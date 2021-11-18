@@ -1,0 +1,126 @@
+[
+    {
+        "name":"",
+        "type":""
+        "works":[
+            {"name":"", "licenseUrl":""}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"", "handle":"", "url":""}
+        ]
+    },
+    {
+        "name":"2Kutup",
+        "type":"musician"
+        "works":[
+            {"name":"Travelling Through Intergalactic Space", "licenseUrl":"https://creativecommons.org/licenses/by-nc-nd/4.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"Soundcloud", "handle":"", "url":"https://soundcloud.com/2kutup"},
+            {"site":"Email", "handle":"ikikutup@gmail.com", "url":"mailto:ikikutup@gmail.com"}
+        ]
+    },
+    {
+        "name":"BenJamin Banger",
+        "type":"musician",
+        "works":[
+            {"name":"Tom 2.0", "licenseUrl":"https://creativecommons.org/licenses/by-nd/4.0/"},
+            {"name":"Freestyle 39", "licenseUrl":"https://creativecommons.org/licenses/by-nd/4.0/"}
+        ],
+        "website":"https://www.benjaminbanger.com/",
+        "socials":[
+            {"site":"", "handle":"@BenJaminBanger", "url":"https://www.instagram.com/benjaminbanger"}
+        ]
+    },
+    {
+        "name":"greenworm",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"Cellphone Alarm Clock Long", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
+        ],
+        "website":"https://freesound.org/people/greenworm/",
+        "socials":[
+            {"site":"", "handle":"", "url":""}
+        ]
+    },
+    {
+        "name":"InspectorJ",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"Heartbeat, Regular, Single, 01-01, LOOP.wav", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
+        ],
+        "website":"http://www.jshaw.co.uk/",
+        "socials":[
+            {"site":"freesound.org", "handle":"InspectorJ", "url":"https://freesound.org/people/InspectorJ/"}
+        ]
+    },
+    {
+        "name":"Aegersum",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"Monster - deep growl.wav", "licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"Aegersum", "url":"https://freesound.org/people/Aegersum/"}
+        ]
+    },
+    {
+        "name":"pfranzen",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"Steam", "handle":"Cat President - A More Purrfect Union", "url":"http://store.steampowered.com/app/474980/Cat_President_A_More_Purrfect_Union/"},
+            {"site":"freesound.org", "handle":"pfranzen", "url": "https://freesound.org/people/pfranzen/"}
+        ]
+    },
+    {
+        "name":"Gerd Altmann",
+        "type":"artist"
+        "works":[
+            {"name":"blood/bacteria overlay", "licenseUrl":"https://pixabay.com/service/license/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"Pixabay", "handle":"geralt", "url":"https://pixabay.com/users/geralt-9301/"}
+        ]
+    },
+    {
+        "name":"Janna",
+        "type":"artist"
+        "works":[
+            {"name":"Sleek Bars", "licenseUrl":"https://opengameart.org/content/sleek-bars"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"opengameart.org", "handle":"Jannax", "url":"https://opengameart.org/users/jannax"}
+        ]
+    },
+    {
+        "name":"Hannemann",
+        "type":"artist"
+        "works":[
+            {"name":"Useful buttons pack", "licenseUrl":"https://opengameart.org/content/useful-buttons-must-have-icons-pack"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"opengameart.org", "handle":"Hannemann", "url":"https://opengameart.org/users/hannemann"}
+        ]
+    },
+    {
+        "name":"Timbre",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"Jobro's Heartbeat (Timbre's variant)", "licenseUrl":"https://creativecommons.org/licenses/by-nc/3.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"Timbre", "url":"https://freesound.org/people/Timbre/"}
+        ]
+    }
+]
