@@ -27,8 +27,8 @@ init 1 python:
             }
 
             self.trackers = {}
-            self.trackers[KEY_HP] = { KEY_TOTAL: self.scores[KEY_ATTR][_sta] + 3, KEY_SPFD: 0, KEY_AGGD: 0}
-            self.trackers[KEY_WP] = { KEY_TOTAL: self.scores[KEY_ATTR][_com] + self.scores[KEY_ATTR][_res], KEY_SPFD: 0, KEY_AGGD: 0 }
+            self.trackers[KEY_HP] = {KEY_TOTAL: self.scores[KEY_ATTR][_sta] + 3, KEY_SPFD: 0, KEY_AGGD: 0}
+            self.trackers[KEY_WP] = {KEY_TOTAL: self.scores[KEY_ATTR][_com] + self.scores[KEY_ATTR][_res], KEY_SPFD: 0, KEY_AGGD: 0, KEY_BONUS: 0}
 
             self.impaired = {}
             self.impaired[KEY_HP] = False
@@ -42,6 +42,8 @@ init 1 python:
             }
 
             self.setResilienceLevel()
+            self.setBloodPotencyValues()
+
             self.merits = startMerits
             self.backgrounds = startBackgrounds
             self.inventory = inventory
@@ -52,7 +54,7 @@ init 1 python:
             if DEBUG : printPCScores(self.scores, stype)
             self.onScoresUpdated(stype)
 
-        def incScores(self, stype, *scorenames): #incPCScores
+        def incScores(self, stype, *scorenames):
             self._nudgeScores(False, stype, scorenames)
 
         def decScores(self, stype, *scorenames):
@@ -71,6 +73,139 @@ init 1 python:
             hasResilience = True if FORT_HP in self.powers[KEY_DISCIPLINE][_fortitude][KEY_DPOWERS] else False
             fortitudeLevel = self.powers[KEY_DISCIPLINE][_fortitude][KEY_LEVEL]
             self.trackers[KEY_HP][KEY_BONUS] = fortitudeLevel if hasResilience else 0
+
+        def setBloodPotencyValues(self):
+            global bpTable
+            self.surgeBonus = bpTable[self.bloodpotency - 1]["surge"]
+            self.powerBonus = bpTable[self.bloodpotency - 1]["discipline_bonus"]
+            self.spfMending = bpTable[self.bloodpotency - 1]["superficial_mend"]
+
+        def addDisciplinePower(self, discipline, power):
+            disclevel = self.powers[KEY_DISCIPLINE][discipline]
+            powerlevel = 0
+            for count, levelset in enumerate(powerlist[discipline]):
+                if power in levelset:
+                    powerlevel = count + 1
+                    break
+
+            if powerlevel < 1:
+                raise ValueError("[Error]: Power \"{pow}\" doesn't exist in discipline \"{disc}\".".format(pow=power, disc=discipline))
+            elif powerlevel > disclevel:
+                raise ValueError("[Error]: Power \"{pow}\" requires \"{disc}\" level {dlevel}.".format(pow=power, disc=discipline, dlevel=powerlevel))
+
+            try:
+                self.powers[KEY_DISCIPLINE][discipline][KEY_DPOWERS][scoreWords[powerlevel]] = power
+            except:
+                print("[Error]: Unknown error occurred when attempting to add discipline power!")
+
+        def addDisciplineDot(self, discipline, choosePower = False):
+            disclevel = self.powers[KEY_DISCIPLINE][discipline]
+            self.powers[KEY_DISCIPLINE][discipline] = increment(disclevel)
+
+        def removePerk(self, typeName):
+            if len(self.merits) < 1 and len(self.backgrounds) < 1:
+                return
+
+            found = False
+
+            if len(self.backgrounds) > 0:
+                for bg in self.backgrounds:
+                    if typeName.lower() == bg[KEY_BGTYPE]:
+                        self.backgrounds.remove(bg)
+                        found = True
+
+            if not found and len(self.merits) > 0:
+                for merit in self.merits:
+                    if typeName.lower() == merit[KEY_BGTYPE]:
+                        self.merits.remove(merit)
+                        found = True
+
+            if found:
+                print("[Status]: Removed merit/background of type {}".format(typeName))
+            else:
+                print("[Error]: Tried to remove a merit/background and couldn't find it.")
+
+        def addPerk(self, typeName, level, merit = False, flaw = False, customToolTip = None):
+            self.removePerk(typeName)
+            found = False
+            table = bgTable if not merit else meritTable
+
+            for perk in table[typeName]:
+                if perk[KEY_BGSCORE] == int(level) and (merit or perk[ISSA_FLAW] == flaw): # merits are never flaws
+                    print("\n\nHERE A1", customToolTip, type(customToolTip))
+                    if customToolTip:
+                        print("\n\nHERE A2")
+                        perk[KEY_TOOLTIP] = "{}".format(customToolTip)
+                    if not merit:
+                        self.backgrounds.append(perk)
+                    else:
+                        self.merits.append(perk)
+                    found = True
+
+            if not found:
+                raise ValueError("[Error]: An attempt was made to add a background/flaw that couldn't be found in the table.")
+
+        def getPredatorType(self):
+            return self.predatorType
+
+        def setPredatorType(self, pt):
+            self.predatorType = pt
+
+        def updateWallet(self, amount, deduct = False):
+            if self.inventory[0][KEY_NAME] != "cash":
+                raise ValueError("[Error]: Cash should always be at index 0 in inventory!")
+
+            cash = self.inventory[0][KEY_VALUE]
+            mult = 1 if not deduct else -1
+            try:
+                self.inventory[0][KEY_VALUE] = max(cash + (float(mult) * (amount or 0.0)), 0.0) # Can't go below broke
+            except TypeError:
+                print("[Error]: Someone tried to add something other than a number to the wallet!")
+
+        def removeFromInventory(self, itemName, payloadValue = None, checkAll = False):
+            if str(itemName).lower() == "cash":
+                self.updateWallet(payloadValue, deduct = True)
+                return
+
+            hasAlready = False
+            for item in self.inventory:
+                if item[KEY_NAME] == itemName:
+                    hasAlready = True
+                    self.inventory.remove(item)
+                    if not checkAll:
+                        break
+            if not hasAlready:
+                print("[Error]: Tried to remove item with name " + str(itemName) + ", but it wasn't found.")
+                return
+            renpy.sound.queue(audio.heartbeat2, u'sound')
+
+        def addToInventory(self, itemName, payloadValue = None, customToolTip = None):
+            if str(itemName).lower() == "cash":
+                self.updateWallet(payloadValue)
+                return
+
+            hasAlready = False
+            existingSet = None
+            for item in self.inventory:
+                if item[KEY_NAME] == itemName:
+                    hasAlready = True
+                    existingSet = item
+                    break
+
+            if not hasAlready: # Maybe later I'll add some logic to affect listed order
+                newItem = {KEY_NAME: itemName}
+                if payloadValue:
+                    newItem[KEY_VALUE] = payloadValue
+                if customToolTip:
+                    newItem[KEY_TOOLTIP] = customToolTip
+                self.inventory.append(newItem)
+            else:
+                try:
+                    existingSet[KEY_VALUE] += int(payloadValue)
+                except TypeError:
+                    print("[Error]: An invalid item adding operation was caught.")
+                    return
+            renpy.sound.queue(audio.heartbeat2, u'sound')
 
         def damage(self, which, dtype, amount):
             swkey = str(which)
@@ -133,19 +268,22 @@ init 1 python:
 
             return retval
 
+        def getHumanity(self):
+            return self.humanity
+
         def setHumanity(self, change, reason, playSound = True, queueSound = True):
             if not hasInt(change):
                 raise TypeError("[Error]: Can't set humanity to non-integer value.")
 
             currenthumanity = self.humanity
-            self.humanity = self.setStateOfUndead("humanity", change, self.humanity, HUMANITY_MIN, HUMANITY_MAX)
+            self.humanity = self.setStateOfUndeath("humanity", change, self.humanity, HUMANITY_MIN, HUMANITY_MAX)
 
             if self.humanity < HUMANITY_MIN:
                 handleBeastEaten()
             elif self.humanity < currenthumanity:
                 handleDegeneration()
-            elif self.humanity >= HUMANITY_MAX and self.humanity > currenthumanity:
-                handleSainthood()
+            elif self.humanity > HUMANITY_MAX and self.humanity > currenthumanity:
+                handleSainthood() # This shouldn't ever fire.
 
         def handleBeastEaten():
             print("")
@@ -155,6 +293,9 @@ init 1 python:
 
         def handleSainthood():
             print("")
+
+        def getHunger(self):
+            return self.hunger
 
         def setHunger(self, change, killed = False, innocent = False, playSound = True, queueSound = True):
             if not hasInt(change):
@@ -228,6 +369,38 @@ init 1 python:
         for name in pcs[KEY_ATTR]:
             print(name, pcs[KEY_ATTR][name])
         print("[NOTE]: Updated character sheet values.")
+
+    def getItemProperty(item, ikey):
+        if not item or not item[KEY_NAME]:
+            raise TypeError("[Error]: Invalid inventory item or item name?")
+
+        name = item[KEY_NAME]
+        itemDetails = itemTable[name]
+
+        if item.has_key(ikey):
+            return item[ikey]
+        elif itemDetails.has_key(ikey):
+            return itemDetails[ikey]
+
+        return None
+
+    def getOpinion(factionKey):
+        global opinions
+        return opinions[factionKey]
+
+    def setOpinion(factionKey, newval, operation = "set"):
+        global opinions
+        prevOpinion = getOpinion(factionKey)
+        if operation == "set":
+            newOpinion = newval
+        elif operation == "add":
+            newOpinion = min(max(prevOpinion + newval, REP_MIN), REP_MAX)
+        elif operation == "subtract":
+            newOpinion = min(max(prevOpinion - newval, REP_MIN), REP_MAX)
+        else:
+            raise ValueError("[Error]: That's an invalid setOpinion operation.")
+
+        opinions[factionKey] = newOpinion
 
     def getCreditsText():
         global builtCredits

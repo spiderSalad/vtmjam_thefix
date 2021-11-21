@@ -4,7 +4,7 @@ init 0 python:
     # NOTE: (OrderedDicts don't work with rollback; had to switch back to native dictionaries)
 
 define DEBUG        = True
-define MUSIC_MUTED  = True
+define MUSIC_MUTED  = False
 
 # Licensing info
 
@@ -26,6 +26,12 @@ define codexTabList             = ["scores", "powers", "status"]
 # Backgrounds
 
 image bg hotel room             = "gevora_hotel_room_1280x720.png"
+image bg driving road1          = "driving_at_night_1280x720.jpg"
+image bg hunt1 consensualist    = "hunt_consensualist1.jpg"
+image bg hunt1 roadsidekiller   = "hunt_roadsidekiller1.jpg"
+image bg hunt1 scenequeen       = "hunt_scenequeen1.jpg"
+image bg hunt1 siren_men        = "hunt_siren1_men.jpg"
+image bg hunt1 siren_women      = "hunt_siren1_women.jpg"
 
 # Overlays
 
@@ -43,12 +49,39 @@ define _pcGhoul     = {"first":"Leonard", "last":"Jackson", "middle": "Bartholom
 define audio.title              = "audio/music/BenJamin Banger - Tom 2.0.mp3"
 define audio.scene1_awakening   = "audio/music/2Kutup - Travelling Through Intergalactic Space.mp3"
 define audio.club1              = "audio/music/BenJamin Banger - Freestyle 39.mp3"
+define audio.car_meeting        = "audio/music/AEED - Through The City.mp3"
+define audio.car_hunting1       = "audio/music/BenJamin Banger - Not The Cypher.mp3"
+define audio.car_hunting2       = "audio/music/Metre - Don't Walk Home Alone.mp3"
+define audio.elysium1           = "audio/music/Teddy and Marge - Dark Eyes.mp3"
+define audio.talk_with_sire     = "audio/music/Ketsa - Sun Hope.mp3"
+define audio.consensualist      = "audio/music/Tea K Pea - chromaticmetal.mp3"
+define audio.roadside_killer    = "audio/music/BenJamin Banger - Freestyle 39.mp3"
+define audio.roadside_killer2   = "audio/music/ROZKOL - Careful now, Stalker.mp3"
+define audio.scene_queen        = "audio/music/Andre Jetson - Andre Jetson - After The Storm (Original Mix).mp3"
 
 define audio.phone_alarm        = "audio/sound/501881__greenworm__cellphone-alarm-clock-long.mp3"
 define audio.heartbeat1         = "audio/sound/inspectorj__heartbeat-regular-single-01-01-loop.mp3"
 define audio.heartbeat2         = "audio/sound/86886__timbre__74829-jobro-heartbeat-timbre-s-variant-1b-loop.mp3"
 define audio.beastgrowl1        = "audio/sound/344903__aegersum__monster-deep-growl.mp3"
 define audio.beastgag           = "audio/sound/347541__pfranzen__human-impression-of-cat-hacking-up-hairball.ogg"
+define audio.shower_pc          = "audio/sound/189689__sangtao__women-in-the-shower.mp3"
+define audio.heels_on_pavement  = "audio/sound/318900__robinhood76__05934-heels-walking-on-pavement-looping.mp3"
+define audio.carstart_pc        = "audio/sound/185740__enric592__car-start.mp3"
+define audio.carstopengine_pc   = "audio/sound/534921__spurioustransients__car-engine-stop-3.mp3"
+define audio.carstopkeys_pc     = "audio/sound/58243__robinhood76__00238-stop-keys-and-manual-brake.mp3"
+define audio.bite1              = "audio/sound/400174__jgriffie919__flesh-bite.mp3"
+define audio.drinking1          = "audio/sound/608241__newlocknew__heart-beat-calm-rhythm-blood-flows-in-the-veins-6lrs.mp3"
+define audio.tackle1            = "audio/sound/502553__kneeling__goblin-fall.mp3"
+
+# Tran... sitions!
+
+define trans_slowfade           = Fade(0.5, 2, 0.3)
+transform basicfade:
+    on show:
+        alpha 0.0
+        linear 3.0 alpha 1.0
+    on hide:
+        linear 1.0 alpha 0.0
 
 # Gameplay constants
 
@@ -97,6 +130,38 @@ define _com     = "Composure"
 define _int     = "Intelligence"
 define _wit     = "Wits"
 define _res     = "Resolve"
+
+# Attribute tooltips
+
+define attrTooltipTable = {
+    _str: [
+        "Lifting, pulling, pushing, punching, kicking, etc.", "", "", "", "", ""
+    ],
+    _dex: [
+        "Coordination and acuity of all kinds, from sprinting to aiming a gun.", "", "", "", "", ""
+    ],
+    _sta: [
+        "How much punishment I can take if I have to. Or want to.", "", "", "", "", ""
+    ],
+    _cha: [
+        "Getting people to like me, fear me, want me. Making them feel.", "", "", "", "", ""
+    ],
+    _man: [
+        "Getting people to listen whether they like me or not..", "", "", "", "", ""
+    ],
+    _com: [
+        "Staying cool in the moment so I don't lose my shit again.", "", "", "", "", ""
+    ],
+    _int: [
+        "Learning, reasoning, problem-solving, memory. The stuff they're always trying to test people for.", "", "", "", "", ""
+    ],
+    _wit: [
+        "Reaction, intuition, thinking on your feet!", "", "", "", "", ""
+    ],
+    _res: [
+        "Focus and determination not to let things go like before.", "", "", "", "", ""
+    ]
+}
 
 # Skill names
 
@@ -153,9 +218,16 @@ define PT_ROADSIDE_KILLER   = "Roadside Killer"
 define PT_SCENE_QUEEN       = "Scene Queen"
 define PT_SIREN             = "Siren"
 
+define SIREN_BOTH           = "either"
+define SIREN_MEN            = "men"
+define SIREN_WOMEN          = "women"
+define SIREN_ENBIES         = "nonbinary"
+
+
 # Merit, loresheet, background keys
 
 define KEY_NAME             = "name"
+define KEY_NAME_ALT         = "altname"
 define KEY_VALUE            = "itemvalue"
 define KEY_TOOLTIP          = "tooltip"
 define KEY_ITEMTYPE         = "typeName"
@@ -167,9 +239,12 @@ define KEY_BGTYPE           = "merit_type"
 define ISSA_MERIT           = "ismerit"
 define ISSA_LORESHEET       = "islore"
 define ISSA_BG              = "isbg"
+define ISSA_FLAW            = "isflaw"
 
-define M_CONTACTS           = {KEY_NAME: "Contacts", KEY_BGTYPE: ISSA_BG, KEY_MERITS: ["??? (Add this)", "", "", "", ""]}
-define M_HERD               = {KEY_NAME: "Herd", KEY_BGTYPE: ISSA_BG, KEY_FLAWS: ["Obvious Predator"], KEY_MERITS: ["Small Herd", "Medium Herd"]}
+define M_ALLIES             = {KEY_NAME: "Allies", KEY_NAME_ALT: "Enemy", KEY_BGTYPE: ISSA_BG, KEY_FLAWS: ["Gifted Mortal Enemy"], KEY_MERITS: ["Weak Mortal Ally", "Average Mortal Ally"]}
+define M_CONTACTS           = {KEY_NAME: "Contacts", KEY_BGTYPE: ISSA_BG, KEY_MERITS: ["\"Jack\"", "\"Jack\" and his \"crew\"", "The Dragon's Claws"]}
+define M_HERD               = {KEY_NAME: "Herd", KEY_BGTYPE: ISSA_BG, KEY_FLAWS: ["Obvious Predator"], KEY_MERITS: ["Small Herd", "Medium Herd", "Large Herd"]}
+define M_INFLUENCE          = {KEY_NAME: "Influence", KEY_BGTYPE: ISSA_BG, KEY_FLAWS: ["Disliked"], KEY_MERITS: ["Well-connected", "Influential", "Entrenched"]}
 define M_LOOKS              = {KEY_NAME: "Looks", KEY_BGTYPE: ISSA_MERIT, KEY_FLAWS: ["Ugly", "Repulsive"], KEY_MERITS: ["Beautiful", "Stunning"]}
 define M_LINE_HARDESTADT    = {KEY_NAME: "Descendant of Hardestadt", KEY_BGTYPE: ISSA_LORESHEET, KEY_MERITS: [
                                     "Voice of Hardestadt", "Supreme Leader", "Ventrue Pillar", "Line to the Founders", "Hardestadt's Heir"
@@ -180,12 +255,42 @@ define IT_MONEY             = "Money"
 define IT_JUNK              = "Junk"
 define IT_CLUE              = "Clue"
 define IT_QUEST             = "Quest Item"
+define IT_WEAPON            = "Weapon"
+define IT_FIREARM           = "Firearm"
+define IT_EQUIPMENT         = "Equipment"
 define IT_MISC              = "Misc."
 
-define IT_COLOR_KEYS        = {IT_MONEY: "#399642", IT_JUNK: "#707070", IT_CLUE: "#ffffff", IT_QUEST: "#763cb7", IT_MISC: "#cbcbdc"}
+define DAMAGE_BONUS         = "Lethality"
+define ITEM_CONCEALED       = "concealedCarry"
 
-define ITEM_CASH            = "Cash"
-define ITEM_PHONE1          = "Smartphone"
+define IT_COLOR_KEYS        = {
+    IT_MONEY: "#399642", IT_JUNK: "#707070", IT_CLUE: "#ffffff", IT_WEAPON: "#8f8f8f",
+    IT_EQUIPMENT: "#cbcbdc", IT_QUEST: "#763cb7", IT_MISC: "#cbcbdc"
+}
+
+# No items, fox only, final destination
+default itemTable       = {
+    # racks
+    "cash": {KEY_ITEMTYPE: IT_MONEY, KEY_TOOLTIP: "Money in hand, for expenses best left off the books."},
+
+    # equipment
+    "smartphone1": {KEY_VALUE: "Smartphone", KEY_ITEMTYPE: IT_EQUIPMENT},
+
+    # weapons
+    "gun_ruger_1": {KEY_VALUE: "Stolen Ruger LCP", KEY_ITEMTYPE: IT_FIREARM, DAMAGE_BONUS: 2, ITEM_CONCEALED: True, KEY_TOOLTIP: "Confiscated and then re-confiscated."},
+    "switchblade": {KEY_VALUE: "Switchblade", KEY_ITEMTYPE: IT_WEAPON, DAMAGE_BONUS: 2, ITEM_CONCEALED: True,
+        KEY_TOOLTIP: "You know what they say about knife fights. Good thing I'm already dead."},
+
+    # junk
+    "chewing_gum": {KEY_VALUE: "Chewing Gum", KEY_ITEMTYPE: IT_JUNK, KEY_TOOLTIP: "I was hoping this would help with blood-breath. It doesn't."}
+}
+
+# Story factions
+define F_ANARCHS            = "Local Anarchs"
+define F_CAMARILLA          = "Local Camarilla"
+define F_VENTRUE            = "Local Ventrue"
+define F_NOSFERATU          = "Local Nosferatu"
+default F_GHOUL             = "" # Depends on Ghoul's name.
 
 # list orders, since we can't use orderedDicts
 
@@ -214,12 +319,13 @@ define clan         = "Ventrue"
 define sire         = "Ms. Walker"
 define generation   = "11th"
 define bloodpotency = 1
+define bpTable      = [{"surge": 2, "discipline_bonus": 0, "superficial_mend": 1}, {"surge": 2, "discipline_bonus": 1, "superficial_mend": 2}]
 
 # Starting player attributes
 
 define STR      = 1
 define DEX      = 1
-define STA      = 2
+define STA      = 1
 define CHA      = 1
 define MAN      = 1
 define COM      = 2
@@ -249,43 +355,50 @@ define Tech     = 1
 
 # List of powers
 
-define dominate_powers      = [[DOM_FORGET, DOM_COMPEL], [DOM_MESMERIZE], [DOM_GASLIGHT, DOM_MANCHURIA]]
-define fortitude_powers     = [[FORT_HP, FORT_STUBBORN], [FORT_TOUGH], [FORT_FIREWALKER, FORT_POKERFACE]]
-define presence_powers      = [[PRES_AWE, PRES_DAUNT], [PRES_ADDICTED2U], [PRES_CHARM, PRES_SCARYFACE], [PRES_DOMVOICE], [PRES_WELLDOITLIVE]]
+define powerlist        = {
+    _dominate: [[DOM_FORGET, DOM_COMPEL], [DOM_MESMERIZE], [DOM_GASLIGHT, DOM_MANCHURIA]],
+    _fortitude: [[FORT_HP, FORT_STUBBORN], [FORT_TOUGH], [FORT_FIREWALKER, FORT_POKERFACE]],
+    _presence: [[PRES_AWE, PRES_DAUNT], [PRES_ADDICTED2U], [PRES_CHARM, PRES_SCARYFACE], [PRES_DOMVOICE], [PRES_WELLDOITLIVE]]
+}
 
-# List of merits (max 3)
+# List of merits (max 3) and backgrounds/flaws
 
-define beautiful            = {KEY_BGTYPE: M_LOOKS[KEY_NAME], KEY_NAME: "Beautiful", KEY_BGSCORE: 1, "flaw": False}
-define voice_of_hardestadt  = {KEY_BGTYPE: M_LINE_HARDESTADT[KEY_NAME], KEY_NAME: "Voice of Hardestadt", KEY_BGSCORE: 1, "flaw": False}
-# TODO: third merit here?
+define meritTable       = {
+    M_LOOKS[KEY_NAME]: [{KEY_BGTYPE: M_LOOKS[KEY_NAME], KEY_NAME: "Beautiful", KEY_BGSCORE: 1, ISSA_FLAW: False}],
+    M_LINE_HARDESTADT[KEY_NAME]: [{KEY_BGTYPE: M_LINE_HARDESTADT[KEY_NAME], KEY_NAME: "Voice of Hardestadt", KEY_BGSCORE: 1, ISSA_FLAW: False}]
+}
 
-# List of backgrounds
-
-define money0               = {KEY_BGTYPE: M_RESOURCES[KEY_NAME], KEY_NAME: "Destitute", KEY_BGSCORE: 1, "flaw": True}
-define money1               = {KEY_BGTYPE: M_RESOURCES[KEY_NAME], KEY_NAME: "Stipend", KEY_BGSCORE: 1, "flaw": False}
-define money2               = {KEY_BGTYPE: M_RESOURCES[KEY_NAME], KEY_NAME: "Actual Budget", KEY_BGSCORE: 2, "flaw": False}
-
-define herd1                = {KEY_BGTYPE: M_HERD[KEY_NAME], KEY_NAME: "Small Herd", KEY_BGSCORE: 1, "flaw": False}
-define herd2                = {KEY_BGTYPE: M_HERD[KEY_NAME], KEY_NAME: "Medium Herd", KEY_BGSCORE: 2, "flaw": False}
-
-define contacts1            = {KEY_BGTYPE: M_CONTACTS[KEY_NAME], KEY_NAME: "???", KEY_BGSCORE: 1, "flaw": False}
+define bgTable          = {
+    M_ALLIES[KEY_NAME]: [{KEY_BGTYPE: M_ALLIES[KEY_NAME], KEY_NAME: "Enemy: My Ex", KEY_BGSCORE: 1, ISSA_FLAW: True}],
+    M_CONTACTS[KEY_NAME]: [
+        {KEY_BGTYPE: M_CONTACTS[KEY_NAME], KEY_NAME: "\"Jack\"", KEY_BGSCORE: 1, ISSA_FLAW: False},
+        {KEY_BGTYPE: M_CONTACTS[KEY_NAME], KEY_NAME: "\"Jack\" and his \"crew\"", KEY_BGSCORE: 2, ISSA_FLAW: False}
+    ],
+    M_INFLUENCE[KEY_NAME]: [{KEY_BGTYPE: M_INFLUENCE[KEY_NAME], KEY_NAME: "Disliked", KEY_BGSCORE: 1, ISSA_FLAW: True}],
+    M_HERD[KEY_NAME]: [
+        {KEY_BGTYPE: M_HERD[KEY_NAME], KEY_NAME: "Small Herd", KEY_BGSCORE: 1, ISSA_FLAW: False},
+        {KEY_BGTYPE: M_HERD[KEY_NAME], KEY_NAME: "Medium Herd", KEY_BGSCORE: 2, ISSA_FLAW: False}
+    ],
+    M_RESOURCES[KEY_NAME]: [
+        {KEY_BGTYPE: M_RESOURCES[KEY_NAME], KEY_NAME: "Destitute", KEY_BGSCORE: 1, ISSA_FLAW: True},
+        {KEY_BGTYPE: M_RESOURCES[KEY_NAME], KEY_NAME: "Stipend", KEY_BGSCORE: 1, ISSA_FLAW: False},
+        {KEY_BGTYPE: M_RESOURCES[KEY_NAME], KEY_NAME: "Actual Budget", KEY_BGSCORE: 2, ISSA_FLAW: False}
+    ]
+}
 
 # Starting discipline powers
 
-define dominate         = 3
-define dominatePowers   = [DOM_FORGET, DOM_MESMERIZE, DOM_GASLIGHT]
-define fortitude        = 4
-define fortitudePowers  = [FORT_HP, FORT_STUBBORN, FORT_TOUGH, FORT_POKERFACE]
-define presence         = 5
-define presencePowers   = [PRES_AWE, PRES_DAUNT, PRES_CHARM, PRES_DOMVOICE, PRES_WELLDOITLIVE]
+define dominate         = 1
+define dominatePowers   = {"one": DOM_FORGET, "two": None, "three": None, "four": None, "five": None}
+define fortitude        = 0
+define fortitudePowers  = {"one": None, "two": None, "three": None, "four": None, "five": None}
+define presence         = 0
+define presencePowers   = {"one": None, "two": None, "three": None, "four": None, "five": None}
 
-# Starting merits
+# Starting merits and backgrounds
 
-define startMerits      = [beautiful, voice_of_hardestadt, money0]
-
-# Starting backgrounds
-
-define startBackgrounds = [contacts1, herd1, money0, money1, herd2, money2]
+define startMerits      = []
+define startBackgrounds = []
 
 # Default opinions
 
@@ -298,9 +411,8 @@ default opinion_ghoul       = 55
 # Starting inventory
 
 default cash            = 1500 # wtf?
-default inventory       = [
-    {KEY_NAME: ITEM_CASH, KEY_VALUE: 1500, KEY_ITEMTYPE: IT_MONEY, KEY_TOOLTIP: "Money in hand, for expenses best left off the books."},
-    {KEY_NAME: ITEM_PHONE1, KEY_VALUE: "Smartphone", KEY_ITEMTYPE: IT_QUEST,
-        KEY_TOOLTIP: "The third-latest iPhone model, rooted and jailbroken and whatnot by my sire's people. Secure, in theory."},
-    {KEY_NAME: "Chewing Gum", KEY_VALUE: "Chewing Gum", KEY_ITEMTYPE: IT_JUNK, KEY_TOOLTIP: "I was hoping it would help with blood-breath. It doesn't."}
+default inventory       = [ # Items in the player's inventory should only have a name/item table reference, and possibly
+    {KEY_NAME: "cash", KEY_VALUE: 1500.0}, # an instance-specific value or tooltip
+    {KEY_NAME: "smartphone1", KEY_TOOLTIP: "The third-latest iPhone model, rooted and jailbroken and whatnot by my sire's people. Secure, in theory."},
+    {KEY_NAME: "chewing_gum"}
 ]

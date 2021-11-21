@@ -19,19 +19,22 @@
         "website":"",
         "socials":[
             {"site":"Soundcloud", "handle":"", "url":"https://soundcloud.com/2kutup"},
-            {"site":"Email", "handle":"ikikutup@gmail.com", "url":"mailto:ikikutup@gmail.com"}
+            {"site":"Email", "handle":"ikikutup@gmail.com", "url":"mailto:ikikutup@gmail.com"},
+            {"site":"Freemusicarchive.org", "handle":"2Kutup", "url":"https://freemusicarchive.org/music/2Kutup"}
         ]
     },
     {
         "name":"BenJamin Banger",
         "type":"musician",
         "works":[
-            {"name":"Tom 2.0", "licenseUrl":"https://creativecommons.org/licenses/by-nd/4.0/"},
-            {"name":"Freestyle 39", "licenseUrl":"https://creativecommons.org/licenses/by-nd/4.0/"}
+            {"name":"Freestyle 39", "licenseUrl":"https://creativecommons.org/licenses/by-nd/4.0/"},
+            {"name":"Not the Cypher", "licenseUrl":"https://creativecommons.org/licenses/by-nd/4.0/"},
+            {"name":"Tom 2.0", "licenseUrl":"https://creativecommons.org/licenses/by-nd/4.0/"}
         ],
         "website":"https://www.benjaminbanger.com/",
         "socials":[
-            {"site":"", "handle":"@BenJaminBanger", "url":"https://www.instagram.com/benjaminbanger"}
+            {"site":"", "handle":"@BenJaminBanger", "url":"https://www.instagram.com/benjaminbanger"},
+            {"site":"Freemusicarchive.org", "handle":"BenJamin Banger", "url":"https://freemusicarchive.org/music/BenJamin_Banger"}
         ]
     },
     {
@@ -102,6 +105,17 @@
         ]
     },
     {
+        "name":"NastyaSensei",
+        "type":"photographer"
+        "works":[
+            {"name":"Time lapse photo of vehicles on paved road", "licenseUrl":"https://www.pexels.com/license/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"pexels.com", "handle":"NastyaSensei", "url":"https://www.pexels.com/@nastyasensei-66707"}
+        ]
+    },
+    {
         "name":"Hannemann",
         "type":"artist"
         "works":[
@@ -121,6 +135,255 @@
         "website":"",
         "socials":[
             {"site":"freesound.org", "handle":"Timbre", "url":"https://freesound.org/people/Timbre/"}
+        ]
+    },
+    {
+        "name":"sangtao",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"Woman singing in the shower", "licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"sangtao", "url":"https://freesound.org/people/sangtao/"}
+        ]
+    },
+    {
+        "name":"Robinhood76",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"high heels on pavement", "licenseUrl":"https://creativecommons.org/licenses/by-nc/3.0/"},
+            {"name":"stop keys and manual brake", "licenseUrl":"https://creativecommons.org/licenses/by-nc/3.0/"}
+
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"", "url":"https://freesound.org/people/Robinhood76/"}
+        ]
+    },
+    {
+        "name":"enric592",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"Car starting", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"enric592", "url":"https://freesound.org/people/enric592/"}
+        ]
+    },
+    {
+        "name":"AEED",
+        "type":"musician"
+        "works":[
+            {"name":"Through the City", "licenseUrl":"https://creativecommons.org/licenses/by-nc-nd/3.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"Myspace", "handle":"aeedmusic", "url":"https://myspace.com/aeedmusic"}
+        ]
+    },
+    {
+        "name":"Teddy and Marge",
+        "type":"musician"
+        "works":[
+            {"name":"Dark Eyes", "licenseUrl":"https://creativecommons.org/licenses/by-nc-sa/3.0/us/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"Freemusicarchive.org", "handle":"Teddy and Marge", "url":"https://freemusicarchive.org/music/Teddy_and_Marge"}
+        ]
+    },
+    {
+        "name":"Sebastian Ervi",
+        "type":"photographer"
+        "works":[
+            {"name":"People in concert", "licenseUrl":"https://www.pexels.com/license/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"pexels.com", "handle":"Sebastian Ervi", "url":"https://www.pexels.com/@sebastian-ervi-866902"}
+        ]
+    },
+    {
+        "name":"mali maeder",
+        "type":"photographer"
+        "works":[
+            {"name":"white-motor-scooter-near-open-door", "licenseUrl":"https://www.pexels.com/license/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"pexels.com", "handle":"mali maeder", "url":"https://www.pexels.com/@mali"}
+        ]
+    },
+    {
+        "name":"cottonbro",
+        "type":"photographer"
+        "works":[
+            {"name":"Three women at the party", "licenseUrl":"https://www.pexels.com/license/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"pexels.com", "handle":"cottonbro", "url":"https://www.pexels.com/@cottonbro"}
+        ]
+    },
+    {
+        "name":"Martin Lopez",
+        "type":"photographer"
+        "works":[
+            {"name":"Man holding bottled water", "licenseUrl":"https://www.pexels.com/license/"},
+            {"name":"Women taking photo", "licenseUrl":"https://www.pexels.com/license/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"pexels.com", "handle":"mediocrememories", "url":"https://www.pexels.com/@mediocrememories"}
+        ]
+    },
+    {
+        "name":"Lukas Rychvalsky",
+        "type":"photographer"
+        "works":[
+            {"name":"Gas station", "licenseUrl":"https://www.pexels.com/license/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"pexels.com", "handle":"Lukas Rychvalsky", "url":"https://www.pexels.com/@lukas-rychvalsky"}
+        ]
+    },
+    {
+        "name":"Alexander Wendt",
+        "type":"photographer"
+        "works":[
+            {"name":"Man wearing cap", "licenseUrl":"https://www.pexels.com/license/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"pexels.com", "handle":"Alexander Wendt", "url":"https://www.pexels.com/@alexander-wendt-1264486"}
+        ]
+    },
+    {
+        "name":"spurioustransients",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"Car engine stop 3", "licenseUrl":"http://creativecommons.org/publicdomain/zero/1.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"spurioustransients", "url":"https://freesound.org/people/spurioustransients/"}
+        ]
+    },
+    {
+        "name":"Ketsa",
+        "type":"musician"
+        "works":[
+            {"name":"Sun Hope", "licenseUrl":"https://creativecommons.org/licenses/by-nc-nd/4.0/"}
+        ],
+        "website":"https://ketsa.uk/",
+        "socials":[
+            {"site":"Freemusicarchive.org", "handle":"Ketsa", "url":"https://freemusicarchive.org/music/Ketsa"}
+        ]
+    },
+    {
+        "name":"Tea K Pea",
+        "type":"musician"
+        "works":[
+            {"name":"chromaticmetal", "licenseUrl":"https://creativecommons.org/licenses/by-nc/4.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"Youtube", "handle":"TravisPerkinsjustme", "url":"https://www.youtube.com/c/TravisPerkinsjustme/videos"},
+            {"site":"Freemusicarchive.org", "handle":"Tea K Pea", "url":"https://freemusicarchive.org/music/tea-k-pea"}
+        ]
+    },
+    {
+        "name":"jgriffie919",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"fleshy bite", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"jgriffie919", "url": "https://freesound.org/people/jgriffie919/"}
+        ]
+    },
+    {
+        "name":"ProductionNow",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"Eating juicy meat", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"ProductionNow", "url": "https://freesound.org/people/ProductionNow/"}
+        ]
+    },
+    {
+        "name":"saturdaysoundg",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"lettuce hit 2", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"saturdaysoundg", "url": "https://freesound.org/people/saturdaysoundg/"}
+        ]
+    },
+    {
+        "name":"newlocknew",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"heartbeat rhythim calm", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"newlocknew", "url": "https://freesound.org/people/newlocknew/"}
+        ]
+    },
+    {
+        "name":"Metre",
+        "type":"musician"
+        "works":[
+            {"name":"Don't Walk Home Alone", "licenseUrl":"https://creativecommons.org/licenses/by-nc/4.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"Mixcloud.com", "handle":"Beat Mix", "url":"https://www.mixcloud.com/Nul_Tiel/ambient-house-mix-2/"},
+            {"site":"Freemusicarchive.org", "handle":"Metre", "url":"https://freemusicarchive.org/music/Metre"}
+        ]
+    },
+    {
+        "name":"Rozkol",
+        "type":"musician"
+        "works":[
+            {"name":"Careful now, stalker", "licenseUrl":"https://creativecommons.org/licenses/by-nc/4.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"Bandcamp", "handle":"Bandcamp", "url":"https://rozkol.bandcamp.com/"},
+            {"site":"Freemusicarchive.org", "handle":"Rozkol", "url":"https://freemusicarchive.org/music/ROZKOL"}
+        ]
+    },
+    {
+        "name":"Kneeling",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"goblin falling over", "licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"Kneeling", "url": "https://freesound.org/people/Kneeling/"}
+        ]
+    },
+    {
+        "name":"Andre Jetson",
+        "type":"musician"
+        "works":[
+            {"name":"After the Storm (Original Mix)", "licenseUrl":"https://creativecommons.org/licenses/by/4.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"Facebook", "handle":"Facebook", "url":"https://www.facebook.com/jetsonmusic/"},
+            {"site":"Freemusicarchive.org", "handle":"Metre", "url":"https://freemusicarchive.org/music/Andre_Jetson"}
         ]
     }
 ]

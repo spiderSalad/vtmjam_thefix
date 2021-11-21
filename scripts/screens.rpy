@@ -401,6 +401,7 @@ screen main_menu():
     tag menu
 
     add gui.main_menu_background
+    add gui.main_menu_vtm_logo at basicfade, top
 
     ## This empty frame darkens the main menu.
     frame:
@@ -1181,11 +1182,11 @@ style help_label_text:
 screen hovertext(txt, toolTip = None, _style = "medium", _xalign = 0.0):
     textbutton "[txt]" xalign _xalign:
         if _style == "medium":
-            text_style style.codex_hoverable_text
+            text_style "codex_hoverable_text"
         elif _style == "big":
-            text_style style.codex_hoverable_text_big
+            text_style "codex_hoverable_text_big"
         else:
-            text_style style.codex_hoverable_text_small
+            text_style "codex_hoverable_text_small"
         action NullAction()
         hovered ShowTransient("hovertip", None, str(toolTip))
         unhovered Hide("hovertip", None)
@@ -1355,7 +1356,8 @@ screen codexScoresPage(*args):
                     for count, attr in enumerate(pc.scores[KEY_ATTR]):
                         $ keydex = attributeOrder[count]
                         frame style style.utility_frame:
-                            use dotchain(keydex, pc.scores[KEY_ATTR][keydex])
+                            $ the_score = pc.scores[KEY_ATTR][keydex]
+                            use dotchain(keydex, the_score, toolTip = "{at1}{at2}".format(at1=attrTooltipTable[keydex][0], at2=attrTooltipTable[keydex][the_score]))
             frame id "pane_skills" xalign 0.5 ysize 170:
                 use buildGrid(gui.GRID_ROWS_ALLSCORES, gui.GRID_COLS_SKILLS, gui.GRID_ROWS_ALLSCORES * gui.GRID_COLS_SKILLS, _transpose = True):
                     for count, skill in enumerate(pc.scores[KEY_SKILL]):
@@ -1377,10 +1379,13 @@ screen codexPowersPage(*args):
                     hbox xfill True:
                         for count in range(min(leng, MERIT_MAX)):
                             frame style style.utility_frame yfill True:
-                                $ meritv = pc.merits[count]
-                                $ dcolor = "dark" if meritv["flaw"] == True else "red"
-                                $ altname = (meritv[KEY_BGTYPE] + " Flaw") if meritv["flaw"] == True else (meritv[KEY_BGTYPE])
-                                use dotchain(meritv[KEY_NAME], meritv[KEY_BGSCORE], altname = altname, dotcolor = dcolor, format = "merit")
+                                python:
+                                    meritv = pc.merits[count]
+                                    dcolor = "red" if meritv[ISSA_FLAW] == True else "red"
+                                    altname = (meritv[KEY_BGTYPE] + " Flaw") if meritv[ISSA_FLAW] == True else (meritv[KEY_BGTYPE])
+                                    print("\nfuckshit", meritv)
+                                    toolTip = meritv[KEY_TOOLTIP] if meritv.has_key(KEY_TOOLTIP) else None
+                                use dotchain(meritv[KEY_NAME], meritv[KEY_BGSCORE], altname = altname, dotcolor = dcolor, format = "merit", toolTip = toolTip)
                 else:
                     hbox xfill True yalign 0.5:
                         text "Nothing special unlocked or discovered." text_align 0.5 xalign 0.5 yalign 0.5
@@ -1394,9 +1399,11 @@ screen codexPowersPage(*args):
                                 $ keydex = disciplineOrder[count] # make sure we list disciplines in order
                                 use dotchain(keydex, pc.powers[KEY_DISCIPLINE][keydex][KEY_LEVEL])
                                 $ powerlist = pc.powers[KEY_DISCIPLINE][keydex][KEY_DPOWERS]
-                                for count, power in enumerate(powerlist):
-                                    frame style style.utility_frame left_padding 5 xalign 0.0:
-                                        text str(count + 1) + ". [power]" text_align 1.0 xfill True
+                                for count in range(4):
+                                    power = powerlist[scoreWords[count + 1]] if powerlist[scoreWords[count + 1]] else None
+                                    if power:
+                                        frame style style.utility_frame left_padding 5 xalign 0.0:
+                                            text str(count + 1) + ". [power]" text_align 1.0 xfill True
 
 
 # Character sheet tab showing status, i.e. opinions, backgrounds, inventory
@@ -1416,8 +1423,8 @@ screen codexStatusPage(*args):
             frame id "pane_backgrounds" xalign 0.5 ysize 180 padding (10, 10):
                 use buildGrid(BG_GRID_ROWS, BG_GRID_COLS, len(pc.backgrounds), 10, 10):
                     for count, asset in enumerate(pc.backgrounds):
-                        $ dcolor = "dark" if asset["flaw"] else "red"
-                        $ altname = (asset[KEY_BGTYPE] + " Flaw") if asset["flaw"] else (asset[KEY_BGTYPE])
+                        $ dcolor = "dark" if asset[ISSA_FLAW] else "red"
+                        $ altname = (asset[KEY_BGTYPE] + " Flaw") if asset[ISSA_FLAW] else (asset[KEY_BGTYPE])
                         use dotchain(asset[KEY_NAME], asset[KEY_BGSCORE], altname = altname, dotcolor = dcolor, format = "merit")
 
 
@@ -1433,11 +1440,25 @@ screen codexCasefilesPage(*args):
                 use buildGrid(4, 3, len(pc.inventory), 5, 10):
                     for count, item in enumerate(pc.inventory):
                         frame style style.utility_frame:
-                            $ colorstr = IT_COLOR_KEYS[item[KEY_ITEMTYPE]]
-                            textbutton str(item[KEY_VALUE]) + " {color=[colorstr]}(" + str(item[KEY_ITEMTYPE]) + "){/color}":
+                            python:
+                                global itemTable
+                                itemDetails = itemTable[item[KEY_NAME]]
+                                colorstr = IT_COLOR_KEYS[itemDetails[KEY_ITEMTYPE]]
+
+                                title = getItemProperty(item, KEY_VALUE)
+                                toolTip = getItemProperty(item, KEY_TOOLTIP)
+                                itype = getItemProperty(item, KEY_ITEMTYPE)
+
+                                if itemDetails[KEY_ITEMTYPE] == IT_MONEY:
+                                    title = "" + str(item[KEY_NAME]).capitalize() + ": ${:.2f}".format(item[KEY_VALUE])
+                                elif itemDetails[KEY_ITEMTYPE] == IT_WEAPON:
+                                    concealed = "I have my trusty forged CCW permit, just in case." if itemDetails[ITEM_CONCEALED] else "This is an open carry state, right?"
+                                    toolTip = "Damage Bonus: {db}\n{cncl}\n{btt}".format(db=itemDetails[DAMAGE_BONUS], cncl=concealed, btt=toolTip)
+
+                            textbutton str(title) + " {color=[colorstr]}(" + str(itemDetails[KEY_ITEMTYPE]) + "){/color}":
                                 text_style style.codex_hoverable_text
                                 action NullAction()
-                                hovered ShowTransient("hovertip", None, "{}".format(item[KEY_TOOLTIP]))
+                                hovered ShowTransient("hovertip", None, "{}".format(toolTip))
                                 unhovered Hide("hovertip", None)
             frame id "pane_case_log" xalign 0.5 ysize 170 padding (10, 10):
                 text "This will basically be a quest log."
@@ -1476,8 +1497,21 @@ screen codex_tabs(*args):
                 keysym "n"
                 action ToggleScreen("codexInfoPage", None)
 
+# Player chooses discipline powers here.
+screen disciplineTree(*args):
+    style style.codex_panel_frame
+    tag codexPage
 
-# Tooltip?
+    window id "powertree_main" align (0.5, 0.1) xysize (900, 500) padding (15, 10):
+        background Frame("gui/nvl.png", 5, 5, 5, 5)
+        modal False
+
+        image "gui/ventrue_bg.png" align (0.5, 0.5) zoom 1.0
+        vbox spacing 2 xfill True:
+            text "Discipline Powers" align truecenter text_align 0.5
+
+
+# Used to display tooltips
 screen hovertip(tip, *args):
     frame background Frame("gui/frame.png", Borders(5, 5, 5, 5)):
         xmaximum 200
