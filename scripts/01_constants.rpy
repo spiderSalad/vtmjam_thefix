@@ -26,12 +26,24 @@ define codexTabList             = ["scores", "powers", "status"]
 # Backgrounds
 
 image bg hotel room             = "gevora_hotel_room_1280x720.png"
+image bg hotel exterior         = "hotel_exterior.jpg"
 image bg driving road1          = "driving_at_night_1280x720.jpg"
+image bg driving road2          = "driving_at_night_2.jpg"
 image bg hunt1 consensualist    = "hunt_consensualist1.jpg"
 image bg hunt1 roadsidekiller   = "hunt_roadsidekiller1.jpg"
 image bg hunt1 scenequeen       = "hunt_scenequeen1.jpg"
 image bg hunt1 siren_men        = "hunt_siren1_men.jpg"
 image bg hunt1 siren_women      = "hunt_siren1_women.jpg"
+image bg hunt siren_their_place = "hunt_siren_their_place.jpg"
+image bg city nightscape1       = "citynight2.jpg"
+image bg city officepark1       = "office_park_1.jpg"
+image bg rooms boardroom1       = "boardroom1.jpg"
+image bg huntX consensualist    = "generic_hunt_consensualist.jpg"
+image bg huntX roadsidekiller   = "generic_hunt_roadsidekiller.jpg"
+image bg huntX scenequeen       = "generic_hunt_scenequeen.jpg"
+image bg huntX siren            = "generic_hunt_siren.jpg"
+image bg danger alley1          = "bg_dark_alley.jpg"
+image bg danger alleyRed        = "bg_red_alley.jpg"
 
 # Overlays
 
@@ -42,22 +54,38 @@ image hungerlay five            = "gui/overlay/hunger_five.png"
 # Character names
 
 define _pc          = {"first":"Bethany", "last":"Salazar", "pet": "Beth"}
-define _pcGhoul     = {"first":"Leonard", "last":"Jackson", "middle": "Bartholomew", "MI": "B."}
+define _pcGhoul     = {"first":"Richard", "last":"Brown", "middle": "Bartholomew", "MI": "B.", "pet": "Richie"}
+define _sensam      = {"first":"Sam", "last":"Torres", "subj":"they", "obj":"them", "pos":"their", "pospro":"theirs", "reflex":"themself"}
+define _exmale      = {"first":"Michael", "last":"Garcia", "subj":"he", "obj":"him", "pos":"his", "pospro":"his", "reflex":"himself"}
+define _exfemale    = {"first":"Michelle", "last":"Garcia", "subj":"she", "obj":"her", "pos":"her", "pospro":"hers", "reflex":"herself"}
 
 # Music and sound aliases
 
 define audio.title              = "audio/music/BenJamin Banger - Tom 2.0.mp3"
 define audio.scene1_awakening   = "audio/music/2Kutup - Travelling Through Intergalactic Space.mp3"
 define audio.club1              = "audio/music/BenJamin Banger - Freestyle 39.mp3"
-define audio.car_meeting        = "audio/music/AEED - Through The City.mp3"
+define audio.car_meeting        = "<from 5>audio/music/AEED - Through The City.mp3"
 define audio.car_hunting1       = "audio/music/BenJamin Banger - Not The Cypher.mp3"
-define audio.car_hunting2       = "audio/music/Metre - Don't Walk Home Alone.mp3"
+define audio.car_hunting2       = "<from 2>audio/music/Metre - Don't Walk Home Alone.mp3"
 define audio.elysium1           = "audio/music/Teddy and Marge - Dark Eyes.mp3"
 define audio.talk_with_sire     = "audio/music/Ketsa - Sun Hope.mp3"
 define audio.consensualist      = "audio/music/Tea K Pea - chromaticmetal.mp3"
-define audio.roadside_killer    = "audio/music/BenJamin Banger - Freestyle 39.mp3"
-define audio.roadside_killer2   = "audio/music/ROZKOL - Careful now, Stalker.mp3"
+define audio.roadside_killer    = "audio/music/ROZKOL - Careful now, Stalker.mp3"
 define audio.scene_queen        = "audio/music/Andre Jetson - Andre Jetson - After The Storm (Original Mix).mp3"
+define audio.scene_queen_x      = "audio/music/Andre Jetson - Andre Jetson - Bipolar (Original Mix).mp3"
+define audio.siren_men1         = "audio/music/BenJamin Banger - Freestyle 39.mp3"
+define audio.siren_women1       = "audio/music/Digi G'Alessio - Appuntamento Al Club.mp3"
+define audio.siren_their_place  = "<from 68 to 125>audio/music/Makaih Beats - Guilty Pleasure (Majestic Drama Collab).mp3"
+define audio.introMission       = "audio/music/Darkstar83 - Shadow Walker.mp3"
+define audio.mission2           = "audio/music/InSpectr - Third eye.mp3"
+define audio.seneschal          = "audio/music/DJ Spooky - Adagio in Blue.mp3"
+define audio.seneschal2         = "<from 4>audio/music/DJ Spooky - Nocturne.mp3"
+define audio.freakout           = "audio/music/InSpectr - Tension.mp3"
+define audio.hotel_neutral      = "<from 5>audio/music/DJ Spooky - Check Your Math.mp3"
+define audio.relaxation         = "audio/music/Ketsa - No-Light-Without-Darkness.mp3"
+define audio.huntsuccess_cons   = "audio/music/Ketsa - Heart Science (no-beats).mp3"
+define audio.huntsuccess        = "audio/music/Tea K Pea - commander.mp3"
+define audio.huntfailure        = "audio/music/Darkstar83 - The Witches Dream.mp3"
 
 define audio.phone_alarm        = "audio/sound/501881__greenworm__cellphone-alarm-clock-long.mp3"
 define audio.heartbeat1         = "audio/sound/inspectorj__heartbeat-regular-single-01-01-loop.mp3"
@@ -72,6 +100,17 @@ define audio.carstopkeys_pc     = "audio/sound/58243__robinhood76__00238-stop-ke
 define audio.bite1              = "audio/sound/400174__jgriffie919__flesh-bite.mp3"
 define audio.drinking1          = "audio/sound/608241__newlocknew__heart-beat-calm-rhythm-blood-flows-in-the-veins-6lrs.mp3"
 define audio.tackle1            = "audio/sound/502553__kneeling__goblin-fall.mp3"
+define audio.tablefist          = "audio/sound/570241__evanski__crunch.mp3"
+define audio.punchgrunt1        = "audio/sound/497713__miksmusic__punch-grunt-1.mp3"
+define audio.heels_running      = "<from 0 to 8>audio/sound/187291__soundadvices__parking-garage-footsteps-woman-heels-2.mp3"
+define audio.car_screech        = "audio/sound/233558__waveplaysfx__sfx-car-screech-2.mp3"
+define audio.kick1              = "audio/sound/450278__ethanchase7744__kick-2.mp3"
+define audio.gunshot1           = "audio/sound/212607__pgi__machine-gun-002-single-shot.mp3"
+define audio.womangrunt         = "audio/sound/536750__egomassive__gruntf.mp3"
+define audio.swordclash         = "audio/sound/440069__ethanchase7744__sword-block-combo.mp3"
+define audio.stab1              = "audio/sound/435238__aris621__nasty-knife-stab.mp3"
+define audio.stab2              = "audio/sound/478145__aris621__nasty-knife-stab-2.mp3"
+define audio.bulletimpacts      = "audio/sound/423301__u1769092__visceralbulletimpacts.mp3"
 
 # Tran... sitions!
 
@@ -96,6 +135,7 @@ define KEY_HP_FORT          = "HealthFort"
 define KEY_WP               = "Willpower"
 define KEY_TOTAL            = "total"
 define KEY_BONUS            = "bonus"
+define KEY_ARMOR            = "armor"
 define KEY_SPFD             = "Superficial Damage"
 define KEY_AGGD             = "Aggravated Damage"
 define KEY_LEVEL            = "level"
@@ -119,6 +159,12 @@ define REP_MIN              = 0 # -100
 define REP_MAX              = 200 # 100
 define REP_VALUE_ADJUST     = 100
 
+define BEASTFAIL            = "Bestial Failure"
+define FAIL                 = "Failure"
+define SUCCESS              = "Success"
+define MESSYCRIT            = "Messy Critical"
+define DRAW                 = "Draw" # combat only
+
 # Attribute names
 
 define _str     = "Strength"
@@ -130,38 +176,6 @@ define _com     = "Composure"
 define _int     = "Intelligence"
 define _wit     = "Wits"
 define _res     = "Resolve"
-
-# Attribute tooltips
-
-define attrTooltipTable = {
-    _str: [
-        "Lifting, pulling, pushing, punching, kicking, etc.", "", "", "", "", ""
-    ],
-    _dex: [
-        "Coordination and acuity of all kinds, from sprinting to aiming a gun.", "", "", "", "", ""
-    ],
-    _sta: [
-        "How much punishment I can take if I have to. Or want to.", "", "", "", "", ""
-    ],
-    _cha: [
-        "Getting people to like me, fear me, want me. Making them feel.", "", "", "", "", ""
-    ],
-    _man: [
-        "Getting people to listen whether they like me or not..", "", "", "", "", ""
-    ],
-    _com: [
-        "Staying cool in the moment so I don't lose my shit again.", "", "", "", "", ""
-    ],
-    _int: [
-        "Learning, reasoning, problem-solving, memory. The stuff they're always trying to test people for.", "", "", "", "", ""
-    ],
-    _wit: [
-        "Reaction, intuition, thinking on your feet!", "", "", "", "", ""
-    ],
-    _res: [
-        "Focus and determination not to let things go like before.", "", "", "", "", ""
-    ]
-}
 
 # Skill names
 
@@ -188,6 +202,36 @@ define _tech    = "Technology"
 define _dominate    = "Dominate"
 define _fortitude   = "Fortitude"
 define _presence    = "Presence"
+
+# Attribute tooltips
+
+define tooltipTable = {
+    _str: "Lifting, pulling, pushing, punching, kicking, etc.",
+    _dex: "Coordination and acuity of all kinds, from sprinting to aiming a gun.",
+    _sta: "How much punishment I can take if I have to. Or want to.",
+    _cha: "Getting people to like me, fear me, want me. Making them feel.",
+    _man: "Getting people to listen whether they like me or not..",
+    _com: "Staying cool in the moment so I don't lose my shit again.",
+    _int: "Learning, reasoning, problem-solving, memory. The stuff they're always trying to test people for.",
+    _wit: "Reaction, intuition, thinking on your feet!",
+    _res: "Focus and determination not to let things go like before.",
+
+    _athl: "",
+    _clan: "",
+    _comb: "",
+    _driv: "",
+    _fire: "",
+    _inti: "",
+    _intr: "",
+    _perf: "",
+    _pers: "",
+    _stre: "",
+    _acad: "",
+    _awar: "",
+    _inve: "",
+    _occu: "",
+    _tech: ""
+}
 
 # Discipline power keys
 
@@ -223,6 +267,14 @@ define SIREN_MEN            = "men"
 define SIREN_WOMEN          = "women"
 define SIREN_ENBIES         = "nonbinary"
 
+define PT_QUIP_TABLE        = {
+    DOM_COMPEL: "I can give an order that {i}must{/i} be obeyed. It can't be too complicated, though. Like, \"stop\" or \"give me that\".",
+    DOM_MESMERIZE: "I can give someone orders that they {i}must{/i} obey. Those orders can be long and complex if need be.",
+    FORT_STUBBORN: "I've learned to use the Blood to actually toughen, like, my mind. Shit just doesn't faze me. Not easily.",
+    FORT_HP: "I'm tough. Like, supernaturally tough. Well, all vampires are. But I mean on top of even that.",
+    PRES_AWE: "I can project an aura of allure, that draws attention and interest. Makes people more amenable to what I have to say.",
+    PRES_DAUNT: "I can project an aura of \"don't fuck with me\". Makes people uneasy around me and terrified to get close or interact with me."
+}
 
 # Merit, loresheet, background keys
 
@@ -275,6 +327,7 @@ default itemTable       = {
 
     # equipment
     "smartphone1": {KEY_VALUE: "Smartphone", KEY_ITEMTYPE: IT_EQUIPMENT},
+    "smartphone2b": {KEY_VALUE: "Cam Burner Phone", KEY_ITEMTYPE: IT_EQUIPMENT},
 
     # weapons
     "gun_ruger_1": {KEY_VALUE: "Stolen Ruger LCP", KEY_ITEMTYPE: IT_FIREARM, DAMAGE_BONUS: 2, ITEM_CONCEALED: True, KEY_TOOLTIP: "Confiscated and then re-confiscated."},
@@ -351,7 +404,7 @@ define Acad     = 2
 define Awar     = 1
 define Inve     = 0
 define Occu     = 0
-define Tech     = 1
+define Tech     = 0
 
 # List of powers
 
@@ -408,11 +461,13 @@ default opinion_ventrue     = 45
 default opinion_nosferatu   = 0
 default opinion_ghoul       = 55
 
+default cam_rep_rank1       = 35
+default cam_rep_rank2       = 55
+
 # Starting inventory
 
-default cash            = 1500 # wtf?
 default inventory       = [ # Items in the player's inventory should only have a name/item table reference, and possibly
-    {KEY_NAME: "cash", KEY_VALUE: 1500.0}, # an instance-specific value or tooltip
+    {KEY_NAME: "cash", KEY_VALUE: 300.0}, # an instance-specific value or tooltip
     {KEY_NAME: "smartphone1", KEY_TOOLTIP: "The third-latest iPhone model, rooted and jailbroken and whatnot by my sire's people. Secure, in theory."},
     {KEY_NAME: "chewing_gum"}
 ]

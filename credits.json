@@ -243,7 +243,8 @@
         "name":"Lukas Rychvalsky",
         "type":"photographer"
         "works":[
-            {"name":"Gas station", "licenseUrl":"https://www.pexels.com/license/"}
+            {"name":"Gas station", "licenseUrl":"https://www.pexels.com/license/"},
+            {"name":"Photo of windshield during rainy weather", "licenseUrl":"https://www.pexels.com/license/"}
         ],
         "website":"",
         "socials":[
@@ -276,7 +277,9 @@
         "name":"Ketsa",
         "type":"musician"
         "works":[
-            {"name":"Sun Hope", "licenseUrl":"https://creativecommons.org/licenses/by-nc-nd/4.0/"}
+            {"name":"Sun Hope", "licenseUrl":"https://creativecommons.org/licenses/by-nc-nd/4.0/"},
+            {"name":"No Light Without Darkness", "licenseUrl":"https://creativecommons.org/licenses/by-nc-nd/4.0/"},
+            {"name":"Heart-Science (no beats)", "licenseUrl":"https://creativecommons.org/licenses/by-nc-nd/4.0/"}
         ],
         "website":"https://ketsa.uk/",
         "socials":[
@@ -378,12 +381,310 @@
         "name":"Andre Jetson",
         "type":"musician"
         "works":[
-            {"name":"After the Storm (Original Mix)", "licenseUrl":"https://creativecommons.org/licenses/by/4.0/"}
+            {"name":"After the Storm (Original Mix)", "licenseUrl":"https://creativecommons.org/licenses/by/4.0/"},
+            {"name":"String Theory II", "licenseUrl":"https://creativecommons.org/licenses/by/4.0/"}
         ],
         "website":"",
         "socials":[
             {"site":"Facebook", "handle":"Facebook", "url":"https://www.facebook.com/jetsonmusic/"},
             {"site":"Freemusicarchive.org", "handle":"Metre", "url":"https://freemusicarchive.org/music/Andre_Jetson"}
+        ]
+    },
+    {
+        "name":"Digi G'Alessio",
+        "type":"musician"
+        "works":[
+            {"name":"Appuntamento Al Club", "licenseUrl":"https://creativecommons.org/licenses/by-nc-sa/2.5/it/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"Soundcloud", "handle":"Daddy G'Alessio", "url":"https://soundcloud.com/digigalessio"}
+        ]
+    },
+    {
+        "name":"Skylar Kang",
+        "type":"photographer"
+        "works":[
+            {"name":"Vintage lamp and candle on dresser", "licenseUrl":"https://www.pexels.com/license/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"pexels.com", "handle":"Skylar Kang", "url":"https://www.pexels.com/@skylar-kang"}
+        ]
+    },
+    {
+        "name":"Darkstar83",
+        "type":"musician"
+        "works":[
+            {"name":"Shadow Walker", "licenseUrl":"https://creativecommons.org/licenses/by-nc-nd/4.0/"},
+            {"name":"The Witch's Dream", "licenseUrl":"https://creativecommons.org/licenses/by-nc-nd/4.0/"}
+        ],
+        "website":"https://darkstar83.net/",
+        "socials":[
+            {"site":"Soundcloud", "handle":"Darkstar83", "url":"https://soundcloud.com/darkstar83"},
+            {"site":"Youtube", "handle":"Darkstar83", "url":"https://www.youtube.com/user/DARKSTARS83TV"}
+        ]
+    },
+    {
+        "name":"David Skyrius",
+        "type":"photographer"
+        "works":[
+            {"name":"Building photography", "licenseUrl":"https://www.pexels.com/license/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"pexels.com", "handle":"David Skyrius", "url":"https://www.pexels.com/@wikispikis"}
+        ]
+    },
+    {
+        "name":"Quentin Ecrepont",
+        "type":"photographer"
+        "works":[
+            {"name":"Turned on lights, multistory building", "licenseUrl":"https://www.pexels.com/license/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"pexels.com", "handle":"Quentin Ecrepont", "url":"https://www.pexels.com/@quentin-ecrepont-1148362"}
+        ]
+    },
+    {
+        "name":"Matheus Natan",
+        "type":"photographer"
+        "works":[
+            {"name":"Black padded leather office chairs", "licenseUrl":"https://www.pexels.com/license/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"pexels.com", "handle":"Matheus Natan", "url":"https://www.pexels.com/@matheusnatan"}
+        ]
+    },
+    {
+        "name":"DJ Spooky",
+        "type":"musician"
+        "works":[
+            {"name":"Adagio in Blue", "licenseUrl":"https://creativecommons.org/licenses/by-nc-sa/3.0/"},
+            {"name":"Nocturne", "licenseUrl":"https://creativecommons.org/licenses/by-nc-sa/3.0/"},
+            {"name":"Check Your Math", "licenseUrl":"https://creativecommons.org/licenses/by-nc-sa/3.0/"}
+        ],
+        "website":"http://www.djspooky.com/",
+        "socials":[
+            {"site":"Freemusicarchive.org", "handle":"DJ Spooky", "url":"https://freemusicarchive.org/music/DJ_Spooky"}
+        ]
+    },
+    {
+        "name":"InSpectr",
+        "type":"musician"
+        "works":[
+            {"name":"Tension", "licenseUrl":"https://creativecommons.org/licenses/by-nc-sa/3.0/us/"},
+            {"name":"Third Eye", "licenseUrl":"https://creativecommons.org/licenses/by-nc-nd/4.0/"}
+        ],
+        "website":"http://cota303.net/artist/inspectr/5",
+        "socials":[
+            {"site":"Freemusicarchive.org", "handle":"InSpectr", "url":"https://freemusicarchive.org/music/InSpectr"}
+        ]
+    },
+    {
+        "name":"EvanSki",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"Crunch.wav", "licenseUrl":"http://creativecommons.org/publicdomain/zero/1.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"EvanSki", "url": "https://freesound.org/people/EvanSki/"}
+        ]
+    },
+    {
+        "name":"Mike",
+        "type":"photographer"
+        "works":[
+            {"name":"Vehicles speeding in road near building with lights at nighttime", "licenseUrl":"https://www.pexels.com/license/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"pexels.com", "handle":"Mike", "url":"https://www.pexels.com/@mike-468229"}
+        ]
+    },
+    {
+        "name":"anna-m. w",
+        "type":"photographer"
+        "works":[
+            {"name":"People Enjoying the Concert", "licenseUrl":"https://www.pexels.com/license/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"pexels.com", "handle":"anna-m. w", "url":"https://www.pexels.com/@annamw"}
+        ]
+    },
+    {
+        "name":"Mart Production",
+        "type":"photographer"
+        "works":[
+            {"name":"People Standing on the Street during Night Time", "licenseUrl":"https://www.pexels.com/license/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"pexels.com", "handle":"Mart Production", "url":"https://www.pexels.com/@mart-production"}
+        ]
+    },
+    {
+        "name":"Aleksandar Pasaric",
+        "type":"photographer"
+        "works":[
+            {"name":"People Standing on the Street during Night Time", "licenseUrl":"https://www.pexels.com/license/"},
+            {"name":"Photo of Dark Alley", "licenseUrl":"https://www.pexels.com/license/"},
+            {"name":"Lighted vending machines on the street", "licenseUrl":"https://www.pexels.com/license/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"pexels.com", "handle":"Aleksandar Pasaric", "url":"https://www.pexels.com/@apasaric"}
+        ]
+    },
+    {
+        "name":"TunePocket",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"Punch Grunt 1", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
+        ],
+        "website":"https://www.tunepocket.com/",
+        "socials":[
+            {"site":"freesound.org", "handle":"Miks Music", "url": "https://freesound.org/people/miksmusic/"}
+        ]
+    },
+    {
+        "name":"soundadvices",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"Parking Garage - Footsteps - Woman Heels 2", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"soundadvices", "url": "https://freesound.org/people/soundadvices/"}
+        ]
+    },
+    {
+        "name":"waveplaySFX",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"Car Screech 2", "licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"waveplaySFX", "url": "https://freesound.org/people/waveplaySFX/"}
+        ]
+    },
+    {
+        "name":"Makaih Beats",
+        "type":"musician"
+        "works":[
+            {"name":"Guilty Pleasure (Majestic Drama Collab)", "licenseUrl":"https://creativecommons.org/licenses/by-nc-nd/4.0/"},
+        ],
+        "website":"https://makaih.com/",
+        "socials":[
+            {"site":"Freemusicarchive.org", "handle":"Makaih Beats", "url":"https://freemusicarchive.org/music/Makaih_Beats"},
+            {"site":"Instagram", "handle":"Makaih Beats", "url":"https://www.instagram.com/makaihbeats/"},
+            {"site":"Twitter", "handle":"Makaih Beats", "url":"https://twitter.com/makaihbeats"}
+        ]
+    },
+    {
+        "name":"Aris621",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"Nasty Knife Stab", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"},
+            {"name":"Nasty Knife Stab 2", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"Aris621", "url": "https://freesound.org/people/Aris621/"}
+        ]
+    },
+    {
+        "name":"ethanchase7744",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"Swords block combo", "licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/"},
+            {"name":"kick2", "licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"ethanchase7744", "url": "https://freesound.org/people/ethanchase7744/"}
+        ]
+    },
+    {
+        "name":"egomassive",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"woman grunt exertion", "licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"egomassive", "url": "https://freesound.org/people/egomassive/"}
+        ]
+    },
+    {
+        "name":"pgi",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"machine gun shot", "licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"pgi", "url": "https://freesound.org/people/pgi/"}
+        ]
+    },
+    {
+        "name":"u1769092",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"visceral bullet impacts", "licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"u1769092", "url": "https://freesound.org/people/u1769092/"}
+        ]
+    },
+    {
+        "name":"SypherZent",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"Cut Through Armor / Slice / Clang", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"SypherZent", "url": "https://freesound.org/people/SypherZent/"}
+        ]
+    },
+    {
+        "name":"EminYILDIRIM",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"Blood Squish", "licenseUrl":"http://creativecommons.org/licenses/by/3.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"EminYILDIRIM", "url": "https://freesound.org/people/EminYILDIRIM/"}
+        ]
+    },
+    {
+        "name":"Asteroiderer",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"aura metal", "licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"Asteroiderer", "url": "https://freesound.org/people/Asteroiderer/"}
+        ]
+    },
+    {
+        "name":"Aleks41",
+        "type":"sound_engineer"
+        "works":[
+            {"name":"magic strike", "licenseUrl":"http://creativecommons.org/publicdomain/zero/1.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"Aleks41", "url": "https://freesound.org/people/Aleks41/"}
         ]
     }
 ]

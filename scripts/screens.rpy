@@ -111,6 +111,15 @@ screen say(who, what):
         text what id "what"
 
     # CHANGED: sidebar, components, and transform below
+    frame id "calendar" align (0.0, 0.0) xysize (100, 40) background Frame("gui/frame.png"):
+        padding (7, 5)
+        xfill False
+        yfill False
+
+        $ global day
+
+        text "Night [night]" id "nightcounter" text_align 0.5 align(0.5, 0.5) size 18
+
     window id "sidebar" align (1.0, 0.0) ysize 224 background Frame("gui/frame.png"):
         padding (10, 15, 10, 0)
         xfill False
@@ -1196,6 +1205,7 @@ screen hovertext(txt, toolTip = None, _style = "medium", _xalign = 0.0):
 screen dotchain(name, score, dotcolor = DEFAULT_DOT_COLOR, format = "bar", dfsize = None, altname = None, toolTip = None):
     python:
         global scoreWords
+
         if not dfsize:
             style.frame["dots"].xysize = (gui.dot_frame_width, gui.dot_frame_height)
         else:
@@ -1357,7 +1367,7 @@ screen codexScoresPage(*args):
                         $ keydex = attributeOrder[count]
                         frame style style.utility_frame:
                             $ the_score = pc.scores[KEY_ATTR][keydex]
-                            use dotchain(keydex, the_score, toolTip = "{at1}{at2}".format(at1=attrTooltipTable[keydex][0], at2=attrTooltipTable[keydex][the_score]))
+                            use dotchain(keydex, the_score, toolTip = "{at1}{at2}".format(at1=tooltipTable[keydex][0], at2=tooltipTable[keydex][the_score]))
             frame id "pane_skills" xalign 0.5 ysize 170:
                 use buildGrid(gui.GRID_ROWS_ALLSCORES, gui.GRID_COLS_SKILLS, gui.GRID_ROWS_ALLSCORES * gui.GRID_COLS_SKILLS, _transpose = True):
                     for count, skill in enumerate(pc.scores[KEY_SKILL]):
@@ -1383,7 +1393,6 @@ screen codexPowersPage(*args):
                                     meritv = pc.merits[count]
                                     dcolor = "red" if meritv[ISSA_FLAW] == True else "red"
                                     altname = (meritv[KEY_BGTYPE] + " Flaw") if meritv[ISSA_FLAW] == True else (meritv[KEY_BGTYPE])
-                                    print("\nfuckshit", meritv)
                                     toolTip = meritv[KEY_TOOLTIP] if meritv.has_key(KEY_TOOLTIP) else None
                                 use dotchain(meritv[KEY_NAME], meritv[KEY_BGSCORE], altname = altname, dotcolor = dcolor, format = "merit", toolTip = toolTip)
                 else:
@@ -1400,7 +1409,7 @@ screen codexPowersPage(*args):
                                 use dotchain(keydex, pc.powers[KEY_DISCIPLINE][keydex][KEY_LEVEL])
                                 $ powerlist = pc.powers[KEY_DISCIPLINE][keydex][KEY_DPOWERS]
                                 for count in range(4):
-                                    power = powerlist[scoreWords[count + 1]] if powerlist[scoreWords[count + 1]] else None
+                                    $ power = powerlist[scoreWords[count + 1]] if powerlist[scoreWords[count + 1]] else None
                                     if power:
                                         frame style style.utility_frame left_padding 5 xalign 0.0:
                                             text str(count + 1) + ". [power]" text_align 1.0 xfill True
@@ -1499,10 +1508,10 @@ screen codex_tabs(*args):
 
 # Player chooses discipline powers here.
 screen disciplineTree(*args):
-    style style.codex_panel_frame
     tag codexPage
 
     window id "powertree_main" align (0.5, 0.1) xysize (900, 500) padding (15, 10):
+        style style.codex_panel_frame
         background Frame("gui/nvl.png", 5, 5, 5, 5)
         modal False
 
