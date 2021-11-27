@@ -1,4 +1,5 @@
 init 1 python:
+
     class Artist:
         def __init__(self, name = "Unnamed Artist", infoText = "", *works):
             self.name = name
@@ -30,6 +31,7 @@ init 1 python:
             self.trackers = {}
             self.trackers[KEY_HP] = {KEY_TOTAL: self.scores[KEY_ATTR][_sta] + 3, KEY_SPFD: 0, KEY_AGGD: 0, KEY_ARMOR: 0}
             self.trackers[KEY_WP] = {KEY_TOTAL: self.scores[KEY_ATTR][_com] + self.scores[KEY_ATTR][_res], KEY_SPFD: 0, KEY_AGGD: 0, KEY_BONUS: 0, KEY_ARMOR: 0}
+            self.canHealAggHPDamage = True
 
             self.impaired = {}
             self.impaired[KEY_HP] = False
@@ -60,6 +62,8 @@ init 1 python:
                 return self.getAttr(n)
             elif self.scores[KEY_SKILL].has_key(n):
                 return self.getSkill(n)
+            elif self.powers[KEY_DISCIPLINE].has_key(n):
+                return self.getDisciplineLevel(n)
             elif bgTable.has_key(name):
                 return self.hasPerk(n)
             else:
@@ -88,12 +92,11 @@ init 1 python:
                 self.trackers[KEY_WP][KEY_TOTAL] = self.scores[KEY_ATTR][_com] + self.scores[KEY_ATTR][_res]
             elif stype == KEY_SKILL:
                 pass
-            updateCharSheetValues(self.scores)
-            if DEBUG : print("--[NOTE]: player scores have been updated.", self.scores)
+            if DEBUG : log("--[NOTE]: player scores have been updated.", self.scores)
 
-        def getDamage(self, type):
-            tracker self.trackers[type]
-            return {KEY_TOTAL: tracker[KEY_TOTAL], KEY_SPFD: tracker[KEY_SPFD], KEY_AGGD: tracker[KEY_AGGD]}
+        def getTrackerDamage(self, type):
+            tracker = self.trackers[type]
+            return {"type": type, KEY_TOTAL: tracker[KEY_TOTAL], KEY_SPFD: tracker[KEY_SPFD], KEY_AGGD: tracker[KEY_AGGD]}
 
         def setResilienceLevel(self):
             hasResilience = True if FORT_HP in self.powers[KEY_DISCIPLINE][_fortitude][KEY_DPOWERS] else False
@@ -155,7 +158,7 @@ init 1 python:
             try:
                 discPowers = self.powers[KEY_DISCIPLINE][discipline][KEY_DPOWERS]
             except:
-                print("[Error]: Unknown error occured when attempting to check for a discipline power.")
+                log("[Error]: Unknown error occured when attempting to check for a discipline power.")
 
             hasPower = False
             for i in range(5):
@@ -163,7 +166,7 @@ init 1 python:
                 if discPowers[scoreWord] == power:
                     hasPower = True
 
-            print ("[Status]: Checking if we have the {disc} power of {pow}... {dowe}".format(disc=discipline, pow=power, dowe=("Yes!" if hasPower else "Nope.")))
+            log("[Status]: Checking if we have the {disc} power of {pow}... {dowe}".format(disc=discipline, pow=power, dowe=("Yes!" if hasPower else "Nope.")))
             return hasPower
 
         def addDisciplinePower(self, discipline, power):
@@ -189,7 +192,7 @@ init 1 python:
                         return True
                 return False
             except:
-                print("[Error]: Unknown error occurred when attempting to add discipline power!")
+                log("[Error]: Unknown error occurred when attempting to add discipline power!")
             finally:
                 return False
 
@@ -226,10 +229,10 @@ init 1 python:
             elif hasit[0] and hasit[1] == ISSA_MERIT:
                 del self.merits[hasit[2]]
             else:
-                print("[Status]: Tried to remove a merit/background BUT we couldn't find it.")
+                log("[Status]: Tried to remove a merit/background BUT we couldn't find it.")
                 return False
 
-            print("[Status]: Removed merit/background of type {}".format(typeName))
+            log("[Status]: Removed merit/background of type {}".format(typeName))
             return True
 
         def addPerk(self, typeName, level, merit = False, flaw = False, customToolTip = None):
@@ -265,7 +268,7 @@ init 1 python:
             try:
                 self.inventory[0][KEY_VALUE] = max(cash + (float(mult) * (amount or 0.0)), 0.0) # Can't go below broke
             except TypeError:
-                print("[Error]: Someone tried to add something other than a number to the wallet!")
+                log("[Error]: Someone tried to add something other than a number to the wallet!")
 
         def getHeldItemsOfType(self, itype):
             if not hasItemOfType():
@@ -299,7 +302,7 @@ init 1 python:
                     if not checkAll:
                         break
             if not hasAlready:
-                print("[Error]: Tried to remove item with name " + str(itemName) + ", but it wasn't found.")
+                log("[Error]: Tried to remove item with name " + str(itemName) + ", but it wasn't found.")
                 return
             renpy.sound.queue(audio.heartbeat2, u'sound')
 
@@ -322,7 +325,7 @@ init 1 python:
                     existingSet = item
                     break
 
-            if not hasAlready: # Maybe later I'll add some logic to affect listed order
+            if not hasAlready: # Maybe later I'll add some logic to affect listed order NOTE: no i won't
                 newItem = {KEY_NAME: itemName}
                 if payloadValue:
                     newItem[KEY_VALUE] = payloadValue
@@ -333,7 +336,7 @@ init 1 python:
                 try:
                     existingSet[KEY_VALUE] += int(payloadValue)
                 except TypeError:
-                    print("[Error]: An invalid item adding operation was caught.")
+                    log("[Error]: An invalid item adding operation was caught.")
                     return
             renpy.sound.queue(audio.heartbeat2, u'sound')
 
@@ -343,6 +346,9 @@ init 1 python:
             armor = self.trackers[swkey][KEY_ARMOR]
             dented = False
             injured = False
+            trueAmount = amount
+            if dtype == KEY_SPFD: # NOTE: Superficial damage is halved before the loop
+                trueAmount = math.ceil(float(amount) / 2)
 
             for point in range(int(amount)):
                 if armor > 0:
@@ -354,15 +360,17 @@ init 1 python:
                 if clearBoxes > 0: # clear spaces get filled first
                     self.handleImpairment(False, swkey)
                     self.trackers[swkey][str(dtype)] += 1
-                    print("====> damage " + str(point) + ": filling a clear space")
+                    log("====> damage " + str(point) + ": filling a clear space")
                 elif self.trackers[swkey][KEY_SPFD] > 0: # if there are no clear boxes, tracker is filled with a mix of aggravated and superficial damage
                     self.handleImpairment(True, swkey)
                     self.trackers[swkey][KEY_SPFD] -= 1
                     self.trackers[swkey][KEY_AGGD] += 1 # if there's any superficial damage left, turn it into an aggravated
-                    print("====> damage " + str(point) + ": removing a superficial and replacing with aggravated")
-                else:
+                    log("====> damage " + str(point) + ": removing a superficial and replacing with aggravated")
+
+                if self.trackers[swkey][KEY_AGGD] >= totalBoxes:
                     self.handleDemise(swkey) # a tracker completely filled with aggravated damage = game over: torpor, death, or a total loss of faculties, face and status
-                    print("====> damage " + str(point) + ": oh shit you dead")
+                    log("====> damage " + str(point) + ": oh shit you dead")
+
                 injured = True
             if dented and not injured:
                 #renpy.sound.queue(audio, u'sound')
@@ -375,25 +383,31 @@ init 1 python:
             damage = self.trackers[swkey][dtype]
             self.trackers[swkey][dtype] = max(damage - amount, 0)
 
+        def canAggHPHeal(self):
+            return self.canHealAggHPDamage
+
+        def toggleAggHPHealing(self, allow = False):
+            self.canHealAggHPDamage = allow
+
         def handleImpairment(self, fulltracker, whichtracker):
             keywrd1 = "physically" if whichtracker == KEY_HP else "mentally"
             keywrd2 = "physical" if whichtracker == KEY_HP else "mental and social"
 
             if self.impaired[whichtracker] and not fulltracker:
                 self.impaired[whichtracker] = False
-                print ("\n[STATUS]: You are no longer {w1} impaired.\n".format(w1=keywrd1))
+                log("\n[STATUS]: You are no longer {w1} impaired.\n".format(w1=keywrd1))
             elif fulltracker and not self.impaired[whichtracker]:
                 self.impaired[whichtracker] = True
-                print ("\n[STATUS]: You are now {w1} impaired and suffer a penalty to {w2} tests.\n".format(w1=keywrd1, w2=keywrd2))
+                log("\n[STATUS]: You are now {w1} impaired and suffer a penalty to {w2} tests.\n".format(w1=keywrd1, w2=keywrd2))
             # else:
             #     raise ValueError("[Error]: Must specify health or willpower tracker.")
 
         def handleDemise(self, which):
-            if which == KEY_HP:
-                print ("\n[STATUS]: You have either met the Final Death, or you've fallen into torpor and will probably die soon. Either way, you're done.")
-            elif which == KEY_WP:
-                print ("\n[STATUS]: Your spirit is broken, and you've lost so much face that your only option is to flee before you're destroyed. You've failed.")
-            renpy.jump("gameover")
+            # if which == KEY_HP:
+            # You have either met the Final Death, or you've fallen into torpor and will probably die soon. Either way, you're done.")
+            # elif which == KEY_WP:
+            # Your spirit is broken, and you've lost so much face that your only option is to flee before you're destroyed. You've failed.")
+            renpy.jump("gameover." + which)
 
         def setStateOfUndeath(self, which, change, currentval, floor, ceiling, _sound = None, playSound = False, queueSound = False):
             cstr = str(change)
@@ -436,13 +450,13 @@ init 1 python:
                 handleSainthood() # This shouldn't ever fire.
 
         def handleBeastEaten():
-            print("")
+            log("")
 
         def handleDegeneration():
-            print("")
+            log("")
 
         def handleSainthood():
-            print("")
+            log("")
 
         def getHunger(self):
             return self.hunger
@@ -467,17 +481,17 @@ init 1 python:
             self.setHunger("+=" + str(abs(change)), playSound = playSound, queueSound = queueSound)
 
         def handleMurder(self, *args):
-            print("\n[STATUS]: You murderer!\n") # TODO: More here, once humanity implemented
+            log("\n[STATUS]: You murderer!\n") # TODO: More here, once humanity implemented
 
         def addHungerDebt(self, vitae):
-            print("\nHUNGER DEBT [STATUS]: adding {vl} to current {hd}".format(vl = vitae, hd = self.hungerDebt))
+            log("\nHUNGER DEBT [STATUS]: adding {vl} to current {hd}".format(vl = vitae, hd = self.hungerDebt))
             if self.hungerDebt + vitae < HUNGER_DEBT_MAX:
                 self.hungerDebt = self.hungerDebt + vitae
             else:
                 debtpaid = HUNGER_DEBT_MAX - self.hungerDebt # how much of added debt was paid? rest is rolled over
                 self.hungerDebt = 0
                 self.raiseHunger(1, playSound = False)
-                print("\nHUNGER DEBT [STATUS]: hunger INCREASED to {}!".format(self.hunger))
+                log("\nHUNGER DEBT [STATUS]: hunger INCREASED to {}!".format(self.hunger))
                 self.addHungerDebt(vitae - debtpaid)
 
         def soundFeed(self, lineBetween = None):
@@ -503,6 +517,7 @@ init 1 python:
             global justWokeUp
             justWokeUp = True
 
+            self.toggleAggHPHealing(True)
             self.addHungerDebt(4)
             herd = self.hasPerk(M_HERD[KEY_NAME])
             herdlevel = herd[0]
@@ -523,7 +538,10 @@ init 1 python:
             bfail = False
 
             for name in names:
-                pool += self.getScoreNoKey(name)
+                if not isNumber(name):
+                    pool += self.getScoreNoKey(name)
+                else:
+                    pool += int(math.floor(name))
 
             marg = pool - diff
             mCritsOn = False
@@ -556,6 +574,13 @@ init 1 python:
         except ValueError:
             return False
 
+    def isNumber(val):
+        try:
+            float(val)
+            return True
+        except ValueError:
+            return False
+
     def _nudge(neg, ints):
         ups = []
         n = 1 if not neg else -1
@@ -569,22 +594,17 @@ init 1 python:
     def decrement(*ints):
         return _nudge(True, ints)
 
-    def updateCharSheetValues(pcs):
-        for name in pcs[KEY_ATTR]:
-            print(name, pcs[KEY_ATTR][name])
-        print("[NOTE]: Updated character sheet values.")
-
     def evalt(result, bestialFailsOn = True, messyCritsOn = True):
         if not hasInt(result[0]):
             raise TypeError("[Error]: Something wrong with this result tuple: ", result)
 
-        if not result[0] < 0:
+        if result[0] < 0:
             if result[2] and bestialFailsOn:
                 return BEASTFAIL
             else:
                 return FAIL
-        elif results[0] >= 0:
-            if results[1]:
+        elif result[0] >= 0:
+            if result[1]:
                 return MESSYCRIT
             else:
                 return SUCCESS
@@ -629,7 +649,7 @@ init 1 python:
         timetonight = 1.0
         if cpc:
             cpc.awaken()
-        renpy.jump("regular.nightloop")
+        renpy.jump("nightloop")
 
     def updateTime(elapsed, cpc = None):
         global timetonight
@@ -637,9 +657,27 @@ init 1 python:
         if timetonight <= 0:
             advanceCalendar(cpc)
 
-    def bethWinsBattle():
-        print("\n\nBETH WINS")
-        pass
+    def getCreditsJSON():
+        global creditsFile
+        global creditsJSON
+        creditsFile = renpy.file(creditsFileName)
+        creditsJSON = json.load(creditsFile)
+
+    def sortCredits(credits_json):
+        sortedCredits = {}
+
+        for credit in credits_json:
+            ctype = credit["type"]
+            if ctype and not sortedCredits.has_key(ctype):
+                sortedCredits[ctype] = []
+            elif ctype:
+                sortedCredits[ctype].append(credit)
+
+        return sortedCredits
+
+
+    def log(*args):
+        print(args)
 
     def getCreditsText():
         global builtCredits

@@ -8,9 +8,11 @@ label chapter0:
 
     # In-game variable initializations, to make sure they get tracked by Ren'py
 
-    $ pc = PlayerCharacter()
-    $ F_GHOUL = _pcGhoul["first"]
-    $ opinions = {F_ANARCHS: opinion_anarchs, F_CAMARILLA: opinion_camarilla, F_GHOUL: opinion_ghoul, F_VENTRUE: opinion_ventrue, F_NOSFERATU: opinion_nosferatu}
+    python:
+        pc = PlayerCharacter()
+        F_GHOUL = _pcGhoul["first"]
+        opinions = {F_ANARCHS: opinion_anarchs, F_CAMARILLA: opinion_camarilla, F_GHOUL: opinion_ghoul, F_VENTRUE: opinion_ventrue, F_NOSFERATU: opinion_nosferatu}
+        arena = BattleArena()
 
     # Characters used by this game. The color argument colorizes the name of the character.
 
@@ -27,8 +29,7 @@ label chapter0:
 
     # Show a background. This uses a placeholder by default, but you can add a file (named either "bg room.png" or "bg room.jpg") to the images directory to show it.
 
-    scene bg hotel room
-    with fade
+    scene bg hotel room with fade
 
     if not MUSIC_MUTED:
         play music audio.scene1_awakening fadeout 1.0 fadein 1.0 volume 0.7
@@ -55,7 +56,11 @@ label chapter0:
 
     "And there's the alarm. After a few seconds I reach for my phone and shut it off."
 
+    $ pc.raiseHunger(3)
+
     "I don't actually need an alarm - none of my kind do. I couldn't stay asleep past sundown if I wanted to. I've tried."
+
+    $ pc.slakeHunger(2)
 
     "But the obnoxious jingle is comforting, somehow. Makes me feel a bit more like the human being I used to be. Normal."
 
@@ -66,10 +71,22 @@ label chapter0:
     "I might {i}have{/i} to keep them waiting, because I have a problem."
 
     python:
-        testopp = Combatant()
+        intro = [
+            "Yo what up this line 1",
+            "Yo this is line 2",
+            ("Some Guy", "This is Some Guy comin at you with line 3",),
+            "and thats it"
+        ]
+
+        dead = ["Yo wtf we all dead man","RIP"]
+        fled = ["Oh shit she gon get us", "cheese it"]
+
+        testopp = Combatant(beth = pc)
         testopp.embody()
         testopp.equip(attack = 1, rangedAttack = 0)
-        startBattle(testopp)
+        testopp.setStoryText(intro = intro, dead = dead, fled = fled)
+        arena.setStage(returnBG = "bg hotel room")
+        arena.startBattle(testopp)
 
     $ pc.setHunger(3) # plays tiger growl
     beast "..."
@@ -362,11 +379,11 @@ label chapter0:
 
         "Alright, let's do this quick."
 
-        call regular.hunt1_preamble from early_bird_gets_worm_1
+        call feeding.hunt1_preamble from early_bird_gets_worm_1
 
-        $ ptstring = str(pc.getPredatorType()).lower().strip()
+        $ ptstring = str(pc.getPredatorType()).lower().strip().replace(" ", "")
 
-        call expression ("regular.hunt1_" + ptstring) from early_bird_gets_worm_2
+        call expression ("feeding.hunt1_" + ptstring) from early_bird_gets_worm_2
 
         stop music fadeout 0.5
 
@@ -494,7 +511,7 @@ label chapter0:
                 "Later in her office, she asked how I'd known. I dodged the question and told her she should be proud, and that I was the one who should be impressed."
 
         if not MUSIC_MUTED:
-            play music audio.talk_with_sire fadeout 4.0 fadein 4.0
+            play music audio.talk_with_sire fadeout 3.0 fadein 3.0 volume 0.5
 
         "We had a long conversation in her office that night. About what I wanted out of life, where I saw myself headed. About what I wanted to do with my time on this Earth. I was a lot more honest than I'd planned to be."
 
@@ -533,6 +550,8 @@ label chapter0:
             beast "You were actually happier as a ghoul, weren't you? I bet I know why, too. It let you shed the unbearable burden of being responsible for your own shitty choices, so you could go back to being a good little girl that everybody likes. Truly pathetic."
 
             "Theresa (my first Kindred friend) once mentioned that every Kindred experiences their Beast differently. For some it's just a set of alien, predatory urges. Fear, rage, hunger. For others it's the voice of someone they respect... or fear."
+
+            beast "Theresa's not your friend, you lackwit. Kindred don't have friends. Which means your Embrace changed little."
 
             "Me? I get saddled with this noxious, sulking thing that won't shut the fuck up no matter what I do."
 
@@ -873,6 +892,8 @@ label chapter0:
 
             sam "There's more in it for you, potentially. Depending on how satisfied the Court is with your performance. And here's a burner phone. Use it to contact me, but only in an emergency. Otherwise, you can call on me at Elysium."
 
+            $ pc.addToInventory("smartphone2b")
+
             keerat "And I've provided you with an email address, at which you'll receive some useful documentation."
 
             sam "I believe that concludes our business here, unless you have anything to add, Ms. Sanghera?"
@@ -1036,7 +1057,7 @@ label chapter0:
             elif pc.getPredatorType() == PT_SIREN:
                 "He knows what I like."
 
-                call regular.establish_orientation from early_ghoul_meet_siren
+                call feeding.establish_orientation from early_ghoul_meet_siren
 
                 python:
                     exname = pcex["first"]
@@ -1121,11 +1142,11 @@ label chapter0:
 
             "..."
 
-            call regular.hunt1_preamble from better_late_than_never_1
+            call feeding.hunt1_preamble from better_late_than_never_1
 
-            $ ptstring = str(pc.getPredatorType()).lower().strip()
+            $ ptstring = str(pc.getPredatorType()).lower().strip().replace(" ", "")
 
-            call expression ("regular.hunt1_" + ptstring) from better_late_than_never_2
+            call expression ("feeding.hunt1_" + ptstring) from better_late_than_never_2
 
             stop music fadeout 0.5
 
@@ -1402,17 +1423,4 @@ label chapter0:
         # TODO: More here.
 
         scene black with fade
-        jump regular.nightloop
-
-# These labels end the game.
-label endgame:
-
-    $ print "\n[STATUS]: Game ended.\n"
-
-    return
-
-label gameover:
-
-    $ print "\n[STATUS]: Failure. Game over.\n"
-
-    return
+        jump nightloop

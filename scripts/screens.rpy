@@ -607,6 +607,10 @@ screen about():
 
         style_prefix "about"
 
+        python:
+            getCreditsJSON()
+            sortedCredits = sortCredits(creditsJSON)
+
         vbox:
 
             label "{size=+10}[config.name!t]{/size}\n"
@@ -618,9 +622,27 @@ screen about():
 
             text _("Made with {a=https://www.renpy.org/}Ren'Py{/a} [renpy.version_only].\n\n[renpy.license!t]")
 
-        vbox:
-            label "\nContributing Creators:\n"
-            text _(getCreditsText())
+        vbox first_spacing 30 spacing 30:
+            python:
+                global sortedCredits
+                atagOpen1 = "{a="
+                atagOpen2 = "}"
+                atagClose = "{/a}"
+            label "\nContributing Creators:"
+            for ctype in sortedCredits:
+                vbox first_spacing 20 spacing 10:
+                    label "{t}s ({c}):".format(t = ctype.replace("_", " ").capitalize(), c = len(sortedCredits[ctype]))
+                    for cred in sortedCredits[ctype]:
+                        label "{cname}".format(cname = cred["name"])
+                        vbox spacing 5:
+                            for wk in cred["works"]:
+                                hbox spacing 20:
+                                    text "{}".format(wk["name"]) align(0.0, 0.5)
+                                    textbutton "(License)" action OpenURL(wk["licenseUrl"]) align (0.0, 0.5)
+                            if cred.has_key("website") and cred["website"]:
+                                textbutton "(Website Link)" action OpenURL(cred["website"]) xalign 0.2
+                            for soc in cred["socials"]:
+                                textbutton "{sms}: ({hdl})".format(sms=soc["site"], hdl=soc["handle"]) action OpenURL(soc["url"])
 
 
 style about_label is gui_label
@@ -1367,13 +1389,13 @@ screen codexScoresPage(*args):
                         $ keydex = attributeOrder[count]
                         frame style style.utility_frame:
                             $ the_score = pc.scores[KEY_ATTR][keydex]
-                            use dotchain(keydex, the_score, toolTip = "{at1}{at2}".format(at1=tooltipTable[keydex][0], at2=tooltipTable[keydex][the_score]))
+                            use dotchain(keydex, the_score, toolTip = "{at1}".format(at1=tooltipTable[keydex]))
             frame id "pane_skills" xalign 0.5 ysize 170:
                 use buildGrid(gui.GRID_ROWS_ALLSCORES, gui.GRID_COLS_SKILLS, gui.GRID_ROWS_ALLSCORES * gui.GRID_COLS_SKILLS, _transpose = True):
                     for count, skill in enumerate(pc.scores[KEY_SKILL]):
                         $ keydex = skillOrder[count]
                         frame style style.utility_frame:
-                            use dotchain(keydex, pc.scores[KEY_SKILL][keydex])
+                            use dotchain(keydex, pc.scores[KEY_SKILL][keydex], toolTip = "{st1}".format(st1=tooltipTable[keydex]))
 
 
 # Character sheet tab showing discipline powers and maybe merits/Hardestadt loresheet if I get that far
@@ -1406,13 +1428,18 @@ screen codexPowersPage(*args):
                         frame style style.utility_frame yfill True xalign xalv:
                             vbox spacing 7:
                                 $ keydex = disciplineOrder[count] # make sure we list disciplines in order
-                                use dotchain(keydex, pc.powers[KEY_DISCIPLINE][keydex][KEY_LEVEL])
+                                use dotchain(keydex, pc.powers[KEY_DISCIPLINE][keydex][KEY_LEVEL], toolTip = tooltipTable[keydex])
                                 $ powerlist = pc.powers[KEY_DISCIPLINE][keydex][KEY_DPOWERS]
                                 for count in range(4):
                                     $ power = powerlist[scoreWords[count + 1]] if powerlist[scoreWords[count + 1]] else None
                                     if power:
                                         frame style style.utility_frame left_padding 5 xalign 0.0:
-                                            text str(count + 1) + ". [power]" text_align 1.0 xfill True
+                                            textbutton str(count + 1) + ". [power]" xfill True:
+                                                text_style style.codex_hoverable_text
+                                                action NullAction()
+                                                hovered ShowTransient("hovertip", None, "{tt}".format(tt=tooltipTable[power]))
+                                                unhovered Hide("hovertip", None)
+                                            # text str(count + 1) + ". [power]" text_align 1.0 xfill True
 
 
 # Character sheet tab showing status, i.e. opinions, backgrounds, inventory
@@ -1490,19 +1517,19 @@ screen codex_tabs(*args):
 
     frame xalign 0.5 yalign 1.0 xysize (600, 40) style style.codex_panel_frame:
         hbox xfill True:
-            textbutton "Abilities" xalign 0.143:
+            textbutton "Abilities {size=11}(z){/size}" xalign 0.143:
                 keysym "z"
                 action ToggleScreen("codexScoresPage", None) # dissolve without quotes
-            textbutton "Powers" xalign 0.429:
+            textbutton "Powers {size=11}(x){/size}" xalign 0.429:
                 keysym "x"
                 action ToggleScreen("codexPowersPage", None)
-            textbutton "Status" xalign 0.714:
+            textbutton "Status {size=11}(c){/size}" xalign 0.714:
                 keysym "c"
                 action ToggleScreen("codexStatusPage", None)
-            textbutton "Case Files" xalign 0.714:
+            textbutton "Case Files {size=11}(b){/size}" xalign 0.714:
                 keysym "b"
                 action ToggleScreen("codexCasefilesPage", None)
-            textbutton "Codex" xalign 0.714:
+            textbutton "Codex {size=11}(n){/size}" xalign 0.714:
                 keysym "n"
                 action ToggleScreen("codexInfoPage", None)
 
@@ -1524,7 +1551,7 @@ screen disciplineTree(*args):
 screen hovertip(tip, *args):
     frame background Frame("gui/frame.png", Borders(5, 5, 5, 5)):
         xmaximum 200
-        ymaximum 100
+        ymaximum 150
         # ysize 80
         pos renpy.get_mouse_pos()
         padding (10, 10)

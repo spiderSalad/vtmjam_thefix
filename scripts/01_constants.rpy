@@ -1,7 +1,6 @@
 init 0 python:
     import math
-    # from collections import OrderedDict
-    # NOTE: (OrderedDicts don't work with rollback; had to switch back to native dictionaries)
+    import json
 
 define DEBUG        = True
 define MUSIC_MUTED  = False
@@ -150,6 +149,7 @@ define HUNGER_MIN_LIVE      = 1
 define HUNGER_MIN_DEAD      = 0
 define HUNGER_MAX_CALM      = 2
 define HUNGER_DEBT_MAX      = 8
+define MAX_BATTLE_FEEDS     = 2
 
 define ATTRIBUTE_MAX        = 5
 define ATTRIBUTE_MIN        = 1
@@ -203,36 +203,6 @@ define _dominate    = "Dominate"
 define _fortitude   = "Fortitude"
 define _presence    = "Presence"
 
-# Attribute tooltips
-
-define tooltipTable = {
-    _str: "Lifting, pulling, pushing, punching, kicking, etc.",
-    _dex: "Coordination and acuity of all kinds, from sprinting to aiming a gun.",
-    _sta: "How much punishment I can take if I have to. Or want to.",
-    _cha: "Getting people to like me, fear me, want me. Making them feel.",
-    _man: "Getting people to listen whether they like me or not..",
-    _com: "Staying cool in the moment so I don't lose my shit again.",
-    _int: "Learning, reasoning, problem-solving, memory. The stuff they're always trying to test people for.",
-    _wit: "Reaction, intuition, thinking on your feet!",
-    _res: "Focus and determination not to let things go like before.",
-
-    _athl: "",
-    _clan: "",
-    _comb: "",
-    _driv: "",
-    _fire: "",
-    _inti: "",
-    _intr: "",
-    _perf: "",
-    _pers: "",
-    _stre: "",
-    _acad: "",
-    _awar: "",
-    _inve: "",
-    _occu: "",
-    _tech: ""
-}
-
 # Discipline power keys
 
 define DOM_FORGET           = "Cloud Memory"
@@ -254,6 +224,55 @@ define PRES_CHARM           = "Entrancement"
 define PRES_SCARYFACE       = "Dread Gaze"
 define PRES_DOMVOICE        = "Irresistible Voice"
 define PRES_WELLDOITLIVE    = "Star Magnetism"
+
+# Attribute, skill, and power tooltips
+
+define tooltipTable = {
+    _str: "Lifting, pulling, pushing, punching, kicking, etc.",
+    _dex: "Coordination, acuity, speed. Everything from sprinting to aiming a gun.",
+    _sta: "How much punishment I can take if I have to. Or want to.",
+    _cha: "Getting people to like me, fear me, want me. Making them {i}feel{/i}.",
+    _man: "Getting people to do what I say, however they feel about me.",
+    _com: "Staying cool in the moment so I don't lose my shit again.",
+    _int: "Learning, reasoning, problem-solving, memory. The stuff they're always trying to test people for.",
+    _wit: "Reaction, intuition, thinking on your feet!",
+    _res: "Focus and determination not to let things go like before.",
+
+    _athl: "Experience, form, and training for various types of coordinated physical exertion.",
+    _clan: "Sneaking around, breaking into things, etc. Doing dirt.",
+    _comb: "Throwing hands, or wielding the kinds of weapons that you bash, cut, or stab with.",
+    _driv: "Handling a car beyond just getting from point A to point B.",
+    _fire: "Handling and using guns. Blue Bloods don't get to do superhero shit like the other Clans, so coming strapped is often a good idea.",
+    _inti: "Getting people to back off or fall in line without resorting to mind control.",
+    _intr: "Dissembling, sophistry, subtlety, and straight up lies. Concealing motives and intentions.",
+    _perf: "The skills and wherewithal to play the necessary role, whether that's dancing well or using proper etiquette.",
+    _pers: "Getting people to genuinely see things my way.",
+    _stre: "What's really going on in this city? How do things work on the margins?",
+    _acad: "All of the assorted knowledge I've accumulated, from grade school to dropping out of college.",
+    _awar: "Paying attention at the right time and in the right ways.",
+    _inve: "Methodical collection and analysis of information and evidence in the field.",
+    _occu: "Supernatural stuff and how it works. I guess it makes sense that if vampires exist, so would other things.",
+    _tech: "In my line of work this is mostly worrying about encryption and hardware security for laptops and smartphones.",
+
+    _dominate: "Hard mind control. If I can catch someone's gaze I can extend my will outward supplant their own. That means making them obey commands and even wiping memories if need be.",
+    _fortitude: "All vampires can shrug off injuries that would cripple or kill mortals. My Clan can take things even further, developing flesh as tough as iron and minds impregnable to coercion, including the very mental powers we wield.",
+    _presence: "Soft mind control. More emotional manipulation, really. It can't make anyone do any particular actions, but it can engender or reinforce emotions - admiration, awe, fear, anything.",
+
+    DOM_FORGET: "I can scour a person's short term memory, making them forget the last several minutes.",
+    DOM_COMPEL: "A short, simple command that must be obeyed. Less versatile, more efficient than its counterpart technique.",
+    DOM_MESMERIZE: "A command that must be obeyed. It can be complex, but can't require them to truly {i}think{/i}. More versatile than its counterpart, but demands more of the Blood.",
+    DOM_GASLIGHT: "It's pretty easy to see how Ventrue with this power enforce the Masquerade. With this I can potentially rewrite days, weeks, maybe even years of someone's memory. Basically it's the ultimate gaslighting tool.",
+
+    FORT_STUBBORN: "People say I was always like this, but I've used my Blood to build a wall around my mind. Because I know all too well what can happen to an unprotected psyche.",
+    FORT_HP: "Remakes my flesh so that I'm just... tougher. I look the same, but I don't go down as easily as another Kindred would.",
+    FORT_TOUGH: "I have to invoke the Blood for this, but I can make my flesh as hard as stone while keeping it as supple and flexible as normal.",
+
+    PRES_AWE: "I can project an aura of supernatural allure, grabbing attention and making everything about myself (even) more appealing. People tend to see things my way.",
+    PRES_DAUNT: "I can project an aura of menace that drives people back and deters them from acting against me. They fear me without even understanding why.",
+    PRES_ADDICTED2U: "Every vampire is addicted to blood, but I can engender an equal and opposite addiction in my prey. A Kiss that mortals crave rather than merely enjoy. Yeah, it's pretty fucked up, but it really helps with my special dietary needs.",
+    PRES_CHARM: "I can make a single person essentially fall in love with me. Not necessarily in a romantic or sexual sense. Like a close friend you've known forever, or someone you admire.",
+    PRES_SCARYFACE: "I can expose my Beast for a brief instant, sending mortals and even vampires running or reducing them to an incoherent mess."
+}
 
 # Predator types
 
@@ -471,3 +490,7 @@ default inventory       = [ # Items in the player's inventory should only have a
     {KEY_NAME: "smartphone1", KEY_TOOLTIP: "The third-latest iPhone model, rooted and jailbroken and whatnot by my sire's people. Secure, in theory."},
     {KEY_NAME: "chewing_gum"}
 ]
+
+# Credits JSON file
+
+define creditsFileName = "credits.json"

@@ -1,7 +1,7 @@
 [
     {
         "name":"",
-        "type":""
+        "type":"",
         "works":[
             {"name":"", "licenseUrl":""}
         ],
@@ -12,7 +12,7 @@
     },
     {
         "name":"2Kutup",
-        "type":"musician"
+        "type":"musician",
         "works":[
             {"name":"Travelling Through Intergalactic Space", "licenseUrl":"https://creativecommons.org/licenses/by-nc-nd/4.0/"}
         ],
@@ -39,7 +39,7 @@
     },
     {
         "name":"greenworm",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"Cellphone Alarm Clock Long", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
         ],
@@ -50,7 +50,7 @@
     },
     {
         "name":"InspectorJ",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"Heartbeat, Regular, Single, 01-01, LOOP.wav", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
         ],
@@ -61,7 +61,7 @@
     },
     {
         "name":"Aegersum",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"Monster - deep growl.wav", "licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/"}
         ],
@@ -72,9 +72,9 @@
     },
     {
         "name":"pfranzen",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
-            {"name":"", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
+            {"name":"Human impression of cat hacking up hairball", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
         ],
         "website":"",
         "socials":[
@@ -84,7 +84,7 @@
     },
     {
         "name":"Gerd Altmann",
-        "type":"artist"
+        "type":"artist",
         "works":[
             {"name":"blood/bacteria overlay", "licenseUrl":"https://pixabay.com/service/license/"}
         ],
@@ -95,7 +95,7 @@
     },
     {
         "name":"Janna",
-        "type":"artist"
+        "type":"artist",
         "works":[
             {"name":"Sleek Bars", "licenseUrl":"https://opengameart.org/content/sleek-bars"}
         ],
@@ -106,7 +106,7 @@
     },
     {
         "name":"NastyaSensei",
-        "type":"photographer"
+        "type":"photographer",
         "works":[
             {"name":"Time lapse photo of vehicles on paved road", "licenseUrl":"https://www.pexels.com/license/"}
         ],
@@ -117,7 +117,7 @@
     },
     {
         "name":"Hannemann",
-        "type":"artist"
+        "type":"artist",
         "works":[
             {"name":"Useful buttons pack", "licenseUrl":"https://opengameart.org/content/useful-buttons-must-have-icons-pack"}
         ],
@@ -128,7 +128,7 @@
     },
     {
         "name":"Timbre",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"Jobro's Heartbeat (Timbre's variant)", "licenseUrl":"https://creativecommons.org/licenses/by-nc/3.0/"}
         ],
@@ -139,7 +139,7 @@
     },
     {
         "name":"sangtao",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"Woman singing in the shower", "licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/"}
         ],
@@ -150,7 +150,7 @@
     },
     {
         "name":"Robinhood76",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"high heels on pavement", "licenseUrl":"https://creativecommons.org/licenses/by-nc/3.0/"},
             {"name":"stop keys and manual brake", "licenseUrl":"https://creativecommons.org/licenses/by-nc/3.0/"}
@@ -163,7 +163,7 @@
     },
     {
         "name":"enric592",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"Car starting", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
         ],
@@ -174,7 +174,7 @@
     },
     {
         "name":"AEED",
-        "type":"musician"
+        "type":"musician",
         "works":[
             {"name":"Through the City", "licenseUrl":"https://creativecommons.org/licenses/by-nc-nd/3.0/"}
         ],
@@ -185,7 +185,7 @@
     },
     {
         "name":"Teddy and Marge",
-        "type":"musician"
+        "type":"musician",
         "works":[
             {"name":"Dark Eyes", "licenseUrl":"https://creativecommons.org/licenses/by-nc-sa/3.0/us/"}
         ],
@@ -196,7 +196,7 @@
     },
     {
         "name":"Sebastian Ervi",
-        "type":"photographer"
+        "type":"photographer",
         "works":[
             {"name":"People in concert", "licenseUrl":"https://www.pexels.com/license/"}
         ],
@@ -207,7 +207,7 @@
     },
     {
         "name":"mali maeder",
-        "type":"photographer"
+        "type":"photographer",
         "works":[
             {"name":"white-motor-scooter-near-open-door", "licenseUrl":"https://www.pexels.com/license/"}
         ],
@@ -218,7 +218,7 @@
     },
     {
         "name":"cottonbro",
-        "type":"photographer"
+        "type":"photographer",
         "works":[
             {"name":"Three women at the party", "licenseUrl":"https://www.pexels.com/license/"}
         ],
@@ -229,7 +229,7 @@
     },
     {
         "name":"Martin Lopez",
-        "type":"photographer"
+        "type":"photographer",
         "works":[
             {"name":"Man holding bottled water", "licenseUrl":"https://www.pexels.com/license/"},
             {"name":"Women taking photo", "licenseUrl":"https://www.pexels.com/license/"}
@@ -241,7 +241,7 @@
     },
     {
         "name":"Lukas Rychvalsky",
-        "type":"photographer"
+        "type":"photographer",
         "works":[
             {"name":"Gas station", "licenseUrl":"https://www.pexels.com/license/"},
             {"name":"Photo of windshield during rainy weather", "licenseUrl":"https://www.pexels.com/license/"}
@@ -253,7 +253,7 @@
     },
     {
         "name":"Alexander Wendt",
-        "type":"photographer"
+        "type":"photographer",
         "works":[
             {"name":"Man wearing cap", "licenseUrl":"https://www.pexels.com/license/"}
         ],
@@ -264,7 +264,7 @@
     },
     {
         "name":"spurioustransients",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"Car engine stop 3", "licenseUrl":"http://creativecommons.org/publicdomain/zero/1.0/"}
         ],
@@ -275,7 +275,7 @@
     },
     {
         "name":"Ketsa",
-        "type":"musician"
+        "type":"musician",
         "works":[
             {"name":"Sun Hope", "licenseUrl":"https://creativecommons.org/licenses/by-nc-nd/4.0/"},
             {"name":"No Light Without Darkness", "licenseUrl":"https://creativecommons.org/licenses/by-nc-nd/4.0/"},
@@ -288,7 +288,7 @@
     },
     {
         "name":"Tea K Pea",
-        "type":"musician"
+        "type":"musician",
         "works":[
             {"name":"chromaticmetal", "licenseUrl":"https://creativecommons.org/licenses/by-nc/4.0/"}
         ],
@@ -300,7 +300,7 @@
     },
     {
         "name":"jgriffie919",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"fleshy bite", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
         ],
@@ -311,7 +311,7 @@
     },
     {
         "name":"ProductionNow",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"Eating juicy meat", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
         ],
@@ -322,7 +322,7 @@
     },
     {
         "name":"saturdaysoundg",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"lettuce hit 2", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
         ],
@@ -333,7 +333,7 @@
     },
     {
         "name":"newlocknew",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"heartbeat rhythim calm", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
         ],
@@ -344,7 +344,7 @@
     },
     {
         "name":"Metre",
-        "type":"musician"
+        "type":"musician",
         "works":[
             {"name":"Don't Walk Home Alone", "licenseUrl":"https://creativecommons.org/licenses/by-nc/4.0/"}
         ],
@@ -356,7 +356,7 @@
     },
     {
         "name":"Rozkol",
-        "type":"musician"
+        "type":"musician",
         "works":[
             {"name":"Careful now, stalker", "licenseUrl":"https://creativecommons.org/licenses/by-nc/4.0/"}
         ],
@@ -368,7 +368,7 @@
     },
     {
         "name":"Kneeling",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"goblin falling over", "licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/"}
         ],
@@ -379,7 +379,7 @@
     },
     {
         "name":"Andre Jetson",
-        "type":"musician"
+        "type":"musician",
         "works":[
             {"name":"After the Storm (Original Mix)", "licenseUrl":"https://creativecommons.org/licenses/by/4.0/"},
             {"name":"String Theory II", "licenseUrl":"https://creativecommons.org/licenses/by/4.0/"}
@@ -392,7 +392,7 @@
     },
     {
         "name":"Digi G'Alessio",
-        "type":"musician"
+        "type":"musician",
         "works":[
             {"name":"Appuntamento Al Club", "licenseUrl":"https://creativecommons.org/licenses/by-nc-sa/2.5/it/"}
         ],
@@ -403,7 +403,7 @@
     },
     {
         "name":"Skylar Kang",
-        "type":"photographer"
+        "type":"photographer",
         "works":[
             {"name":"Vintage lamp and candle on dresser", "licenseUrl":"https://www.pexels.com/license/"}
         ],
@@ -414,7 +414,7 @@
     },
     {
         "name":"Darkstar83",
-        "type":"musician"
+        "type":"musician",
         "works":[
             {"name":"Shadow Walker", "licenseUrl":"https://creativecommons.org/licenses/by-nc-nd/4.0/"},
             {"name":"The Witch's Dream", "licenseUrl":"https://creativecommons.org/licenses/by-nc-nd/4.0/"}
@@ -427,7 +427,7 @@
     },
     {
         "name":"David Skyrius",
-        "type":"photographer"
+        "type":"photographer",
         "works":[
             {"name":"Building photography", "licenseUrl":"https://www.pexels.com/license/"}
         ],
@@ -438,7 +438,7 @@
     },
     {
         "name":"Quentin Ecrepont",
-        "type":"photographer"
+        "type":"photographer",
         "works":[
             {"name":"Turned on lights, multistory building", "licenseUrl":"https://www.pexels.com/license/"}
         ],
@@ -449,7 +449,7 @@
     },
     {
         "name":"Matheus Natan",
-        "type":"photographer"
+        "type":"photographer",
         "works":[
             {"name":"Black padded leather office chairs", "licenseUrl":"https://www.pexels.com/license/"}
         ],
@@ -460,7 +460,7 @@
     },
     {
         "name":"DJ Spooky",
-        "type":"musician"
+        "type":"musician",
         "works":[
             {"name":"Adagio in Blue", "licenseUrl":"https://creativecommons.org/licenses/by-nc-sa/3.0/"},
             {"name":"Nocturne", "licenseUrl":"https://creativecommons.org/licenses/by-nc-sa/3.0/"},
@@ -473,7 +473,7 @@
     },
     {
         "name":"InSpectr",
-        "type":"musician"
+        "type":"musician",
         "works":[
             {"name":"Tension", "licenseUrl":"https://creativecommons.org/licenses/by-nc-sa/3.0/us/"},
             {"name":"Third Eye", "licenseUrl":"https://creativecommons.org/licenses/by-nc-nd/4.0/"}
@@ -485,7 +485,7 @@
     },
     {
         "name":"EvanSki",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"Crunch.wav", "licenseUrl":"http://creativecommons.org/publicdomain/zero/1.0/"}
         ],
@@ -496,7 +496,7 @@
     },
     {
         "name":"Mike",
-        "type":"photographer"
+        "type":"photographer",
         "works":[
             {"name":"Vehicles speeding in road near building with lights at nighttime", "licenseUrl":"https://www.pexels.com/license/"}
         ],
@@ -507,7 +507,7 @@
     },
     {
         "name":"anna-m. w",
-        "type":"photographer"
+        "type":"photographer",
         "works":[
             {"name":"People Enjoying the Concert", "licenseUrl":"https://www.pexels.com/license/"}
         ],
@@ -518,7 +518,7 @@
     },
     {
         "name":"Mart Production",
-        "type":"photographer"
+        "type":"photographer",
         "works":[
             {"name":"People Standing on the Street during Night Time", "licenseUrl":"https://www.pexels.com/license/"}
         ],
@@ -529,7 +529,7 @@
     },
     {
         "name":"Aleksandar Pasaric",
-        "type":"photographer"
+        "type":"photographer",
         "works":[
             {"name":"People Standing on the Street during Night Time", "licenseUrl":"https://www.pexels.com/license/"},
             {"name":"Photo of Dark Alley", "licenseUrl":"https://www.pexels.com/license/"},
@@ -542,7 +542,7 @@
     },
     {
         "name":"TunePocket",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"Punch Grunt 1", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
         ],
@@ -553,7 +553,7 @@
     },
     {
         "name":"soundadvices",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"Parking Garage - Footsteps - Woman Heels 2", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
         ],
@@ -564,7 +564,7 @@
     },
     {
         "name":"waveplaySFX",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"Car Screech 2", "licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/"}
         ],
@@ -575,9 +575,9 @@
     },
     {
         "name":"Makaih Beats",
-        "type":"musician"
+        "type":"musician",
         "works":[
-            {"name":"Guilty Pleasure (Majestic Drama Collab)", "licenseUrl":"https://creativecommons.org/licenses/by-nc-nd/4.0/"},
+            {"name":"Guilty Pleasure (Majestic Drama Collab)", "licenseUrl":"https://creativecommons.org/licenses/by-nc-nd/4.0/"}
         ],
         "website":"https://makaih.com/",
         "socials":[
@@ -588,7 +588,7 @@
     },
     {
         "name":"Aris621",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"Nasty Knife Stab", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"},
             {"name":"Nasty Knife Stab 2", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
@@ -600,7 +600,7 @@
     },
     {
         "name":"ethanchase7744",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"Swords block combo", "licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/"},
             {"name":"kick2", "licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/"}
@@ -612,7 +612,7 @@
     },
     {
         "name":"egomassive",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"woman grunt exertion", "licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/"}
         ],
@@ -623,7 +623,7 @@
     },
     {
         "name":"pgi",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"machine gun shot", "licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/"}
         ],
@@ -634,7 +634,7 @@
     },
     {
         "name":"u1769092",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"visceral bullet impacts", "licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/"}
         ],
@@ -645,7 +645,7 @@
     },
     {
         "name":"SypherZent",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"Cut Through Armor / Slice / Clang", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
         ],
@@ -656,7 +656,7 @@
     },
     {
         "name":"EminYILDIRIM",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"Blood Squish", "licenseUrl":"http://creativecommons.org/licenses/by/3.0/"}
         ],
@@ -667,7 +667,7 @@
     },
     {
         "name":"Asteroiderer",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"aura metal", "licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/"}
         ],
@@ -678,7 +678,7 @@
     },
     {
         "name":"Aleks41",
-        "type":"sound_engineer"
+        "type":"sound_engineer",
         "works":[
             {"name":"magic strike", "licenseUrl":"http://creativecommons.org/publicdomain/zero/1.0/"}
         ],

@@ -1,6 +1,7 @@
 default currentCodexTab         = codexTabList[0]
 
 default pc                      = None
+default arena                   = None
 default opp                     = None
 
 # Faction/character opinions
@@ -55,4 +56,7 @@ default artists             = []
 default musicians           = []
 
 default creditsText         = ""
+default creditsFile         = None
+default creditsJSON         = None
+default sortedCredits       = None
 default builtCredits        = False

@@ -7,7 +7,7 @@ init 2 python:
     ghoulname = _pcGhoul["first"]
     ghoulpet = _pcGhoul["pet"]
 
-label regular:
+label feeding:
 
     define sadman   = Character("Stressed Man", color = "#86edeb")
     define robber   = Character("Stick Up Kid", color = "#99cc68")
@@ -464,14 +464,14 @@ label regular:
     label .hunt1_siren:
 
         if not story_orientation_set:
-            call regular.establish_orientation from hunt_start_early_siren
+            call feeding.establish_orientation from hunt_start_early_siren
 
         if story_this_time == SIREN_WOMEN:
             scene bg hunt1 siren_women with fade
-            jump regular.hunt1_siren_drinkwomen
+            jump feeding.hunt1_siren_drinkwomen
         else:
             scene bg hunt1 siren_men with fade
-            jump regular.hunt1_siren_drinkmen
+            jump feeding.hunt1_siren_drinkmen
 
         label .hunt1_siren_drinkmen:
 
@@ -826,88 +826,6 @@ label regular:
 
             return
 
-    label .nightloop:
-        scene bg hotel room with fade
-        play music audio.hotel_neutral fadeout 0.5 fadein 2.0 volume 0.5
-
-        python:
-            if justWokeUp:
-                wakeupcall = "Wake up, dead girl. Time to go to work."
-                justWokeUp = False
-            else:
-                wakeupcall = "Hurry up and make a choice."
-
-        menu:
-            beast "[wakeupcall]"
-
-            "Hunt":
-                $ herd = pc.hasPerk(M_HERD[KEY_NAME])
-
-                if pc.getHunger() < 2 and pc.getHumanity() > 5:
-                    "Nah, no point hunting now. This is about as good as it gets. The only way to slake the Hunger completely is to kill someone. And even then, the peace doesn't last for long. It's not worth premeditated murder. I'm not that far gone yet."
-
-                    jump regular.nightloop
-                elif herd[0] > 0 and herd_countdown < 1:
-                    $ herdlevel = herd[0]
-
-                    "Instead of hunting tonight, why don't I just go visit some of my \"acquaintances\"?"
-
-                    beast "Fine by me."
-
-                    $ pc.slakeHunger(herdlevel)
-                else:
-                    if pc.getHunger() >= 4 or pc.getHumanity() < 6:
-                        beast "FUCKING FINALLY!!! It's LONG past time we FED. And we're NOT gonna stop this time. Not if I can help it."
-
-                        "..."
-                    else:
-                        beast "Glad to see your priorities are in order. I like you much better when you're thinking straight."
-
-                        "Don't make me change my mind."
-
-                    stop music fadeout 0.5
-                    scene bg driving road2 with trans_slowfade
-                    play sound audio.heels_on_pavement
-                    queue sound audio.carstart_pc
-
-                    "It's night [night]."
-
-                    "We don't have all the time in the world."
-
-                    "Need to get this done quickly."
-
-                    beast "We're here."
-
-                    play sound audio.carstopengine_pc
-                    play sound audio.carstopkeys_pc
-                    scene black with fade
-
-                    $ updateTime(0.5, pc)
-
-                    $ ptstring = str(pc.getPredatorType()).lower().strip()
-                    call expression "regular.huntX_" + ptstring
-
-            "Work the Case":
-                # TODO: GEt next main quest info here, use it to inform menu below.
-
-                menu:
-                    "Alright, let's consider our next move."
-
-                    "TESTBATTLE":
-                        scene bg danger alley1
-                        $ startBattle()
-
-            # "Attend Elysium":
-            #     $ pass
-            #
-            # "Seek out the Anarchs" if story_anarchs_enabled:
-            #     $ pass
-
-            "Recuperate":
-                $ pass
-
-        jump regular.nightloop
-
 
     # ===CONSENSUALIST HUNTS===
     label .huntX_consensualist:
@@ -938,19 +856,19 @@ label regular:
             "I inquire after a sex worker who's willing to engage in \"blood play\". It'll be expensive, but it's a safe(r) bet. ([_man] + [_pers])" if not picked1:
                 $ picked1 = True
                 if story_con_generic1:
-                    jump regular.hx_con_generic
+                    jump feeding.hx_con_generic
                 else:
                     $ grade = evalt(pc.test(hunting_difficulty, _man, _pers, messyCritsOn = True))
-                    jump regular.hx_con_opt1
+                    jump feeding.hx_con_opt1
 
             "It'll be harder, but I present myself as an experienced participant in kink and see if I can get some \"blood play\" started on my own. ([_man] + [_perf])" if not picked2:
                 $ picked2 = True
 
                 if story_con_generic2:
-                    jump regular.hx_con_generic
+                    jump feeding.hx_con_generic
                 else:
                     $ grade = evalt(pc.test(hunting_difficulty + 1, _man, _perf, messyCritsOn = True))
-                    jump regular.hx_con_opt2
+                    jump feeding.hx_con_opt2
 
             "Forget it. This was a mistake. Looks like we're going hungry for now.":
                 beast "Are you FUCKING kidding me?!"
@@ -990,7 +908,7 @@ label regular:
                 "Fuck! I focus my willpower and force myself to stop! I lick away the puncture wounds on her forearm."
 
                 python:
-                    pc.damage(KEY_WP, KEY_SUPF, pc.getWillPenalty())
+                    pc.damage(KEY_WP, KEY_SPFD, pc.getWillPenalty())
                     pc.slakeHunger(3)
                     if pc.getHumanity() > 6:
                         pc.loseCash(200.50)
@@ -1055,7 +973,7 @@ label regular:
 
                 "I focus my will, and force my Beast back down. Then I grab the poor woman's face and stare into her eyes."
 
-                $ pc.damage(KEY_WP, KEY_SUPF, pc.getWillPenalty())
+                $ pc.damage(KEY_WP, KEY_SPFD, pc.getWillPenalty())
 
                 beast "You useless piece of shit! Why can't you do anything right? Why can't you-"
 
@@ -1068,9 +986,9 @@ label regular:
 
 
         if grade == MESSYCRIT or grade == SUCCESS:
-            jump regular.hx_con_win
+            jump feeding.hx_con_win
         else:
-            jump regular.hx_con_menu
+            jump feeding.hx_con_menu
 
 
         # CONSENSUALIST OPTION 2
@@ -1177,9 +1095,9 @@ label regular:
                 $ pc.soundFlee()
 
         if grade == MESSYCRIT or grade == SUCCESS:
-            jump regular.hx_con_win
+            jump feeding.hx_con_win
         else:
-            jump regular.hx_con_menu
+            jump feeding.hx_con_menu
 
 
         label .hx_con_win: # NOTE: CONSENSUALIST SUCCESS STATE
@@ -1242,7 +1160,7 @@ label regular:
 
         play music audio.roadside_killer fadeout 0.5 fadein 1.0
 
-        $ picked1, picked2, used_dominate, used_presence = False
+        $ picked1 = picked2 = used_dominate = used_presence = False
 
         "I head into the city, to one of the spots on [ghoulname]'s list of places with heavy traffic. Should be lots of folks on the move around there."
 
@@ -1260,39 +1178,39 @@ label regular:
             "I haunt parking lots, driving slow and casual, looking for any suitable stragglers I can draw. ([_cha] + [_driv])" if not picked1:
                 $ picked1 = True
                 if story_rsk_generic1:
-                    jump regular.hx_rsk_generic
+                    jump feeding.hx_rsk_generic
                 else:
                     $ grade = evalt(pc.test(hunting_difficulty, _cha, _driv, messyCritsOn = True))
-                    jump regular.hx_rsk_opt1
+                    jump feeding.hx_rsk_opt1
 
             "I look for suitable stragglers. When I find one, I pull up and command them to get in. This is the surest bet, but I'm risking more Hunger. ([_man] + [_dominate])" if not picked1 and pc.hasDisciplinePower(_dominate, DOM_MESMERIZE):
-                $ picked1, used_dominate = True
+                $ picked1 = used_dominate = True
                 if story_rsk_generic1:
-                    jump regular.hx_rsk_generic
+                    jump feeding.hx_rsk_generic
                 else:
                     $ pc.addHungerDebt(4)
                     $ grade = evalt(pc.test(hunting_difficulty - 1, _man, _dominate, messyCritsOn = True))
-                    jump regular.hx_rsk_opt1
+                    jump feeding.hx_rsk_opt1
 
             "This will be tricky, but I take to the highway and try to follow a suitable looking vehicle to their destination. ([_dex] + [_driv])" if not picked2:
                 $ picked2 = True
                 if story_rsk_generic2:
-                    jump regular.hx_rsk_generic
+                    jump feeding.hx_rsk_generic
                 else:
                     $ grade = evalt(pc.test(hunting_difficulty + 1, _dex, _driv, messyCritsOn = True))
-                    jump regular.hx_rsk_opt2
+                    jump feeding.hx_rsk_opt2
 
             "I take to the highway and try to follow a suitable looking vehicle to their destination. This will be tricky, but my supernatural charisma will smooth things over if my natural charisma doesn't. ([_cha] + [_driv] + [_presence])" if not picked2 and (pc.hasDisciplinePower(_presence, PRES_AWE) or pc.hasDisciplinePower(_presence, PRES_CHARM)):
                 $ picked2, used_presence = True
                 if story_rsk_generic2:
-                    jump regular.hx_rsk_generic
+                    jump feeding.hx_rsk_generic
                 else:
                     if pc.hasDisciplinePower(_presence, PRES_AWE):
                         $ pc.awe()
                     else:
                         $ pc.entrance()
                     $ grade = evalt(pc.test(hunting_difficulty + 2, _cha, _driv, _presence, messyCritsOn = False, bestialFailsOn = False))
-                    jump regular.hx_rsk_opt2
+                    jump feeding.hx_rsk_opt2
 
             "Forget it. This was a mistake. Looks like we're going hungry for now.":
                 beast "Are you FUCKING kidding me?!"
@@ -1329,7 +1247,7 @@ label regular:
 
                 "I don't know. That's not the point. I force myself to stop."
 
-                $ pc.damage(KEY_WP, KEY_SUPF, pc.getWillPenalty())
+                $ pc.damage(KEY_WP, KEY_SPFD, pc.getWillPenalty())
                 $ pc.slakeHunger(3)
 
                 if not used_dominate:
@@ -1397,16 +1315,16 @@ label regular:
 
                 me "Forget!"
 
-                $ pc.damage(KEY_WP, KEY_SUPF, pc.getWillPenalty())
+                $ pc.damage(KEY_WP, KEY_SPFD, pc.getWillPenalty())
                 $ pc.cloudMemory()
 
                 "I make a run for it. At least I made sure there weren't any cameras."
                 $ pc.soundFlee()
 
             if grade == MESSYCRIT or grade == SUCCESS:
-                jump regular.hx_rsk_win
+                jump feeding.hx_rsk_win
             else:
-                jump regular.hx_rsk_menu
+                jump feeding.hx_rsk_menu
 
 
         # ROADSIDE KILLER OPTION 2
@@ -1436,7 +1354,7 @@ label regular:
                 "No! What the fuck? ...How did I even get into her car? Stop!"
 
                 python:
-                    pc.damage(KEY_WP, KEY_SUPF, pc.getWillPenalty())
+                    pc.damage(KEY_WP, KEY_SPFD, pc.getWillPenalty())
                     pc.slakeHunger(2)
 
                 "Oh God. What the fuck have you done?"
@@ -1498,9 +1416,9 @@ label regular:
                 $ pc.soundFlee()
 
         if grade == MESSYCRIT or grade == SUCCESS:
-            jump regular.hx_rsk_win
+            jump feeding.hx_rsk_win
         else:
-            jump regular.hx_rsk_menu
+            jump feeding.hx_rsk_menu
 
 
         label .hx_rsk_win: # NOTE: ROADSIDE KILLER SUCCESS STATE
@@ -1552,7 +1470,7 @@ label regular:
 
         play music audio.scene_queen_x fadeout 0.5 fadein 1.0
 
-        $ picked1, picked2, used_contacts, used_presence = False
+        $ picked1 = picked2 = used_contacts = used_presence = False
 
         "I head into the city, to one of the clubs on [ghoulname]'s list. Hopefully we can treat ourselves to some dancing and dinner."
 
@@ -1566,31 +1484,31 @@ label regular:
             "I've introduced myself to the owner and staff here. I'll spread some money and love around, get people watching, then conquer the dance floor. ([_cha] + [_perf])" if not picked1:
                 $ picked1 = True
                 if story_sqn_generic1:
-                    jump regular.hx_sqn_generic
+                    jump feeding.hx_sqn_generic
                 else:
                     $ grade = evalt(pc.test(hunting_difficulty, _cha, _perf, messyCritsOn = True))
-                    jump regular.hx_sqn_opt1
+                    jump feeding.hx_sqn_opt1
 
             "I've introduced myself to the owner and staff here. I'll spread some money and love around, get people watching, then conquer the dance floor with my supernatural Ventrue allure. ([_cha] + [_perf] + [_presence])" if not picked1 and (pc.hasDisciplinePower(_presence, PRES_AWE) or pc.hasDisciplinePower(_presence, PRES_CHARM)):
-                $ picked1, used_presence = True
+                $ picked1 = used_presence = True
                 if story_sqn_generic1:
-                    jump regular.hx_sqn_generic
+                    jump feeding.hx_sqn_generic
                 else:
                     if pc.hasDisciplinePower(_presence, PRES_AWE):
                         $ pc.awe()
                     else:
                         $ pc.entrance()
                     $ grade = evalt(pc.test(hunting_difficulty + 1, _cha, _perf, _presence, messyCritsOn = False, bestialFailsOn = False))
-                    jump regular.hx_sqn_opt1
+                    jump feeding.hx_sqn_opt1
 
             "My contacts should be helpful here. I talk to the owner and have him have the staff send someone my way. On a totally unrelated note, I furnish the owner of with a small consideration, as a token of respect. ([_man] + [_intr] + Contacts)" if not picked2 and pc.hasPerk(M_CONTACTS[KEY_NAME])[0]:
                 $ picked2, used_contacts = True
                 if story_sqn_generic2:
-                    jump regular.hx_sqn_generic
+                    jump feeding.hx_sqn_generic
                 else:
                     $ contactsLevel = pc.hasPerk(M_CONTACTS[KEY_NAME])[0]
                     $ grade = evalt(pc.test(hunting_difficulty, _man, _intr, M_CONTACTS[KEY_NAME], messyCritsOn = False, bestialFailsOn = False))
-                    jump regular.hx_sqn_opt2
+                    jump feeding.hx_sqn_opt2
 
             "Forget it. This was a mistake. Looks like we're going hungry for now.":
                 beast "Are you FUCKING kidding me?!"
@@ -1625,7 +1543,7 @@ label regular:
 
                 "We're letting go of her NOW."
 
-                $ pc.damage(KEY_WP, KEY_SUPF, pc.getWillPenalty())
+                $ pc.damage(KEY_WP, KEY_SPFD, pc.getWillPenalty())
                 $ pc.slakeHunger(3)
 
                 "I lick the wound and let one of the staff know about my unfortunate friend. I tell them she passed out and might have alcohol poisoning. They'll get her some help."
@@ -1712,7 +1630,7 @@ label regular:
 
                 "Oh God."
 
-                $ pc.damage(KEY_WP, KEY_SUPF, pc.getWillPenalty())
+                $ pc.damage(KEY_WP, KEY_SPFD, pc.getWillPenalty())
 
                 me "Forget!"
 
@@ -1735,9 +1653,9 @@ label regular:
                 "Just fucking great."
 
             if grade == MESSYCRIT or grade == SUCCESS:
-                jump regular.hx_sqn_win
+                jump feeding.hx_sqn_win
             else:
-                jump regular.hx_sqn_menu
+                jump feeding.hx_sqn_menu
 
 
         # SCENE QUEEN OPTION 2
@@ -1792,9 +1710,9 @@ label regular:
                 "..."
 
         if grade == MESSYCRIT or grade == SUCCESS:
-            jump regular.hx_sqn_win
+            jump feeding.hx_sqn_win
         else:
-            jump regular.hx_sqn_menu
+            jump feeding.hx_sqn_menu
 
         label .hx_sqn_win: # NOTE: SCENE QUEEN SUCCESS STATE
 
@@ -1832,7 +1750,7 @@ label regular:
         play music audio.siren_new fadeout 0.5 fadein 1.0
 
         python:
-            picked1, picked2, used_presence = False
+            picked1 = picked2 = used_presence = False
             exname = pcex["first"]
             exlast = pcex["last"]
             exsubj = pcex["subj"]
@@ -1850,7 +1768,7 @@ label regular:
         beast "Alright, sexpot. Do your thing. Wake me up when it's time for dinner."
 
         if story_srn_generic:
-            jump regular.hx_srn_generic
+            jump feeding.hx_srn_generic
 
         "Sure, just watch me-"
 
@@ -1876,7 +1794,7 @@ label regular:
                     "Shut up. Let's get back to business."
 
                     $ story_times_dodged_ex += 1
-                    jump expression "regular.hx_srn_" + story_this_time
+                    jump expression "feeding.hx_srn_" + story_this_time
                 elif grade == FAIL:
                     "Ducking into alleys and hiding behind buildings, always keeping [expos] position in mind, and finally..."
 
@@ -1885,7 +1803,7 @@ label regular:
                     beast "Way to go, Sam Fisher."
 
                     $ story_met_ex = True
-                    jump regular.hx_srn_meet_ex
+                    jump feeding.hx_srn_meet_ex
                 else: # bestial failure
                     "...Shit. Goddamn it!"
 
@@ -1894,7 +1812,7 @@ label regular:
                     stop music fadeout 0.5
                     scene black with fade
 
-                    jump regular.hx_srn_attack_ex
+                    jump feeding.hx_srn_attack_ex
 
             "I can literally just {i}make{/i} [exobj] leave. I command [exname] to leave the city! ([_man] + [_dominate])" if pc.hasDisciplinePower(_dominate, DOM_MESMERIZE):
                 $ grade = evalt(pc.test(3 + int(story_times_dodged_ex), _man, _dominate))
@@ -1915,7 +1833,7 @@ label regular:
                     "...Just shut up. Please."
 
                     $ story_times_dodged_ex += 1
-                    jump expression "regular.hx_srn_" + story_this_time
+                    jump expression "feeding.hx_srn_" + story_this_time
                 else:
                     exlover "[Beth], why are you doing this? Why are you acting this way? Just talk to me, please! Please."
 
@@ -1924,7 +1842,7 @@ label regular:
                     me "...How? Shit."
 
                     $ story_met_ex = True
-                    jump regular.hx_srn_meet_ex
+                    jump feeding.hx_srn_meet_ex
 
             "This has gone on long enough. I'm dealing with [exname] for good. I pull [exobj] into a quiet alley and rewrite [expos] memories. It's drastic and cruel, but it's what best for me, [exobj], and the Masquerade." if pc.hasDisciplinePower(_dominate, DOM_GASLIGHT) and story_times_dodged_ex > 2:
                 beast "Well look who's finally grown a spine. Not my ideal solution, but it's certainly decisive. And final. Very Ventrue."
@@ -1940,12 +1858,12 @@ label regular:
                 scene bg danger alley1
                 # play music audio.brainwashedex fadeout 1.0 fadein 2.5 TODO: need track for this
 
-                jump regular.hx_srn_brainwash_ex
+                jump feeding.hx_srn_brainwash_ex
 
             "Fuck it. I have to deal with [exobj] sooner or later. I'll go talk to [exname].":
                 beast "Well look who's finally grown a spine. I still think you should eat [exobj]."
 
-                jump regular.hx_srn_meet_ex
+                jump feeding.hx_srn_meet_ex
 
 
         label .hx_srn_brainwash_ex:
@@ -1977,7 +1895,7 @@ label regular:
 
             $ story_brainwashed_ex = True
             $ story_ex_resolved = True
-            jump expression "regular.hx_srn_" + story_this_time
+            jump expression "feeding.hx_srn_" + story_this_time
 
 
         label .hx_srn_meet_ex:
@@ -2054,7 +1972,7 @@ label regular:
                 "I have to do {i}something{/i}, don't I?"
 
                 "This can't go any farther. It's wrong and it's cruel, but I know my job and I what the alternatives are. I use the power of my Blood to rewrite [exname]'s memories." if pc.hasDisciplinePower(_dominate, DOM_GASLIGHT):
-                    jump regular.hx_srn_brainwash_ex
+                    jump feeding.hx_srn_brainwash_ex
 
                 "I guess [exname] really is my responsibility after all. I did this to [exobj]. Some of it, at least. There's only way forward that doesn't involve [expos] death. I make [exname] into my second retainer.":
                     beast "..."
@@ -2095,7 +2013,7 @@ label regular:
 
                     $ story_ghouled_ex = True
                     $ story_ex_resolved = True
-                    jump expression "regular.hx_srn_" + story_this_time
+                    jump expression "feeding.hx_srn_" + story_this_time
 
 
         label .hx_srn_attack_ex:
@@ -2118,7 +2036,7 @@ label regular:
 
         "My hands are wrapped around [exname]'s throat. [exSubj]'s giving me that look. That sad, betrayed, pathetic look that makes me want to kill myself and maybe [exobj] too. [exSubj]'s not even fighting back! Oh God. STOP IT! PLEASE! pleasepleasepleasepleasepleaseplease stopitstopitstopitstopitstopitstopit"
 
-        $ pc.damage(KEY_WP, KEY_SUPF, pc.getWillPenalty())
+        $ pc.damage(KEY_WP, KEY_SPFD, pc.getWillPenalty())
         $ pc.slakeHunger(2)
 
         "[exSubj] gasps for air."
@@ -2159,7 +2077,7 @@ label regular:
         scene bg huntX siren
 
         if story_srn_generic:
-            jump regular.hx_srn_generic
+            jump feeding.hx_srn_generic
 
         $ story_siren_generic = True
 
@@ -2191,7 +2109,7 @@ label regular:
 
         "You tried this once before, asshole. We both know that's not how it works. I pull my clothes back on and slip out the door."
 
-        jump regular.hx_srn_win
+        jump feeding.hx_srn_win
 
 
         label .hx_srn_women:
@@ -2199,7 +2117,7 @@ label regular:
         scene bg huntX siren
 
         if story_srn_generic:
-            jump regular.hx_srn_generic
+            jump feeding.hx_srn_generic
 
         $ story_siren_generic = True
 
@@ -2283,7 +2201,7 @@ label regular:
 
         beast "I'll hold you to that, [petname]."
 
-        jump regular.hx_srn_win
+        jump feeding.hx_srn_win
 
 
 
@@ -2309,7 +2227,7 @@ label regular:
                     $ pc.soundFeed("And then, we both get what we want. I check his pulse and breathing before putting my clothes back on and leaving.")
                     $ pc.slakeHunger(2)
 
-                jump regular.hx_srn_win
+                jump feeding.hx_srn_win
             else:
                 "I hit club after club, and there's plenty of interest."
 
@@ -2321,7 +2239,7 @@ label regular:
 
                 beast "You're {i}really{/i} not going to like what happens if you keep screwing up like this."
 
-                jump regular.hx_srn_fail
+                jump feeding.hx_srn_fail
 
         label .hx_srn_win: # SIREN NORMAL SUCCESS STATE
 
