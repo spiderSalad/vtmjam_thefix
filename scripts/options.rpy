@@ -12,7 +12,7 @@
 ##
 ## The _() surrounding the string marks it as eligible for translation.
 
-define config.name = _("VtM: Barely Disguised Hunger")
+define config.name = _("VtM: Hunger's Guise")
 define config.layers = ['master', 'transient', 'hunger_layer', 'screens', 'overlay']
 
 
@@ -24,7 +24,7 @@ define gui.show_name = False
 
 ## The version of the game.
 
-define config.version = "0.5.2"
+define config.version = "1.0.1"
 
 
 ## Text that is placed on the game's about screen. Place the text between the
@@ -63,7 +63,7 @@ define config.has_voice = True
 ## the player is at the main menu. This file will continue playing into the
 ## game, until it is stopped or another file is played.
 
-define config.main_menu_music = audio.title
+define config.main_menu_music = audio.title2
 
 
 ## Transitions #################################################################

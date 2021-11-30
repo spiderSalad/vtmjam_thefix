@@ -15,20 +15,26 @@ init 2 python:
     GOAL_GUNCHASE       = "Flee attempt (Enemy, PC Shooting)"
     GOAL_LETGO          = "Allowing enemy to flee"
     GOAL_BETHKILLS      = "PC killed Enemy"
+    GOAL_KNOCKOUT       = "PC knocked out Enemy"
 
     class Combatant:
-        def __init__(self, beth = None, name = "Unknown Assailant", vampire = True, fightsToDeath = False):
+        def __init__(self, beth = None, name = "Unknown Assailant", vampire = True, fightsToDeath = False, knockable = False, escapable = True):
             self.name = name
             self.beth = beth
             self.dead = False
+            self.awake = True
             self.vampire = vampire
             self.fightsToDeath = fightsToDeath
+            self.knockable = knockable
+            self.escapable = escapable
             self.chasePenalty = 0
             self.wantsToFlee = False
             self.lines = {}
             self.lines["intro"] = []
             self.lines["dead"] = []
+            self.lines["outcold"] = []
             self.lines["fled"] = []
+            self.lines["escape"] = []
 
         def embody(self, maxhp = 5, maxwill = 7, armor = 0):
             self.maxhp = maxhp
@@ -60,10 +66,17 @@ init 2 python:
             else:
                 return None
 
-        def setStoryText(self, intro = [], dead = [], fled = []):
-            self.lines["intro"] = intro
-            self.lines["dead"] = dead
-            self.lines["fled"] = fled
+        def setStoryText(self, intro = [], dead = [], outcold = [], fled = [], escape = []):
+            if intro:
+                self.lines["intro"] = intro
+            if dead:
+                self.lines["dead"] = dead
+            if outcold:
+                self.lines["outcold"] = outcold
+            if fled:
+                self.lines["fled"] = fled # when enemy escapes
+            if escape:
+                self.lines["escape"] = escape # when player escapes
 
         def debugGetHP(self):
             aggra = " (AGG)" if self.aggravated else ""
@@ -71,6 +84,9 @@ init 2 python:
 
         def isVampire(self):
             return self.vampire
+
+        def canBeFled(self):
+            return self.escapable
 
         def disarm(self):
             self.disarmed = True
@@ -97,6 +113,9 @@ init 2 python:
         def isDead(self):
             return self.dead
 
+        def isAwake(self):
+            return self.awake
+
         def _attack(self, bonus = 0, biting = False):
             results = []
             bethDamage = True
@@ -112,7 +131,11 @@ init 2 python:
             if self.wantsToFlee and not biting:
                 return self._flee(bethAllows = False, bethShooting = self.shootout, bonus = bonus)
             elif self.wantsToFlee and biting:
-                return beth.test(self.speed, _dex, _athl, bonus, bestialFailsOn = False, goal = GOAL_FEED_ATTACK)
+                bestResult = beth.test(self.speed, _dex, _athl, bonus, bestialFailsOn = False, goal = GOAL_FEED_ATTACK)
+                beth.slakeHunger(bestResult[0])
+                return bestResult
+            elif not self.awake:
+                return (1, False, False, GOAL_KNOCKOUT)
             elif self.dead:
                 return (1, False, False, GOAL_BETHKILLS)
 
@@ -145,7 +168,8 @@ init 2 python:
                 if not biting:
                     self.takeDamage(bestMargin + beth.getDamageBonus(), bethDamage)
                 else: # feeding drains power and slakes beth's hunger
-                    beth.slakeHunger(min(bestMargin, 3))
+                    juice = min(bestMargin, 3)
+                    beth.slakeHunger(juice)
                     self.attack -= 1
                     self.speed -= 1
                 if engageOnMookLoss:
@@ -170,10 +194,13 @@ init 2 python:
             if self.hp <= 0 and not self.aggravated:
                 self.aggravated = True
                 self.hp = self.maxhp
-                if not self.fightsToDeath:
+                if self.knockable:
+                    self.awake = False
+                elif not self.fightsToDeath:
                     self.wantsToFlee = True
             elif self.hp <= 0:
                 self.dead = True
+                self.wantsToFlee = False
 
         def dealDamage(self, amount, enabled = True):# TODO: ADD damage sound effects!
             if not enabled:
@@ -191,6 +218,8 @@ init 2 python:
 
             if self.will <= 0 and goal == GOAL_DISARM:
                 self.disarm()
+            elif self.will <= 0 and self.knockable:
+                self.awake = False
             elif self.will <= 0:
                 self.wantsToFlee = True
             else:
@@ -246,6 +275,35 @@ init 2 python:
             self.pcHasCompel = pc.hasDisciplinePower(_dominate, DOM_COMPEL)
             self.pcHasMesmerize = pc.hasDisciplinePower(_dominate, DOM_MESMERIZE)
             self.pcHasDreadGaze = pc.hasDisciplinePower(_presence, PRES_SCARYFACE)
+            self.pcHasToughness = pc.hasDisciplinePower(_fortitude, FORT_TOUGH)
+
+        def generateRandomOpp(self):
+            randomOpp = Combatant(beth = pc)
+            randomOpp.embody(random.randint(4, 7), random.randint(3, 6), random.randint(0, 1))
+            randomOpp.equip(random.randint(3, 6), random.randint(0, 2), random.randint(1, 4))
+            randomOpp.setStoryText(intro = [
+                "I get the bright idea of taking a shortcut suggested by Waze. I find myself driving through an alley just wide enough. All going according to plan, until...",
+
+                "I'm boxed in by another car. I curse, thinking it's parked and empty and just blocking my shortcut.",
+
+                "I was wrong. It roars to life, and its occupant steps out. Kindred. I can tell right away. And, I'm guessing Anarch. Is there anywhere for me to even flee?"
+            ])
+
+            randomOpp.setStoryText(dead = [
+                "Great. Just great. A dead Anarch and his shitbox car. This isn't going to look good to anyone. I guess I should be grateful I'm alive."
+            ])
+            randomOpp.setStoryText(fled = [
+                "The motherfucker ran! I can't believe this shit. Jumps me and has the nerve to fucking run!"
+            ])
+            randomOpp.setStoryText(escape = [
+                "I turn a corner, sprint up to an alcove as fast as I can and pivot into it. I press myself into the crevasse, and my attacker runs past. I can't believe that worked.",
+
+                (beast, "They're Anarchs. You were expecting Belisarius or something?",),
+
+                "I creep back the way I came."
+            ])
+
+            return randomOpp
 
         def getNumRounds(self):
             return self.rounds
@@ -281,7 +339,19 @@ init 2 python:
         def hasDreadGaze(self):
             return self.pcHasDreadGaze
 
-        def readOppStory(self, which):
+        def hasToughness(self):
+            return self.pcHasToughness
+
+        def readOppStory(self, which, _opp = None):
+            global opp
+
+            if _opp:
+                opp = _opp
+            elif not opp:
+                opp = Combatant(beth = pc)
+                opp.embody()
+                opp.equip()
+
             line = opp.peelOppLine(which)
             while line:
                 if type(line) is tuple:
@@ -312,10 +382,17 @@ init 2 python:
             renpy.call("battles.battleLoop")
 
         def endBattle(self):
+            global usingToughness
+            usingToughness = False
+
             if opp.isDead():
                 self.readOppStory("dead")
-            else:
+            elif not opp.isAwake():
+                self.readOppStory("outcold")
+            elif opp.isFleeing():
                 self.readOppStory("fled")
+            else:
+                self.readOppStory("escape")
 
             renpy.scene()
             renpy.show(self.returnBG)
@@ -349,6 +426,7 @@ init 2 python:
             elif etype == GOAL_CLOSE:
                 self.bmsgClose(marg, pc, opp, mcrit, bfail)
             elif etype == GOAL_FEED_ATTACK and marg > 0:
+                self.incBattleFeeds()
                 renpy.say(beast, "Yes... Wonderful work, dead girl.")
                 renpy.say(None, "Can't believe that worked.")
             elif etype == GOAL_FEED_ATTACK:
@@ -374,6 +452,10 @@ init 2 python:
             elif etype == GOAL_BETHKILLS:
                 renpy.say(beast, "Well done. Another notch on our belt, and maybe now the fools will learn to fear us.")
                 renpy.say(None, "That's not what we're here for, asshole.")
+                self.bethWinsBattle(True)
+            elif etype == GOAL_KNOCKOUT:
+                renpy.say(None, "Man. Out like a light.")
+                self.bethWinsBattle(False)
             else:
                 raise ValueError("[Error]: Unknown battle event!")
 
@@ -388,10 +470,12 @@ init 2 python:
             elif marg > 0 and mcrit:
                 renpy.say(beast, "Crush. Them.")
             elif marg > 0 and useweapon:
-                renpy.say(None, "I score a solid cut. There's a sound of splitting meat. Not bad.")
+                renpy.play(audio.stab1, u'sound')
+                renpy.say(None, "I score a solid cut, and I'm rewarded with the sound of splitting meat. Not bad.")
             elif marg > 0:
                 renpy.say(None, "I throw punches and kicks and elbows and my enemy reels. But I can't let my guard down.")
             elif marg == 0 and useweapon and oppweapon:
+                renpy.play(audio.swordclash, u'sound')
                 renpy.say(None, "Our weapons clash painfully. It's a draw.")
             elif marg == 0 and useweapon:
                 renpy.say(None, "Well that was embarrassing. They don't even have a weapon.")
@@ -416,16 +500,20 @@ init 2 python:
             elif marg == 0:
                 renpy.say(None, "We both fire at each other almost blindly.")
             elif marg < 0 and bfail:
+                renpy.play(audio.bulletimpacts, u'sound')
                 renpy.say(me, "Ahh!")
                 renpy.say(beast, "We're getting perforated, you idiot! Do something!")
             else:
+                renpy.play(audio.bulletimpacts, u'sound')
                 renpy.say(me, "Ughn...")
                 renpy.say(None, "Apparently they're a better shot. That's not good.")
 
         def bmsgOpenfire(self, marg):
             if marg > -1:
+                renpy.play(audio.gunshot1, u'sound')
                 renpy.say(None, "My attacker opens up on me, but they're too slow and their aim sucks. Now I'm in a better position.")
             else:
+                renpy.play(audio.bulletimpacts, u'sound')
                 renpy.say(me, "Ughn...")
                 renpy.say(None, "Fuck! I'm out of position and taking hits!")
 
@@ -506,13 +594,17 @@ label battles:
 
             if opp.isDead():
                 fleeMessage = "Uh... I think we got them."
+            elif not opp.isAwake():
+                fleeMessage = "They won't be up for a while."
             elif opp.isFleeing():
                 fleeMessage = "Better just let them go..."
+            elif not opp.canBeFled():
+                fleeMessage = "...I can't run away from this one."
             else:
                 fleeMessage = "This was a mistake... time to run!"
 
             if opp.isVampire():
-                feedAttackMsg = "Feeding on another vampire is risky as fuck, not to mention taboo. But I'm hungry enough not to care. "
+                feedAttackMsg = "Feeding in combat is risky as fuck. But I'm hungry enough not to care. "
             else:
                 feedAttackMsg = "If they're gonna run, that makes them acceptable prey... "
         menu:
@@ -541,7 +633,7 @@ label battles:
                 jump battles.processEvent
 
             # Firearms attack
-            "I take aim and pop off with my gun!" if pc.hasItemOfType(IT_FIREARM):
+            "I take aim and let off with my gun!" if pc.hasItemOfType(IT_FIREARM):
                 python:
                     damageBonus = 0
                     if pc.hasItemOfType(IT_FIREARM):
@@ -558,31 +650,45 @@ label battles:
                 jump battles.processEvent
 
             # Mental attack - disarm
-            "I catch their gaze and command them to throw down their weapons!" if (arena.hasCompel() or arena.hasMesmerize()) and not opp.isDisarmed():
+            "I catch their gaze and command them to throw down their weapons!" if (arena.hasCompel() or arena.hasMesmerize()) and pc.getHunger() < HUNGER_MAX and not opp.isDisarmed() and opp.isAwake():
                 python:
                     compel = pc.getAttr(_cha) + pc.getDisciplineLevel(_dominate)
                     mesmerize = pc.getAttr(_man) + pc.getDisciplineLevel(_dominate)
                     if arena.hasCompel() and (not arena.hasMesmerize() or compel > mesmerize or pc.getHunger() > 3): # try to prioritize compel
+                        renpy.play(audio.dominate1, u'sound')
                         nextEvent = opp._mindWarp(GOAL_DISARM, _cha, _dominate, arena.getBonus())
                         pc.addHungerDebt(1)
                     else:
+                        renpy.play(audio.dominate1, u'sound')
                         nextEvent = opp._mindWarp(GOAL_DISARM, _man, _dominate, arena.getBonus())
                         pc.addHungerDebt(4)
 
                 jump battles.processEvent
 
             # Mental attack - drive off
-            "I crush their will and compel them to flee!" if (arena.hasMesmerize() or arena.hasDreadGaze()) and not opp.isFleeing():
+            "I crush their will and compel them to flee!" if (arena.hasMesmerize() or arena.hasDreadGaze()) and pc.getHunger() < HUNGER_MAX and not opp.isFleeing() and opp.isAwake():
                 python:
                     mesmerize = pc.getAttr(_man) + pc.getDisciplineLevel(_dominate)
                     dreadgaze = pc.getAttr(_cha) + pc.getDisciplineLevel(_presence)
                     if arena.hasDreadGaze() and dreadgaze > mesmerize:
+                        renpy.play(audio.dreadgaze, u'sound')
                         nextEvent = opp._mindWarp(GOAL_SCARE, _cha, _presence, arena.getBonus())
                     else:
+                        renpy.play(audio.dominate1, u'sound')
                         nextEvent = opp._mindWarp(GOAL_SCARE, _man, _dominate, arena.getBonus())
                     pc.addHungerDebt(4)
 
                 jump battles.processEvent
+
+            # Toughness (grants armor)
+            "I flush Blood throughout my body and harden my flesh against blade and bullet alike." if arena.hasToughness() and pc.getHunger() < HUNGER_MAX and not usingToughness:
+                python:
+                    global usingToughness
+                    usingToughness = True
+                    pc.addHungerDebt(4)
+                # play sound ???
+                "There we go. I feel much safer."
+                jump battles.battleLoop
 
             # Blood Surge (unavailable on first round)
             "I need more power. I send Blood surging throughout my body in preparation for my next move." if pc.getHunger() < HUNGER_MAX and not arena.hasSurged() and arena.getNumRounds() > 0:
@@ -596,8 +702,8 @@ label battles:
             # Feed attack (enemy vampire or fleeing enemy human)
             "[feedAttackMsg]I go in for a bite!" if pc.getHunger() > 2 and arena.numBattleFeeds() < MAX_BATTLE_FEEDS and (opp.isVampire() or opp.isFleeing()):
                 python:
+                    print("\n\nFEED ATTACK ISSUED")
                     pc.setDamageBonus(0)
-                    arena.incBattleFeeds()
                     nextEvent = opp._attack(arena.getBonus(), biting = True)
 
                 jump battles.processEvent
@@ -608,13 +714,17 @@ label battles:
                 python:
                     pc.mend(KEY_HP, KEY_SPFD, pc.getBPMend())
                     pc.addHungerDebt(4)
-                    # play sound
 
+                play sound audio.mending
                 "That's better... but I need to be careful. Can't get too hungry..."
                 jump battles.battleLoop
 
             # Flee
             "[fleeMessage]":
+                if not opp.canBeFled():
+                    "No. I can't back out of this fight."
+                    jump battles.battleLoop
+
                 python:
                     nextEvent = opp._chase(arena.getBonus())
 

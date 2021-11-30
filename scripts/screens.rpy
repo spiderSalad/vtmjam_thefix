@@ -404,6 +404,7 @@ style navigation_button_text:
 ##
 ## https://www.renpy.org/doc/html/screen_special.html#main-menu
 
+
 screen main_menu():
 
     ## This ensures that any other menu screen is replaced.
@@ -431,6 +432,9 @@ screen main_menu():
             text "[config.version]":
                 style "main_menu_version"
 
+    text "This game was created as a part of a Vampire: The Masquerade game jam. Events portrayed in this game are not canon within the World of Darkness universe.":
+        align (0.5, 0.99)
+        size 12
 
 style main_menu_frame is empty
 style main_menu_vbox is vbox
@@ -1325,7 +1329,7 @@ screen codexTopRow():
                         ptdesc = "\nPredator Type:"
                         ptname = "\n???" if not hasattr(pc, KEY_PRED_TYPE) else "\n" + str(pc.predatorType)
                     text "Name:\nClan:\nSire:\nGeneration:[ptdesc]" text_align 0.0 size 12 xalign 0.0
-                    text "[_pc[first]] [_pc[last]]\n[clan]\n[sire]\n[generation] {color=#cc0000}([pc.bloodpotency]){/color}[ptname]" text_align 1.0 size 12 xalign 1.0
+                    text "[_pc[first]] [_pc[last]]\n[clan]\n[_sire]\n[generation] {color=#cc0000}([pc.bloodpotency]){/color}[ptname]" text_align 1.0 size 12 xalign 1.0
 
             frame id "pane_soulstate" align (0.3, 0.0) xysize (172, 96):
                 $ humanityPhrase = humanityScores[pc.humanity - 5]
@@ -1434,7 +1438,7 @@ screen codexPowersPage(*args):
                                     $ power = powerlist[scoreWords[count + 1]] if powerlist[scoreWords[count + 1]] else None
                                     if power:
                                         frame style style.utility_frame left_padding 5 xalign 0.0:
-                                            textbutton str(count + 1) + ". [power]" xfill True:
+                                            textbutton str(count + 1) + ". [power]":
                                                 text_style style.codex_hoverable_text
                                                 action NullAction()
                                                 hovered ShowTransient("hovertip", None, "{tt}".format(tt=tooltipTable[power]))

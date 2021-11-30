@@ -2,7 +2,7 @@ init 0 python:
     import math
     import json
 
-define DEBUG        = True
+define DEBUG        = False
 define MUSIC_MUTED  = False
 
 # Licensing info
@@ -43,6 +43,11 @@ image bg huntX scenequeen       = "generic_hunt_scenequeen.jpg"
 image bg huntX siren            = "generic_hunt_siren.jpg"
 image bg danger alley1          = "bg_dark_alley.jpg"
 image bg danger alleyRed        = "bg_red_alley.jpg"
+image bg precinct exterior      = "police_waterfront.jpg"
+image bg precinct interior1     = "desolate_interior.jpg"
+image bg relax beach            = "beach1.jpg"
+image bg relax club             = "smokyclub.jpg"
+image bg relax smokebar         = "whiskey_bar.jpg"
 
 # Overlays
 
@@ -61,6 +66,7 @@ define _exfemale    = {"first":"Michelle", "last":"Garcia", "subj":"she", "obj":
 # Music and sound aliases
 
 define audio.title              = "audio/music/BenJamin Banger - Tom 2.0.mp3"
+define audio.title2             = "audio/music/DJ Spooky - Dark Skies.mp3"
 define audio.scene1_awakening   = "audio/music/2Kutup - Travelling Through Intergalactic Space.mp3"
 define audio.club1              = "audio/music/BenJamin Banger - Freestyle 39.mp3"
 define audio.car_meeting        = "<from 5>audio/music/AEED - Through The City.mp3"
@@ -110,6 +116,10 @@ define audio.swordclash         = "audio/sound/440069__ethanchase7744__sword-blo
 define audio.stab1              = "audio/sound/435238__aris621__nasty-knife-stab.mp3"
 define audio.stab2              = "audio/sound/478145__aris621__nasty-knife-stab-2.mp3"
 define audio.bulletimpacts      = "audio/sound/423301__u1769092__visceralbulletimpacts.mp3"
+define audio.mending            = "audio/sound/554285__eminyildirim__blood-squish.mp3"
+define audio.dominate1          = "<from 0 to 3>audio/sound/444856__asteroiderer__aura-metal.mp3"
+define audio.pc_hit_fort_melee  = "audio/sound/420675__sypherzent__cut-through-armor-slice-clang.mp3"
+define audio.dreadgaze          = "<from 0 to 3>audio/sound/333832__nick121087__demonic-woman-scream.mp3"
 
 # Tran... sitions!
 
@@ -254,9 +264,9 @@ define tooltipTable = {
     _occu: "Supernatural stuff and how it works. I guess it makes sense that if vampires exist, so would other things.",
     _tech: "In my line of work this is mostly worrying about encryption and hardware security for laptops and smartphones.",
 
-    _dominate: "Hard mind control. If I can catch someone's gaze I can extend my will outward supplant their own. That means making them obey commands and even wiping memories if need be.",
+    _dominate: "Hard mind control. If I can catch someone's gaze I can extend my will outward supplant their own. That means making them obey commands and even wiping memories if need be. Using this art successfully is all about effective communication. (Charisma and Manipulation)",
     _fortitude: "All vampires can shrug off injuries that would cripple or kill mortals. My Clan can take things even further, developing flesh as tough as iron and minds impregnable to coercion, including the very mental powers we wield.",
-    _presence: "Soft mind control. More emotional manipulation, really. It can't make anyone do any particular actions, but it can engender or reinforce emotions - admiration, awe, fear, anything.",
+    _presence: "Soft mind control. More emotional manipulation, really. It can't make anyone do any particular actions, but it can engender or reinforce emotions - admiration, awe, fear, anything. This art is all about working with the emotions and sentiments of its subjects - the heart more than the head. (Charisma)",
 
     DOM_FORGET: "I can scour a person's short term memory, making them forget the last several minutes.",
     DOM_COMPEL: "A short, simple command that must be obeyed. Less versatile, more efficient than its counterpart technique.",
@@ -302,7 +312,6 @@ define KEY_NAME_ALT         = "altname"
 define KEY_VALUE            = "itemvalue"
 define KEY_TOOLTIP          = "tooltip"
 define KEY_ITEMTYPE         = "typeName"
-define KEY_BGTYPE           = "typeName"
 define KEY_BGSCORE          = "score"
 define KEY_MERITS           = "merits"
 define KEY_FLAWS            = "flaws"
@@ -350,8 +359,14 @@ default itemTable       = {
 
     # weapons
     "gun_ruger_1": {KEY_VALUE: "Stolen Ruger LCP", KEY_ITEMTYPE: IT_FIREARM, DAMAGE_BONUS: 2, ITEM_CONCEALED: True, KEY_TOOLTIP: "Confiscated and then re-confiscated."},
+    "police_colt": {KEY_VALUE: "Blood-spattered Colt 45", KEY_ITEMTYPE: IT_FIREARM, DAMAGE_BONUS: 2, ITEM_CONCEALED: True, KEY_TOOLTIP: "I'm sure I'll need this, wherever I'm going..."},
     "switchblade": {KEY_VALUE: "Switchblade", KEY_ITEMTYPE: IT_WEAPON, DAMAGE_BONUS: 2, ITEM_CONCEALED: True,
         KEY_TOOLTIP: "You know what they say about knife fights. Good thing I'm already dead."},
+    "swm500": {KEY_VALUE: "S & W Model 500", KEY_ITEMTYPE: IT_FIREARM, DAMAGE_BONUS: 3, ITEM_CONCEALED: True, KEY_TOOLTIP: "I think I'm feeling lucky."},
+
+    # quest items
+    "precinct_lanyard": {KEY_VALUE: "Authorized Visitor's Lanyard", KEY_ITEMTYPE: IT_QUEST, KEY_TOOLTIP: "This lets me walk around freely in most of the places I need to go."},
+    "police_report": {KEY_VALUE: "Police Report", KEY_ITEMTYPE: IT_QUEST, KEY_TOOLTIP: "Details of the \"{i}Bandita{/i} incident\", where the unsanctioned Embrace went down, including some serious Masquerade breaches."},
 
     # junk
     "chewing_gum": {KEY_VALUE: "Chewing Gum", KEY_ITEMTYPE: IT_JUNK, KEY_TOOLTIP: "I was hoping this would help with blood-breath. It doesn't."}
@@ -388,7 +403,7 @@ define hungerQuotes     = [ # hunger 0-5, humanity 5-8 (you lose at 4; 9 is unre
 # Starting PC vampire dossier
 
 define clan         = "Ventrue"
-define sire         = "Ms. Walker"
+define _sire        = "Ms. Walker"
 define generation   = "11th"
 define bloodpotency = 1
 define bpTable      = [{"surge": 2, "discipline_bonus": 0, "superficial_mend": 1}, {"surge": 2, "discipline_bonus": 1, "superficial_mend": 2}]
@@ -410,7 +425,7 @@ define RES      = 1
 define Athl     = 1
 define Clan     = 1
 define Comb     = 0
-define Driv     = 1
+define Driv     = 2
 define Fire     = 0
 
 define Inti     = 1
@@ -449,7 +464,8 @@ define bgTable          = {
     M_INFLUENCE[KEY_NAME]: [{KEY_BGTYPE: M_INFLUENCE[KEY_NAME], KEY_NAME: "Disliked", KEY_BGSCORE: 1, ISSA_FLAW: True}],
     M_HERD[KEY_NAME]: [
         {KEY_BGTYPE: M_HERD[KEY_NAME], KEY_NAME: "Small Herd", KEY_BGSCORE: 1, ISSA_FLAW: False},
-        {KEY_BGTYPE: M_HERD[KEY_NAME], KEY_NAME: "Medium Herd", KEY_BGSCORE: 2, ISSA_FLAW: False}
+        {KEY_BGTYPE: M_HERD[KEY_NAME], KEY_NAME: "Medium Herd", KEY_BGSCORE: 2, ISSA_FLAW: False},
+        {KEY_BGTYPE: M_HERD[KEY_NAME], KEY_NAME: "Bigass Herd", KEY_BGSCORE: 3, ISSA_FLAW: False}
     ],
     M_RESOURCES[KEY_NAME]: [
         {KEY_BGTYPE: M_RESOURCES[KEY_NAME], KEY_NAME: "Destitute", KEY_BGSCORE: 1, ISSA_FLAW: True},

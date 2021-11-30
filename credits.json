@@ -464,7 +464,8 @@
         "works":[
             {"name":"Adagio in Blue", "licenseUrl":"https://creativecommons.org/licenses/by-nc-sa/3.0/"},
             {"name":"Nocturne", "licenseUrl":"https://creativecommons.org/licenses/by-nc-sa/3.0/"},
-            {"name":"Check Your Math", "licenseUrl":"https://creativecommons.org/licenses/by-nc-sa/3.0/"}
+            {"name":"Check Your Math", "licenseUrl":"https://creativecommons.org/licenses/by-nc-sa/3.0/"},
+            {"name":"Dark Skies", "licenseUrl":"https://creativecommons.org/licenses/by-nc-sa/3.0/"}
         ],
         "website":"http://www.djspooky.com/",
         "socials":[
@@ -685,6 +686,39 @@
         "website":"",
         "socials":[
             {"site":"freesound.org", "handle":"Aleks41", "url": "https://freesound.org/people/Aleks41/"}
+        ]
+    },
+    {
+        "name":"nick121087",
+        "type":"sound_engineer",
+        "works":[
+            {"name":"Demonic woman scream", "licenseUrl":"http://creativecommons.org/publicdomain/zero/1.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"nick121087", "url": "https://freesound.org/people/nick121087/"}
+        ]
+    },
+    {
+        "name":"Stanislav Kondratiev",
+        "type":"photographer",
+        "works":[
+            {"name":"Empty dark corridor with glowing square shaped lamps", "licenseUrl":"https://www.pexels.com/license/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"pexels.com", "handle":"Stanislav Kondratiev", "url":"https://www.pexels.com/@technobulka"}
+        ]
+    },
+    {
+        "name":"Lucian Photography",
+        "type":"photographer",
+        "works":[
+            {"name":"Assorted liquor bottles", "licenseUrl":"https://www.pexels.com/license/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"pexels.com", "handle":"Lucian Photography", "url":"https://www.pexels.com/@lucianphotography"}
         ]
     }
 ]

@@ -16,6 +16,7 @@ init 1 python:
             self.generation = 11
             self.bloodpotency = bloodpotency
             self.damageBonus = 0
+            self.predatorType = "???"
 
             self.scores = {}
             self.scores[KEY_ATTR] = {
@@ -46,7 +47,7 @@ init 1 python:
 
             self.setResilienceLevel()
             self.setUnswayableMindLevel()
-            self.setToughnessLevel()
+            # self.setToughnessLevel()
             self.setBloodPotencyValues()
 
             self.merits = startMerits
@@ -67,6 +68,7 @@ init 1 python:
             elif bgTable.has_key(name):
                 return self.hasPerk(n)
             else:
+                print ("n = ", n)
                 raise ValueError("[Error]: Cannot find score for ", n)
 
         def getAttr(self, name):
@@ -99,19 +101,38 @@ init 1 python:
             return {"type": type, KEY_TOTAL: tracker[KEY_TOTAL], KEY_SPFD: tracker[KEY_SPFD], KEY_AGGD: tracker[KEY_AGGD]}
 
         def setResilienceLevel(self):
-            hasResilience = True if FORT_HP in self.powers[KEY_DISCIPLINE][_fortitude][KEY_DPOWERS] else False
+            hasResilience = self.hasDisciplinePower(_fortitude, FORT_HP)
             fortitudeLevel = self.getDisciplineLevel(_fortitude)
             self.trackers[KEY_HP][KEY_BONUS] = fortitudeLevel if hasResilience else 0
 
         def setUnswayableMindLevel(self):
-            hasUM = True if FORT_STUBBORN in self.powers[KEY_DISCIPLINE][_fortitude][KEY_DPOWERS] else False
+            hasUM = self.hasDisciplinePower(_fortitude, FORT_STUBBORN)
             fortitudeLevel = self.getDisciplineLevel(_fortitude)
             self.trackers[KEY_WP][KEY_ARMOR] = fortitudeLevel if hasUM else 0
 
         def setToughnessLevel(self):
-            hasToughness = True if FORT_TOUGH in self.powers[KEY_DISCIPLINE][_fortitude][KEY_DPOWERS] else False
+            hasToughness = self.hasDisciplinePower(_fortitude, FORT_TOUGH)
             fortitudeLevel = self.getDisciplineLevel(_fortitude)
             self.trackers[KEY_HP][KEY_ARMOR] = fortitudeLevel if hasToughness else 0
+
+        def setHerdLevel(self):
+            herdlevel = 0
+            ctt = ""
+
+            if opinion_camarilla >= cam_rep_rank2:
+                herdlevel += 1
+                ctt = "Looks like I've impressed the Camarilla enough that they're giving me additional hunting \"privileges\". How nice of them."
+
+            if self.getPredatorType() == PT_ROADSIDE_KILLER:
+                herdlevel += 1
+                ctt = "In every city there are places you can go to find people just passing through. The only problem is they're usually claimed, but that's not a problem for me here."
+
+            if PRES_ADDICTED2U in self.powers[KEY_DISCIPLINE][_presence][KEY_DPOWERS]:
+                herdlevel += 1
+                ctt = "My milkshake brings all the boys to the yard. Girls too. People of any gender, really."
+
+            if ctt:
+                pc.addPerk(M_HERD[KEY_NAME], herdlevel, customToolTip = ctt)
 
         def getBPDisciplineBonus(self):
             return self.powerBonus
@@ -121,6 +142,29 @@ init 1 python:
 
         def getBPSurge(self):
             return self.surgeBonus
+
+        def useBloodSurge(self, freeSurges = 0): # NOTE: will ALWAYS attempt to surge, only fails if at hunger 5
+            global freeBloodSurges
+            if freeSurges > 0:
+                renpy.play(audio.heartbeat1, u'sound')
+                freeBloodSurges -= 1
+                print ("useBloodSurge() --> FREE returning ", self.getBPSurge())
+                return self.getBPSurge()
+            elif self.hunger < HUNGER_MAX:
+                renpy.play(audio.heartbeat1, u'sound')
+                self.addHungerDebt(4)
+                print ("useBloodSurge() --> paid returning ", self.getBPSurge())
+                return self.getBPSurge()
+            else:
+                return 0
+
+        def maybeBloodSurge(self):
+            if usingBloodSurge or freeBloodSurges > 0:
+                print ("maybeBloodSurge() --> returning useBloodSurge()")
+                return self.useBloodSurge(freeBloodSurges)
+            else:
+                print ("maybeBloodSurge() --> returning zero")
+                return 0
 
         def setBloodPotencyValues(self):
             global bpTable
@@ -153,6 +197,11 @@ init 1 python:
                     numPowers += 1
 
             return numPowers
+
+        def checkPowers(self):
+            self.setResilienceLevel()
+            self.setUnswayableMindLevel()
+            self.setHerdLevel()
 
         def hasDisciplinePower(self, discipline, power):
             try:
@@ -187,13 +236,16 @@ init 1 python:
             try:
                 for i in range(powerlevel, disclevel + 1):
                     powerInThatSlot = self.powers[KEY_DISCIPLINE][discipline][KEY_DPOWERS][scoreWords[i]]
+                    # print("\n\npowerInThatSlot", powerInThatSlot, scoreWords, i)
                     if not powerInThatSlot:
                         self.powers[KEY_DISCIPLINE][discipline][KEY_DPOWERS][scoreWords[i]] = power
+                        print("\n\npowers:: ", scoreWords[i], self.powers[KEY_DISCIPLINE][discipline][KEY_DPOWERS])
+                        self.checkPowers()
                         return True
+                self.checkPowers()
                 return False
             except:
                 log("[Error]: Unknown error occurred when attempting to add discipline power!")
-            finally:
                 return False
 
         def getDisciplineLevel(self, discipline):
@@ -205,6 +257,9 @@ init 1 python:
         def addDisciplineDot(self, discipline, choosePower = False):
             disclevel = self.getDisciplineLevel(discipline)
             self.setDisciplineLevel(discipline, increment(disclevel)[0])
+            self.setResilienceLevel()
+            self.setUnswayableMindLevel()
+            self.setHerdLevel()
 
         def hasPerk(self, typeName): # should now return KEY_BGSCORE, 0 if not found
             if len(self.merits) < 1 and len(self.backgrounds) < 1:
@@ -212,14 +267,17 @@ init 1 python:
 
             if len(self.backgrounds) > 0:
                 for count, bg in enumerate(self.backgrounds):
-                    if typeName.lower() == bg[KEY_BGTYPE]:
+                    if typeName.lower() == bg[KEY_BGTYPE].lower():
+                        print("returnm", (bg[KEY_BGSCORE], ISSA_BG, count, bg[ISSA_FLAW]))
                         return (bg[KEY_BGSCORE], ISSA_BG, count, bg[ISSA_FLAW])
 
             if len(self.merits) > 0:
                 for count, merit in enumerate(self.merits):
-                    if typeName.lower() == merit[KEY_BGTYPE]:
+                    if typeName.lower() == merit[KEY_BGTYPE].lower():
+                        print("return", (merit[KEY_BGSCORE], ISSA_MERIT, count, merit[ISSA_FLAW]))
                         return (merit[KEY_BGSCORE], ISSA_MERIT, count, merit[ISSA_FLAW])
 
+            print("return baseline")
             return (0, None, None, False)
 
         def removePerk(self, typeName):
@@ -271,7 +329,7 @@ init 1 python:
                 log("[Error]: Someone tried to add something other than a number to the wallet!")
 
         def getHeldItemsOfType(self, itype):
-            if not hasItemOfType():
+            if not self.hasItemOfType(itype):
                 return []
 
             bag = []
@@ -281,6 +339,12 @@ init 1 python:
                     bag.append(itemTable[iname])
 
             return bag
+
+        def hasItem(self, itemName):
+            for item in self.inventory:
+                if item[KEY_NAME] == itemName:
+                    return item
+            return None
 
         def hasItemOfType(self, itype):
             for item in self.inventory:
@@ -294,16 +358,11 @@ init 1 python:
                 self.updateWallet(payloadValue, deduct = True)
                 return
 
-            hasAlready = False
-            for item in self.inventory:
-                if item[KEY_NAME] == itemName:
-                    hasAlready = True
-                    self.inventory.remove(item)
-                    if not checkAll:
-                        break
-            if not hasAlready:
-                log("[Error]: Tried to remove item with name " + str(itemName) + ", but it wasn't found.")
-                return
+            existingCopy = self.hasItem(itemName)
+            while existingCopy:
+                self.inventory.remove(existingCopy)
+                existingCopy = self.hasItem(itemName)
+
             renpy.sound.queue(audio.heartbeat2, u'sound')
 
         def loseCash(self, amount):
@@ -317,15 +376,9 @@ init 1 python:
                 self.updateWallet(payloadValue)
                 return
 
-            hasAlready = False
-            existingSet = None
-            for item in self.inventory:
-                if item[KEY_NAME] == itemName:
-                    hasAlready = True
-                    existingSet = item
-                    break
+            existingSet = self.hasItem(itemName)
 
-            if not hasAlready: # Maybe later I'll add some logic to affect listed order NOTE: no i won't
+            if not existingSet: # Maybe later I'll add some logic to affect listed order NOTE: no i won't
                 newItem = {KEY_NAME: itemName}
                 if payloadValue:
                     newItem[KEY_VALUE] = payloadValue
@@ -334,23 +387,34 @@ init 1 python:
                 self.inventory.append(newItem)
             else:
                 try:
-                    existingSet[KEY_VALUE] += int(payloadValue)
+                    print("dfdfdf", KEY_VALUE, existingSet, payloadValue)
+                    if payloadValue:
+                        existingSet[KEY_VALUE] += int(payloadValue)
+                    else:
+                        existingSet[KEY_VALUE] += 1
                 except TypeError:
                     log("[Error]: An invalid item adding operation was caught.")
+                    return
+                except KeyError:
                     return
             renpy.sound.queue(audio.heartbeat2, u'sound')
 
         def damage(self, which, dtype, amount):
             swkey = str(which)
             totalBoxes = self.trackers[swkey][KEY_TOTAL] + self.trackers[swkey][KEY_BONUS]
-            armor = self.trackers[swkey][KEY_ARMOR]
+
+            if usingToughness and swkey == KEY_HP:
+                armor = self.getDisciplineLevel(_fortitude)
+            else:
+                armor = self.trackers[swkey][KEY_ARMOR]
+
             dented = False
             injured = False
             trueAmount = amount
             if dtype == KEY_SPFD: # NOTE: Superficial damage is halved before the loop
                 trueAmount = math.ceil(float(amount) / 2)
 
-            for point in range(int(amount)):
+            for point in range(int(trueAmount)):
                 if armor > 0:
                     dented = True
                     armor -= 1
@@ -373,7 +437,7 @@ init 1 python:
 
                 injured = True
             if dented and not injured:
-                #renpy.sound.queue(audio, u'sound')
+                renpy.sound.queue(audio.pc_hit_fort_melee, u'sound')
                 pass
             elif injured:
                 renpy.sound.queue(audio.stab2, u'sound')
@@ -403,10 +467,6 @@ init 1 python:
             #     raise ValueError("[Error]: Must specify health or willpower tracker.")
 
         def handleDemise(self, which):
-            # if which == KEY_HP:
-            # You have either met the Final Death, or you've fallen into torpor and will probably die soon. Either way, you're done.")
-            # elif which == KEY_WP:
-            # Your spirit is broken, and you've lost so much face that your only option is to flee before you're destroyed. You've failed.")
             renpy.jump("gameover." + which)
 
         def setStateOfUndeath(self, which, change, currentval, floor, ceiling, _sound = None, playSound = False, queueSound = False):
@@ -500,6 +560,12 @@ init 1 python:
                 renpy.say(None, str(lineBetween))
             renpy.sound.queue(audio.drinking1, u'sound')
 
+        def soundRoadTrip(self, lineBetween = None):
+            renpy.play(audio.heels_on_pavement, u'sound')
+            if lineBetween:
+                renpy.say(None, str(lineBetween))
+            renpy.sound.queue(audio.carstart_pc, u'sound')
+
         def soundFlee(self):
             renpy.play(audio.heels_running, u'sound')
             renpy.sound.queue(audio.carstart_pc, u'sound')
@@ -522,9 +588,8 @@ init 1 python:
             herd = self.hasPerk(M_HERD[KEY_NAME])
             herdlevel = herd[0]
 
-            if opinion_camarilla >= cam_rep_rank2 and herdlevel < 2:
-                self.addPerk(M_HERD[KEY_NAME], 2,
-                    customToolTip = "Looks like I've impressed the Camarilla enough that they're giving me additional hunting \"privileges\". How nice of them.")
+            if opinion_camarilla >= cam_rep_rank2:
+                self.setHerdLevel()
 
             if opinion_camarilla >= cam_rep_rank1:
                 self.gainCash(300)
@@ -537,7 +602,9 @@ init 1 python:
             mcrit = False
             bfail = False
 
+            print("\n\n")
             for name in names:
+                print(name)
                 if not isNumber(name):
                     pool += self.getScoreNoKey(name)
                 else:
@@ -564,7 +631,7 @@ init 1 python:
             return (marg, mcrit, bfail, goal)
 
         def basictest(self, diff, *scores):
-            return self.test(diff, scores, messyCritsOn = False, bestialFailsOn = False)
+            return self.test(diff, *scores, messyCritsOn = False, bestialFailsOn = False)
 
 
     def hasInt(val):
@@ -579,6 +646,8 @@ init 1 python:
             float(val)
             return True
         except ValueError:
+            return False
+        except TypeError:
             return False
 
     def _nudge(neg, ints):
@@ -678,42 +747,3 @@ init 1 python:
 
     def log(*args):
         print(args)
-
-    def getCreditsText():
-        global builtCredits
-        global creditsText
-
-        if not builtCredits:
-            buildCreditsText()
-
-        return creditsText
-
-    def buildCreditsText():
-        global creditsText, builtCredits
-
-        if not bool(musicians):
-            BJB = Artist("{a=https://www.benjaminbanger.com/}BenJamin Banger{/a}", "    Instagram: {a=https://www.instagram.com/benjaminbanger}@BenJaminBanger{/a}")
-            BJB.works = ["Tom 2.0", "Freestyle 39"]
-            musicians.append(BJB)
-
-            KTP = Artist("{a=https://www.benjaminbanger.com/}2Kutup{/a}", "    Instagram: {a=https://www.instagram.com/benjaminbanger}@BenJaminBanger{/a}")
-            KTP.works = ["Tom 2.0", "Freestyle 39"]
-            musicians.append(KTP)
-
-        ct = ""
-        ct += "Artists\n\n"
-        for a in artists:
-            infoText = a.infoText if bool(a.infoText) else ""
-            ct += a.name + "\n\n" + infoText
-            for w in a.works:
-                ct += "    \"" + w + "\" (" + ccl_url1 + "License" + ccl_url2 + ")\n\n"
-        ct += "Musicians:\n\n";
-        for m in musicians:
-            infoText = m.infoText if bool(m.infoText) else ""
-            ct += m.name + "\n\n" + infoText + "\n\n"
-            for w in m.works:
-                ct += "    \"" + w + "\" (" + ccl_url1 + "License" + ccl_url2 + ")\n\n"
-        ct += "\n\n"
-
-        creditsText = ct
-        builtCredits = True

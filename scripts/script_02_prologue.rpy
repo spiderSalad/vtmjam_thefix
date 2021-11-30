@@ -3,6 +3,15 @@
 label start:
 
 # The game starts here.
+    stop music fadeout 1.0
+
+    scene black with fade
+
+    "Content warning: (Somewhat graphic descriptions of) violence, blood, alcohol, addiction, mental illness, emotional abuse."
+
+    "Some sexual content, if you pick the option that mentions it. Lots of profanity."
+
+    "..."
 
 label chapter0:
 
@@ -71,22 +80,23 @@ label chapter0:
     "I might {i}have{/i} to keep them waiting, because I have a problem."
 
     python:
-        intro = [
-            "Yo what up this line 1",
-            "Yo this is line 2",
-            ("Some Guy", "This is Some Guy comin at you with line 3",),
-            "and thats it"
-        ]
+        if DEBUG:
+            intro = [
+                "Yo what up this line 1",
+                "Yo this is line 2",
+                ("Some Guy", "This is Some Guy comin at you with line 3",),
+                "and thats it"
+            ]
 
-        dead = ["Yo wtf we all dead man","RIP"]
-        fled = ["Oh shit she gon get us", "cheese it"]
+            dead = ["Yo wtf we all dead man","RIP"]
+            fled = ["Oh shit she gon get us", "cheese it"]
 
-        testopp = Combatant(beth = pc)
-        testopp.embody()
-        testopp.equip(attack = 1, rangedAttack = 0)
-        testopp.setStoryText(intro = intro, dead = dead, fled = fled)
-        arena.setStage(returnBG = "bg hotel room")
-        arena.startBattle(testopp)
+            testopp = Combatant(beth = pc)
+            testopp.embody()
+            testopp.equip(attack = 1, rangedAttack = 0)
+            testopp.setStoryText(intro = intro, dead = dead, fled = fled)
+            arena.setStage(returnBG = "bg hotel room")
+            arena.startBattle(_opp = testopp)
 
     $ pc.setHunger(3) # plays tiger growl
     beast "..."
@@ -277,8 +287,8 @@ label chapter0:
                 python:
                     pc.setPredatorType(PT_ROADSIDE_KILLER)
                     pc.incScores(KEY_SKILL, _inve)
-                    ctt = "In every city there are places you can go to find people just passing through. The only problem is they're usually claimed, but that's not a problem for me here."
-                    pc.addPerk(M_HERD[KEY_NAME], 1, customToolTip = ctt)
+                    pc.incScores(KEY_SKILL, _driv)
+                    pc.setHerdLevel()
                     setOpinion(F_ANARCHS, 10, "add")
                     pc.addDisciplineDot(_fortitude)
                     feeding_transient = True
@@ -314,11 +324,7 @@ label chapter0:
 
         "A quick shower, some eyeshadow and lipstick, and my favorite purple number. Okay, let's hit the road."
 
-        queue sound audio.heels_on_pavement
-
-        "Shit, where did I park again?"
-
-        queue sound audio.carstart_pc
+        $ pc.soundRoadTrip("Shit, where did I park again?")
 
         scene bg driving road2 with trans_slowfade
 
@@ -368,8 +374,7 @@ label chapter0:
 
         scene bg driving road2 with trans_slowfade
 
-        if not MUSIC_MUTED:
-            play music audio.car_hunting2 fadeout 1.0 fadein 2.0 volume 0.9
+        play music audio.car_hunting2 fadeout 2.0 fadein 2.0 volume 0.6
 
         "This city is strange. It feels like its own little island in the cosmic sea, lost in its own time and space. Nothing here feels real or connected to anything in the outside world."
 
@@ -384,6 +389,7 @@ label chapter0:
         $ ptstring = str(pc.getPredatorType()).lower().strip().replace(" ", "")
 
         call expression ("feeding.hunt1_" + ptstring) from early_bird_gets_worm_2
+        $ timesFed += 1
 
         stop music fadeout 0.5
 
@@ -840,7 +846,7 @@ label chapter0:
 
         me "Well, first off, what about offsite backups? Cloud storage and all that?"
 
-        keerat "We have another asset handling that. There will be no backups for these particular data. Not that the police here put much effort into security or data protection anyway."
+        keerat "We have the Nosferatu handling that. There will be no backups for these particular data. Not that the police here put much effort into security or data protection anyway."
 
         me "Okay, cool. Second, what do you even need me for? I thought it was standard practice for the Tower in any city to control that city's police department."
 
@@ -865,7 +871,9 @@ label chapter0:
 
             me "Thanks. What's our time frame here?"
 
-            keerat "You have three nights. If you're worth the recommendation you come with you should be able to do it in one night, but - as you brought up earlier - we want you to have time to prepare. So you can do the job right."
+            keerat "You have six, maybe seven nights. That's when their offsite information security team will arrive, complicating things a great deal. They're likely to make physical backups, for one thing."
+
+            keerat "To be frank: if you're worth the recommendation you came with, you should be able to do it in one night, but - as you brought up earlier - we want you to have time to prepare. So you can do the job right."
 
             keerat "Here's a burner phone you can use to contact the Seneschal in an emergency. {i}Only{/i} in an emergency. Good luck to you. You're dismissed. Get out."
 
@@ -895,6 +903,14 @@ label chapter0:
             $ pc.addToInventory("smartphone2b")
 
             keerat "And I've provided you with an email address, at which you'll receive some useful documentation."
+
+            me "I appreciate that. What's the time frame for this job?"
+
+            keerat "You have a week, give or take a night. That's when their offsite information security team will arrive and make things a great deal more complicated."
+
+            sam "They're likely to bring along physical storage media, with which they'll make backup copies of the information we want destroyed."
+
+            keerat "If you're worth the recommendation you came with, you should be able to do the job in one night, but - as you brought up earlier - we want you to have time to prepare. So you can do the job right."
 
             sam "I believe that concludes our business here, unless you have anything to add, Ms. Sanghera?"
 
@@ -1124,9 +1140,7 @@ label chapter0:
 
             ghoul "Good luck."
 
-            play sound audio.heels_on_pavement
-
-            queue sound audio.carstart_pc
+            $ pc.soundRoadTrip()
 
             "I think I can work with what [ghoulname] came up with. I take some time to freshen up, then head out."
 
@@ -1147,6 +1161,7 @@ label chapter0:
             $ ptstring = str(pc.getPredatorType()).lower().strip().replace(" ", "")
 
             call expression ("feeding.hunt1_" + ptstring) from better_late_than_never_2
+            $ timesFed += 1
 
             stop music fadeout 0.5
 
@@ -1156,7 +1171,7 @@ label chapter0:
 
         scene bg hotel room
 
-        play music audio.mission2
+        # play music audio.mission2
 
         ghoul "Alright, so what are the bosses makin' you do, exactly?"
 

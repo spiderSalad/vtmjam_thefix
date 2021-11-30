@@ -10,3 +10,4 @@ tl/
 # Ignore compiled .rpyc files.
 
 scripts/**/*.rpyc
+scripts/**/*.bak

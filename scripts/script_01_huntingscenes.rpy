@@ -35,10 +35,12 @@ label feeding:
 
             "Men.":
                 $ story_orientation = SIREN_MEN
+                $ story_this_time = SIREN_MEN
                 $ pcex = _exmale
 
             "Women.":
                 $ story_orientation = SIREN_WOMEN
+                $ story_this_time = SIREN_WOMEN
                 $ pcex = _exfemale
 
             "Whoever catches my eye.":
@@ -322,6 +324,7 @@ label feeding:
 
         "But there's nowhere to take him. Not that I can get to quickly. I stuff a bit of cash into his pocket so he can at least buy something to eat when he comes to."
 
+        $ pc.slakeHunger(2)
         $ pc.loseCash(100.00)
 
         scene black with fade
@@ -341,7 +344,7 @@ label feeding:
 
         $ pc.loseCash(70.00)
 
-        "I wish I could partake, but if I drink from any of the molly poppers in the crowd I'll be sitting next to them on that flight. Showing up late is already pushing it; I can't show up to work high. Especially now that my bosses ares vampires."
+        "I wish I could partake, but if I drink from any of the molly poppers in the crowd I'll be sitting next to them on that flight. Showing up late is already pushing it; I can't show up to work high. Especially now that my bosses are vampires."
 
         beast "Let's hit the dance floor. We can scan the rest of the place for prey, and if we're lucky it'll come to us."
 
@@ -451,7 +454,7 @@ label feeding:
 
         $ pc.slakeHunger(2)
 
-        raven "That was... what {i}was{/i} that?"
+        raver "That was... what {i}was{/i} that?"
 
         me "Don't worry. Forget about it."
 
@@ -1125,7 +1128,7 @@ label feeding:
             $ pc.mend(KEY_WP, KEY_SPFD, 1)
             stop music fadeout 2.0
             scene black with fade
-
+            $ updateTime(0.5)
             return
 
         label .hx_con_generic:
@@ -1150,6 +1153,7 @@ label feeding:
 
                 beast "...Don't lose focus now. Things will go badly if you do."
 
+            $ updateTime(0.5)
             return
 
 
@@ -1435,7 +1439,7 @@ label feeding:
 
             stop music fadeout 2.0
             scene black with fade
-
+            $ updateTime(0.5)
             return
 
         label .hx_rsk_generic:
@@ -1460,6 +1464,7 @@ label feeding:
                 $ pc.slakeHunger(2)
                 $ pc.damage(KEY_HP, KEY_SPFD, 4)
 
+            $ updateTime(0.5)
             return
 
 
@@ -1592,7 +1597,7 @@ label feeding:
 
                 "...There. That'll have to be enough."
 
-                edm "...Mmm"
+                edmlady "...Mmm"
 
                 me "Thanks for the fix, babe. Just forget about all this, okay?"
 
@@ -1731,6 +1736,7 @@ label feeding:
             stop music fadeout 2.0
             scene black with fade
 
+            $ updateTime(0.5)
             return
 
         label .hx_sqn_generic:
@@ -1740,6 +1746,7 @@ label feeding:
             "Fortunately, finding prey is easy here. And easy means far less chance of accidents."
 
             $ pc.slakeHunger(2)
+            $ updateTime(0.5)
 
 
     # ===SIREN HUNTS===
@@ -1747,7 +1754,7 @@ label feeding:
 
         scene bg city nightscape1
 
-        play music audio.siren_new fadeout 0.5 fadein 1.0
+        play music audio.siren_women1 fadeout 0.5 fadein 1.0
 
         python:
             picked1 = picked2 = used_presence = False
@@ -2247,8 +2254,7 @@ label feeding:
 
             "..."
 
-            play sound audio.heels_on_pavement
-            queue sound audio.carstart_pc
+            $ pc.soundRoadTrip()
             play music audio.huntsuccess
             scene bg driving road2
 
@@ -2265,6 +2271,9 @@ label feeding:
             stop music fadeout 2.0
             scene black with fade
 
+            $ updateTime(0.5)
             return
 
         label .hx_srn_fail: # SIREN GENERIC FAILURE STATE
+
+            $ updateTime(0.5)

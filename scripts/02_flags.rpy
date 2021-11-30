@@ -11,9 +11,11 @@ default opinions                = {}
 # Story flags
 
 default night                   = 1
+default daysLeft                = 7
 default justWokeUp              = True
 default timetonight             = 1.0
 default prologue                = True
+default timesFed                = 0
 
 default predator_type           = None
 default predator_type_power     = None
@@ -47,16 +49,38 @@ default story_srn_generic       = False
 default anarchs_enabled         = False
 default anarchs_found           = False
 
+default usingBloodSurge         = False
+default freeBloodSurges         = 0
+default usingAwe                = False
+default usingMindControl        = False # Entrance or Mesmerize
+default usingToughness          = False # Used in combat, unlike most of these flags
+
+default story_mission1_cased    = False
+default story_mission1_start    = False
+default story_mission1_ghost    = True
+default story_mission1_spotted  = False
+default story_mission1_failed   = False
+default story_mission1_complete = False
+
+default story_m1_cutface        = True
+default story_m1_allcameras     = False
+
+default story_m1fail_burglary   = False
+default story_m1fail_tech       = False
+default story_m1fail_social     = False
+
+default relaxclub               = False
+default relaxbeach              = False
+default relaxbar                = False
+
 # Variable characters
 define pcex                 = {"first":"", "last":"", "subj":"", "obj":"", "pos":"", "pospro":"", "reflex":""}
+define shadyguy             = None
+define dirtycop             = None
+define brujah               = None
 
 # Credits and licensing
 
-default artists             = []
-default musicians           = []
-
-default creditsText         = ""
 default creditsFile         = None
 default creditsJSON         = None
 default sortedCredits       = None
-default builtCredits        = False
