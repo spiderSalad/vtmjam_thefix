@@ -86,11 +86,13 @@ label missions:
                 jump missions.mission1_thug_fight
 
             "I take off running. I don't have time to deal with this creep.":
+                play sound audio.heels_running
                 $ grade = pc.basictest(4, _dex, _athl)
                 jump missions.mission1_thug_run
 
             "I don't have time for this; I'm on the job! I'm willing to burn some Blood to lose this worm.":
                 $ grade = pc.basictest(4, _dex, _athl, pc.getBPSurge())
+                play sound audio.heels_running
                 $ pc.addHungerDebt(4)
                 jump missions.mission1_thug_run
 
@@ -177,9 +179,12 @@ label missions:
 
         scene bg precinct exterior with fade
 
-        if grade == SUCCESS:
-            label .mission1_try_again: # Start here if you're trying a second time after failing.
+        $ story_m1_case_win = (grade == SUCCESS)
+        label .mission1_try_again: # Start here if you're trying a second time after failing.
+
+        if story_m1_case_win:
             scene bg precinct exterior with fade
+            $ story_m1_case_win = True
 
             "Hmm... Well, I can see two ways of going about this. Both of them risky and difficult, just in different ways."
 
@@ -238,6 +243,8 @@ label missions:
                 #     jump missions.mission1_blunted_tour
 
         else:
+            $ story_m1_case_win = False
+
             "Hmm... Well, I really only see one way in."
 
             beast "It's a police station. Did you expect it to be easy to break into?"
@@ -263,7 +270,7 @@ label missions:
             menu:
                 beast "Has putting things off ever led to anything good in your life?"
 
-                "When you're right, you're right. Let's do this." if (not hpdamage and not willdamage) or story_mission1_cased:
+                "When you're right, you're right. Let's do this." if story_mission1_cased:
                     $ story_mission1_cased = True
                     return
 
@@ -307,6 +314,8 @@ label missions:
         if max(pc.getAttr(_str), pc.getAttr(_dex)) + pc.getSkill(_athl) > 4:
             "I circle around the back, walking casually but out of camera range. When I get in position, I can take a running start and easily parkour off an adjoining wall to jump the fence and land without too much noise. Even cleared the razorwire, no problem."
 
+            play sound audio.heels_running
+
             "Now here comes the hard part. Well, the {i}first{/i} hard part."
         else:
             "I circle around the back, walking casually but out of camera range. I'm not going to be able to leap the fence, but after a few minutes I find a spot that's out of camera view. Or at least it better be, given what I have to do next."
@@ -314,6 +323,8 @@ label missions:
             "I'm going to have to pull myself up and over the fence, razorwire and all. And I can't let my clothes or my gloves get shredded, so I have to strip and toss them over, then climb over a ten foot tall, spiked, razor-wired fence. Butt-ass naked. Wonderful."
 
             $ pc.damage(KEY_HP, KEY_SPFD, 1)
+
+            play sound audio.womangrunt
 
             "Well that was painful in more ways than one. Now that I've put my clothes back on, here comes the hard part. Well, the {i}first{/i} hard part."
 
@@ -505,7 +516,7 @@ label missions:
 
             "Nothing shows up at first. No obviously unsecured nodes, no routers still on factory settings. Newer routers are configured to run through an app or some other authenticated service, anyway."
 
-            "But wait, here's something. I'm looking through the hardware specs, and one of these nodes is running older software whose devs stopped getting supporting it back in 2010. In fact, the company went out of business in 2014."
+            "But wait, here's something. I'm looking through the hardware specs, and one of these nodes is running older software whose devs stopped supporting it back in 2010. In fact, the company went out of business in 2014."
 
             "Both of those years are well before the Heartbleed patch went out. And the software is proprietary, so it's unlikely anyone patched it independently. I check, and sure enough the Heartbleed exploit works, and I'm reading out the device's memory."
 
@@ -621,6 +632,7 @@ label missions:
                 "Shit. The command wore off too quickly, and I let her remember what happened. Fucking amateur mistake. Mortals may not understand what's happening to them when we mentally dominate them, but they usually understand that something's very wrong."
 
                 "I turn and make a break for the exit. I can't believe I was so fucking careless."
+                play sound audio.heels_running
 
                 $ story_mission1_ghost = False
                 $ story_mission1_spotted = True
@@ -761,6 +773,7 @@ label missions:
             receptionist "Ma'am, could you wait right there for a moment? Someone will be here to verify your identity shortly."
 
             "I'm not waiting for that. She won't look directly at me, as if she somehow instinctively knows I'm the kind of monster that you shouldn't look in the eye. I can't mindwipe her without eye contact. Shit. I can only turn and run."
+            play sound audio.heels_running
 
             scene black with fade
 
@@ -854,7 +867,7 @@ label missions:
 
         "There's supposed to be a police report that I need to steal. As in, a set of papers, probably in some manila folder in a filing cabinet somewhere. There's also physical evidence taken from {i}Bandita{/i}, which I also need to steal."
 
-        "Then I need to find the security camera footage taken from the club and delete it. The Nosferatu - well, most likely just {i}a{/i} Nosferatu, who's probably just some neonate pawn like me - has made sure that no off-site cloud backups can be made."
+        "Then I need to find the security camera footage taken from the club and delete it. The Nosferatu - well, most likely just {i}a{/i} Nosferatu, who's probably just some neonate schmuck like me - has made sure that no off-site cloud backups can be made."
 
         "By cutting off their internet access and making it look like a normal service outage. Something to be annoyed about rather than suspicious."
 
@@ -1303,14 +1316,14 @@ label missions:
 
                     "There's some cash too, but this gun packs enough of a punch to be useful against other vampires. I stash the heater, ammo and cash."
 
+                    $ pc.addToInventory("swm500")
+                    $ pc.gainCash(1000)
+                    $ story_mission1_spotted = True
+
                 "The favor of the Tower is worth more than money and a gun. Leave that shit where it is.":
                     beast "All the favor in the world won't do us much good if we get jumped without protection."
 
                     "..."
-
-                    $ pc.addToInventory("swm500")
-                    $ pc.gainCash(1000)
-                    $ story_mission1_spotted = True
 
         else:
             "Hmm... What have we here? Something catches my eye on the way out. A locker underneath the purview of the camera I couldn't disable."
@@ -1357,7 +1370,7 @@ label missions:
 
         me "You here for an autograph, champ?"
 
-        _anarch "I think you know what I'm here for. Lotta useful data in there about Kay and the other Ventrue pukes that think they run this city. We been trying to get in there for days. Baron Marlowe doesn't want us just busting in and taking it, you see."
+        _anarch "Cute. I think you know what I'm here for. Lotta useful data in there about Kay and the other Ventrue pukes that think they run this city. We been trying to get in there for days. Baron Marlowe doesn't want us just busting in and taking it, you see."
 
         me "Sounds like a smart guy."
 
@@ -1373,7 +1386,7 @@ label missions:
 
         "The Tower is a nest of schemers and traitors, but so is every organized group of Kindred. At least the Tower can offer me security."
 
-        "I'm not going to spend my unlife on the run, begging for suitable blood, scraping by from night to night. That's not living. That's just a slow death sentence."
+        "I'm not going to spend my unlife on the run, begging for blood I can drink, scraping by from night to night. That's not living. That's just a slow death sentence."
 
         me "..."
 
@@ -1381,9 +1394,11 @@ label missions:
 
         _anarch "Time's up, kid."
 
+        play sound audio.tackle1
+
         "And he's on me in a flash, almost faster than I can blink. I roll with his momentum and throw him over me as I hit the ground."
 
-        $ arena.setStage()
+        $ arena.setStage(battleMusic = audio.brujahfight)
         $ arena.startBattle(brujah) # Boss fight
 
         "..."
@@ -1414,7 +1429,7 @@ label missions:
 
             $ story_mission1_failed = True
             $ pc.damage(KEY_WP, KEY_AGGD, 10)
-        elif (story_m1fail_burglary and story_m1fail_tech and story_m1fail_social):
+        elif (story_m1fail_burglary and story_m1fail_tech):# and story_m1fail_social):
             beast "How the FUCK did you manage to fail at absolutely everything?! At every single one of your stupid fucking gambits! You'd think one of your plans would succeed if only by chance!"
 
             "..."

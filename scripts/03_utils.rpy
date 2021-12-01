@@ -66,7 +66,7 @@ init 1 python:
             elif self.powers[KEY_DISCIPLINE].has_key(n):
                 return self.getDisciplineLevel(n)
             elif bgTable.has_key(name):
-                return self.hasPerk(n)
+                return self.hasPerk(n)[0]
             else:
                 print ("n = ", n)
                 raise ValueError("[Error]: Cannot find score for ", n)
@@ -556,13 +556,17 @@ init 1 python:
 
         def soundFeed(self, lineBetween = None):
             renpy.play(audio.bite1, u'sound')
-            if lineBetween:
+            if lineBetween and type(lineBetween) is tuple:
+                renpy.say(lineBetween[0], lineBetween[1])
+            elif lineBetween:
                 renpy.say(None, str(lineBetween))
             renpy.sound.queue(audio.drinking1, u'sound')
 
         def soundRoadTrip(self, lineBetween = None):
             renpy.play(audio.heels_on_pavement, u'sound')
-            if lineBetween:
+            if lineBetween and type(lineBetween) is tuple:
+                renpy.say(lineBetween[0], lineBetween[1])
+            elif lineBetween:
                 renpy.say(None, str(lineBetween))
             renpy.sound.queue(audio.carstart_pc, u'sound')
 
@@ -602,7 +606,7 @@ init 1 python:
             mcrit = False
             bfail = False
 
-            print("\n\n")
+            print("\n\n", names)
             for name in names:
                 print(name)
                 if not isNumber(name):
@@ -713,9 +717,10 @@ init 1 python:
         opinions[factionKey] = newOpinion
 
     def advanceCalendar(cpc = None):
-        global night, timetonight
+        global night, timetonight, daysLeft
         night += 1
         timetonight = 1.0
+        daysLeft = 7 - night
         if cpc:
             cpc.awaken()
         renpy.jump("nightloop")

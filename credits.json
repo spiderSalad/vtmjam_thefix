@@ -43,9 +43,9 @@
         "works":[
             {"name":"Cellphone Alarm Clock Long", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
         ],
-        "website":"https://freesound.org/people/greenworm/",
+        "website":"",
         "socials":[
-            {"site":"", "handle":"", "url":""}
+            {"site":"freesound.org", "handle":"greenworm", "url":"https://freesound.org/people/greenworm/"}
         ]
     },
     {
@@ -477,6 +477,7 @@
         "type":"musician",
         "works":[
             {"name":"Tension", "licenseUrl":"https://creativecommons.org/licenses/by-nc-sa/3.0/us/"},
+            {"name":"Third Eye", "licenseUrl":"https://creativecommons.org/licenses/by-nc-nd/4.0/"},
             {"name":"Third Eye", "licenseUrl":"https://creativecommons.org/licenses/by-nc-nd/4.0/"}
         ],
         "website":"http://cota303.net/artist/inspectr/5",
@@ -719,6 +720,83 @@
         "website":"",
         "socials":[
             {"site":"pexels.com", "handle":"Lucian Photography", "url":"https://www.pexels.com/@lucianphotography"}
+        ]
+    },
+    {
+        "name":"BhaveshShaha",
+        "type":"sound_engineer",
+        "works":[
+            {"name":"Slapping beating human flesh", "licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"BhaveshShaha", "url":"https://freesound.org/people/BhaveshShaha/"}
+        ]
+    },
+    {
+        "name":"SubwaySandwitch420",
+        "type":"sound_engineer",
+        "works":[
+            {"name":"door knock", "licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"SubwaySandwitch420", "url":"https://freesound.org/people/SubwaySandwitch420/"}
+        ]
+    },
+    {
+        "name":"jsburgh",
+        "type":"sound_engineer",
+        "works":[
+            {"name":"struggle between two people.aif", "licenseUrl":"https://creativecommons.org/licenses/by/3.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"jsburgh", "url":"https://freesound.org/people/jsburgh/"}
+        ]
+    },
+    {
+        "name":"magnuswaker",
+        "type":"sound_engineer",
+        "works":[
+            {"name":"gore rend", "licenseUrl":"http://creativecommons.org/publicdomain/zero/1.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"magnuswaker", "url":"https://freesound.org/people/magnuswaker/"}
+        ]
+    },
+    {
+        "name":"craigsmith",
+        "type":"sound_engineer",
+        "works":[
+            {"name":"R09-54-Clear Crackling Flames.wav", "licenseUrl":"http://creativecommons.org/publicdomain/zero/1.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"craigsmith", "url":"https://freesound.org/people/craigsmith/"}
+        ]
+    },
+    {
+        "name":"Harha",
+        "type":"sound_engineer",
+        "works":[
+            {"name":"Hardstyle Kick 01 \"Nustyle\" - Harha", "licenseUrl":"http://creativecommons.org/licenses/by/3.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"Harha", "url":"https://freesound.org/people/Harha/"}
+        ]
+    },
+    {
+        "name":"Huminaatio",
+        "type":"sound_engineer",
+        "works":[
+            {"name":"Aagh - Male", "licenseUrl":"http://creativecommons.org/publicdomain/zero/1.0/"}
+        ],
+        "website":"",
+        "socials":[
+            {"site":"freesound.org", "handle":"Huminaatio", "url":"https://freesound.org/people/Huminaatio/"}
         ]
     }
 ]

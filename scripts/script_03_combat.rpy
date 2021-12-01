@@ -104,6 +104,9 @@ init 2 python:
             if self.shootout:
                 self.engaged = False
 
+        def isEngaged(self):
+            return self.engaged
+
         def isFleeing(self):
             return self.wantsToFlee
 
@@ -116,12 +119,14 @@ init 2 python:
         def isAwake(self):
             return self.awake
 
-        def _attack(self, bonus = 0, biting = False):
+        def _attack(self, bonus = 0, biting = False, bethShooting = False):
             results = []
             bethDamage = True
             mookDamage = True
             engageOnMookLoss = False
+            disengageOnMookLoss = False
             engageOnMookWin = False
+            disengageOnMookWin = False
 
             bestMargin = -100
             bestResult = None
@@ -129,7 +134,7 @@ init 2 python:
             beth = self.beth
 
             if self.wantsToFlee and not biting:
-                return self._flee(bethAllows = False, bethShooting = self.shootout, bonus = bonus)
+                return self._flee(bethAllows = False, bethShooting = bethShooting, bonus = bonus)
             elif self.wantsToFlee and biting:
                 bestResult = beth.test(self.speed, _dex, _athl, bonus, bestialFailsOn = False, goal = GOAL_FEED_ATTACK)
                 beth.slakeHunger(bestResult[0])
@@ -153,8 +158,10 @@ init 2 python:
             elif not self.ranged and not self.engaged: # chase vs ranged beth
                 mookDamage = False
                 engageOnMookWin = True
-                if not beth.hasItemOfType(IT_FIREARM):
+                disengageOnMookLoss = True
+                if not bethShooting:
                     engageOnMookLoss = True
+                    disengageOnMookWin = True
                 results.append(beth.test(self.speed, _dex, _fire, bonus, messyCritsOn = True, goal = GOAL_CLOSE))
             else:
                 raise ValueError("[Error]: This shouldn't have been reached! Combat bug!")
@@ -174,6 +181,8 @@ init 2 python:
                     self.speed -= 1
                 if engageOnMookLoss:
                     self.melee(True)
+                if disengageOnMookLoss:
+                    self.melee(False)
             elif bestMargin == 0: # tie
                 self.takeDamage(1, bethDamage)
                 self.dealDamage(1, mookDamage)
@@ -182,6 +191,8 @@ init 2 python:
                 self.dealDamage(dmg, mookDamage)
                 if engageOnMookWin:
                     self.melee(True)
+                if disengageOnMookWin:
+                    self.melee(False)
 
             return bestResult
 
@@ -199,6 +210,7 @@ init 2 python:
                 elif not self.fightsToDeath:
                     self.wantsToFlee = True
             elif self.hp <= 0:
+                renpy.play(audio.maledeath1, u'sound')
                 self.dead = True
                 self.wantsToFlee = False
 
@@ -242,8 +254,12 @@ init 2 python:
             if bethAllows:
                 return (-1, False, False, GOAL_LETGO)
             elif bethShooting:
-                return self.beth.test(self.speed, _dex, _fire, bonus, goal = GOAL_GUNCHASE)
-            return self.beth.test(self.speed, _dex, _athl, bonus, goal = GOAL_CHASE)
+                result = self.beth.test(self.speed - self.chasePenalty, _dex, _fire, bonus, goal = GOAL_GUNCHASE)
+            else:
+                result = self.beth.test(self.speed - self.chasePenalty, _dex, _athl, bonus, goal = GOAL_CHASE)
+
+            self.chasePenalty += 1
+            return result
 
 
     class BattleArena:
@@ -256,11 +272,16 @@ init 2 python:
             else:
                 self.returnMusic = renpy.music.get_playing()
 
-        def setStage(self, battleBG = None, returnBG = None, returnMusic = None):
+        def setStage(self, battleBG = None, battleMusic = None, returnBG = None, returnMusic = None):
             if battleBG:
                 self.battleBG = battleBG
             if returnBG:
                 self.returnBG = returnBG
+            if battleMusic:
+                self.battleMusic = battleMusic
+            else:
+                self.battleMusic = audio.mission2
+
             if returnMusic:
                 self.returnMusic = returnMusic
             else:
@@ -373,7 +394,7 @@ init 2 python:
 
             renpy.sound.stop()
             renpy.music.stop(fadeout = 1.5)
-            renpy.music.play(audio.mission2)
+            renpy.music.play(self.battleMusic)
             renpy.scene()
             renpy.show(self.battleBG)
 
@@ -414,8 +435,10 @@ init 2 python:
                 renpy.say(None, "Type: {t}, result = {res}.{mc}{bf} Enemy HP: {hp}".format(t=evt[3], res=evt[0], mc=(mcstr if mcrit else ""), bf=(bfstr if bfail else ""), hp=opp.debugGetHP()))
 
             if etype == GOAL_FLEE and marg > -1:
+                renpy.play(audio.heels_running, u'sound')
                 self.bethEscapes()
             elif etype == GOAL_FLEE:
+                renpy.play(audio.heels_running, u'sound')
                 renpy.say(None, "Fuck! Can't shake this asshole.")
             elif etype == GOAL_BRAWL:
                 self.bmsgBrawl(marg, pc, opp, mcrit, bfail)
@@ -424,16 +447,18 @@ init 2 python:
             elif etype == GOAL_OPENFIRE:
                 self.bmsgOpenfire(marg)
             elif etype == GOAL_CLOSE:
+                opp.melee(True)
                 self.bmsgClose(marg, pc, opp, mcrit, bfail)
             elif etype == GOAL_FEED_ATTACK and marg > 0:
                 self.incBattleFeeds()
-                renpy.say(beast, "Yes... Wonderful work, dead girl.")
+                pc.soundFeed((beast, "Yes... Wonderful work, dead girl.",))
                 renpy.say(None, "Can't believe that worked.")
             elif etype == GOAL_FEED_ATTACK:
                 renpy.say(beast, "A failure. But I like where your head's at.")
             elif etype == GOAL_MENTAL_ATTACK or etype == GOAL_SCARE or etype == GOAL_DISARM:
                 self.bmsgPsychicAttack(marg, etype, mcrit, bfail)
             elif etype == GOAL_CHASE and marg > 0:
+                renpy.play(audio.heels_running, u'sound')
                 renpy.say(None, "Where do you think you're going?")
                 opp.melee(True)
                 opp.takeDamage(marg)
@@ -466,30 +491,42 @@ init 2 python:
             oppweapon = opp.damage > 0
 
             if marg > 0 and useweapon and mcrit:
+                renpy.play(audio.stab1, u'sound')
+                renpy.sound.queue(audio.gore_rend, u'sound')
                 renpy.say(beast, "Cut them to pieces! Paint the walls with their blood!")
             elif marg > 0 and mcrit:
+                renpy.play(audio.punches1, u'sound')
                 renpy.say(beast, "Crush. Them.")
             elif marg > 0 and useweapon:
                 renpy.play(audio.stab1, u'sound')
                 renpy.say(None, "I score a solid cut, and I'm rewarded with the sound of splitting meat. Not bad.")
             elif marg > 0:
+                renpy.play(audio.punches1, u'sound')
                 renpy.say(None, "I throw punches and kicks and elbows and my enemy reels. But I can't let my guard down.")
             elif marg == 0 and useweapon and oppweapon:
                 renpy.play(audio.swordclash, u'sound')
                 renpy.say(None, "Our weapons clash painfully. It's a draw.")
             elif marg == 0 and useweapon:
+                renpy.play(audio.punches1, u'sound')
                 renpy.say(None, "Well that was embarrassing. They don't even have a weapon.")
             elif marg == 0 and oppweapon:
+                renpy.play(audio.punches1, u'sound')
                 renpy.say(None, "Bringing fists to a knife fight would be pretty stupid if I weren't already dead.")
             elif marg == 0:
+                renpy.play(audio.struggle, u'sound')
                 renpy.say(None, "I didn't come here to wrestle, dammit.")
             elif marg < 0 and oppweapon:
+                renpy.play(audio.stab2, u'sound')
+                renpy.sound.queue(audio.womangrunt, u'sound')
                 renpy.say(me, "Ahh!")
                 renpy.say(None, "That fucking hurts!")
             elif marg < 0 and bfail:
+                renpy.play(audio.stab1, u'sound')
+                renpy.sound.queue(audio.womangrunt, u'sound')
                 renpy.say(me, "Hurk...")
                 renpy.say(beast, "What the fuck are you doing?! Fight back!")
             else:
+                renpy.play(audio.struggle, u'sound')
                 renpy.say(None, "This is shameful. I'm getting my ass handed to me on a platter.")
 
         def bmsgShootout(self, marg, pc, opp, mcrit = False, bfail = False):
@@ -502,6 +539,7 @@ init 2 python:
             elif marg < 0 and bfail:
                 renpy.play(audio.bulletimpacts, u'sound')
                 renpy.say(me, "Ahh!")
+                renpy.sound.queue(audio.womangrunt, u'sound')
                 renpy.say(beast, "We're getting perforated, you idiot! Do something!")
             else:
                 renpy.play(audio.bulletimpacts, u'sound')
@@ -524,24 +562,35 @@ init 2 python:
             if marg > 0 and usegun and mcrit:
                 renpy.say(beast, "Yes! Blow them apart!")
             elif marg > 0 and mcrit:
+                renpy.play(audio.punches1, u'sound')
                 renpy.say(beast, "Yes! Tear them apart! Beat them into the ground!")
             elif marg > 0 and usegun:
                 renpy.say(None, "I land a solid shot, center mass. That should slow them down.")
             elif marg > 0:
+                renpy.play(audio.heels_running, u'sound')
                 renpy.say(None, "I close with the enemy, surprising them with my speed.")
             elif marg == 0 and usegun:
+                # renpy.play(audio.gunshot1, u'sound')
                 renpy.say(None, "I can't get a good shot. I wing them once, then it's too late. They're in my face.")
             elif marg == 0:
+                renpy.play(audio.swordclash, u'sound')
                 renpy.say(None, "We clash and it's a draw.")
             elif marg < 0 and oppweapon:
+                renpy.play(audio.stab2, u'sound')
+                renpy.sound.queue(audio.womangrunt, u'sound')
                 renpy.say(None, "They're on me in an instant. I barely avoid being run through!")
             elif marg < 0 and usegun and bfail:
+                renpy.play(audio.bulletimpacts, u'sound')
+                renpy.sound.queue(audio.womangrunt, u'sound')
                 renpy.say(me, "Ahhh!")
                 renpy.say(beast, "What the fuck are you doing?! I thought you knew how to shoot!")
             elif marg < 0 and bfail:
+                renpy.play(audio.stab2, u'sound')
+                renpy.sound.queue(audio.womangrunt, u'sound')
                 renpy.say(me, "Hurk...")
                 renpy.say(beast, "What are you doing?! Fight back!")
             else:
+                renpy.play(audio.heels_running, u'sound')
                 renpy.say(None, "...Well that wasn't a great start.")
 
         def bmsgPsychicAttack(self, marg, goal, mcrit = False, bfail = False):
@@ -614,7 +663,7 @@ label battles:
             "And me, without a weapon. Guess I'll have to throw hands." if not pc.hasItemOfType(IT_WEAPON):
                 python:
                     pc.setDamageBonus(0)
-                    nextEvent = opp._attack(arena.getBonus())
+                    nextEvent = opp._attack(bonus = arena.getBonus())
 
                 jump battles.processEvent
 
@@ -628,7 +677,7 @@ label battles:
                             damageBonus = weapon[DAMAGE_BONUS]
 
                     pc.setDamageBonus(damageBonus)
-                    nextEvent = opp._attack(arena.getBonus())
+                    nextEvent = opp._attack(bonus = arena.getBonus())
 
                 jump battles.processEvent
 
@@ -643,8 +692,9 @@ label battles:
                                 damageBonus = weapon[DAMAGE_BONUS]
 
                         pc.setDamageBonus(damageBonus)
-                    opp.gunfight()
-                    nextEvent = opp._attack(arena.getBonus())
+                    if not opp.isEngaged():
+                        opp.gunfight(True)
+                    nextEvent = opp._attack(bonus = arena.getBonus(), bethShooting = True)
 
                 play sound audio.gunshot1
                 jump battles.processEvent
@@ -660,7 +710,7 @@ label battles:
                         pc.addHungerDebt(1)
                     else:
                         renpy.play(audio.dominate1, u'sound')
-                        nextEvent = opp._mindWarp(GOAL_DISARM, _man, _dominate, arena.getBonus())
+                        nextEvent = opp._mindWarp(GOAL_DISARM, _man, _dominate, 1, arena.getBonus())
                         pc.addHungerDebt(4)
 
                 jump battles.processEvent
@@ -686,7 +736,7 @@ label battles:
                     global usingToughness
                     usingToughness = True
                     pc.addHungerDebt(4)
-                # play sound ???
+                play sound audio.toughness
                 "There we go. I feel much safer."
                 jump battles.battleLoop
 

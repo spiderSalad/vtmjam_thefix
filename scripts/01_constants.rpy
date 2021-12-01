@@ -91,6 +91,7 @@ define audio.relaxation         = "audio/music/Ketsa - No-Light-Without-Darkness
 define audio.huntsuccess_cons   = "audio/music/Ketsa - Heart Science (no-beats).mp3"
 define audio.huntsuccess        = "audio/music/Tea K Pea - commander.mp3"
 define audio.huntfailure        = "audio/music/Darkstar83 - The Witches Dream.mp3"
+define audio.brujahfight        = "audio/music/InSpectr - Pintche.mp3"
 
 define audio.phone_alarm        = "audio/sound/501881__greenworm__cellphone-alarm-clock-long.mp3"
 define audio.heartbeat1         = "audio/sound/inspectorj__heartbeat-regular-single-01-01-loop.mp3"
@@ -120,6 +121,13 @@ define audio.mending            = "audio/sound/554285__eminyildirim__blood-squis
 define audio.dominate1          = "<from 0 to 3>audio/sound/444856__asteroiderer__aura-metal.mp3"
 define audio.pc_hit_fort_melee  = "audio/sound/420675__sypherzent__cut-through-armor-slice-clang.mp3"
 define audio.dreadgaze          = "<from 0 to 3>audio/sound/333832__nick121087__demonic-woman-scream.mp3"
+define audio.struggle           = "<from 0 to 3>audio/sound/235681__jsburgh__struggle-between-two-people.mp3"
+define audio.punches1           = "audio/sound/432278__bhaveshshaha__slapping-beating-human-flesh.mp3"
+define audio.doorknock          = "audio/sound/540770__subwaysandwitch420__door-knock.mp3"
+define audio.burnit             = "audio/sound/483302__craigsmith__r09-54-clear-crackling-flames.mp3"
+define audio.gore_rend          = "audio/sound/563491__magnuswaker__gore-rend.mp3"
+define audio.toughness          = "audio/sound/129073__harha__hardstyle-kick-01-nustyle-harha.mp3"
+define audio.maledeath1         = "audio/sound/219073__huminaatio__aagh-male.mp3"
 
 # Tran... sitions!
 
@@ -345,7 +353,7 @@ define ITEM_CONCEALED       = "concealedCarry"
 
 define IT_COLOR_KEYS        = {
     IT_MONEY: "#399642", IT_JUNK: "#707070", IT_CLUE: "#ffffff", IT_WEAPON: "#8f8f8f",
-    IT_EQUIPMENT: "#cbcbdc", IT_QUEST: "#763cb7", IT_MISC: "#cbcbdc"
+    IT_EQUIPMENT: "#cbcbdc", IT_QUEST: "#763cb7", IT_MISC: "#cbcbdc", IT_FIREARM: "#71797E"
 }
 
 # No items, fox only, final destination
@@ -438,7 +446,7 @@ define Acad     = 2
 define Awar     = 1
 define Inve     = 0
 define Occu     = 0
-define Tech     = 0
+define Tech     = 1
 
 # List of powers
 
@@ -451,8 +459,13 @@ define powerlist        = {
 # List of merits (max 3) and backgrounds/flaws
 
 define meritTable       = {
-    M_LOOKS[KEY_NAME]: [{KEY_BGTYPE: M_LOOKS[KEY_NAME], KEY_NAME: "Beautiful", KEY_BGSCORE: 1, ISSA_FLAW: False}],
-    M_LINE_HARDESTADT[KEY_NAME]: [{KEY_BGTYPE: M_LINE_HARDESTADT[KEY_NAME], KEY_NAME: "Voice of Hardestadt", KEY_BGSCORE: 1, ISSA_FLAW: False}]
+    M_LOOKS[KEY_NAME]: [{
+        KEY_BGTYPE: M_LOOKS[KEY_NAME], KEY_NAME: "Beautiful", KEY_BGSCORE: 1, ISSA_FLAW: False
+    }],
+    M_LINE_HARDESTADT[KEY_NAME]: [{
+        KEY_BGTYPE: M_LINE_HARDESTADT[KEY_NAME], KEY_NAME: "Voice of Hardestadt", KEY_BGSCORE: 1, ISSA_FLAW: False,
+        KEY_TOOLTIP: "I can always be heard when I want to. Not something every Blue Blood can do. An ability I got from my sire, that goes all the way back to some guy whose name I can't pronounce. Who was apparently such an abusive asshole that it manifests in the Blood as a supernatural ability to yell at people."
+    }]
 }
 
 define bgTable          = {

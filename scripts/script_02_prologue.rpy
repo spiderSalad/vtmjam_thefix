@@ -1,18 +1,5 @@
 ﻿# The script of the game goes in this file.
 
-label start:
-
-# The game starts here.
-    stop music fadeout 1.0
-
-    scene black with fade
-
-    "Content warning: (Somewhat graphic descriptions of) violence, blood, alcohol, addiction, mental illness, emotional abuse."
-
-    "Some sexual content, if you pick the option that mentions it. Lots of profanity."
-
-    "..."
-
 label chapter0:
 
     # In-game variable initializations, to make sure they get tracked by Ren'py
@@ -65,11 +52,7 @@ label chapter0:
 
     "And there's the alarm. After a few seconds I reach for my phone and shut it off."
 
-    $ pc.raiseHunger(3)
-
     "I don't actually need an alarm - none of my kind do. I couldn't stay asleep past sundown if I wanted to. I've tried."
-
-    $ pc.slakeHunger(2)
 
     "But the obnoxious jingle is comforting, somehow. Makes me feel a bit more like the human being I used to be. Normal."
 
@@ -1171,7 +1154,7 @@ label chapter0:
 
         scene bg hotel room
 
-        # play music audio.mission2
+        play music audio.hotel_neutral fadeout 2.0 fadein 3.0 volume 0.6
 
         ghoul "Alright, so what are the bosses makin' you do, exactly?"
 
@@ -1187,7 +1170,7 @@ label chapter0:
 
         me "There's information about shift schedules, patrol routes, comm frequencies, passwords, and building schematics."
 
-        ghoul "Oh. Damn. Sounds like they hooked up you up. But you still gotta physically get in and out, right? How are we pullin' that off?"
+        ghoul "Oh. Damn. Sounds like they hooked you up. But you still gotta physically get in and out, right? How are we pullin' that off?"
 
         me "Presumably some combination drawn from my abundance of natural talent and effortless mastery of the Ventrue arts."
 

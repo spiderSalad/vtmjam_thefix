@@ -615,7 +615,7 @@ label feeding:
 
             "Ignoring the \"tiger\", I wiggle back into my dress, smooth it a bit, grab my purse and excuse myself. I make sure to lock the door behind me. Goodbye, Lloyd. Thank you for sharing with me. I hope there are better days for you ahead."
 
-            beast "Gag me with fucking spoon."
+            beast "Gag me with a fucking spoon."
 
             $ pc.loseCash(20.0)
 
@@ -1507,7 +1507,7 @@ label feeding:
                     jump feeding.hx_sqn_opt1
 
             "My contacts should be helpful here. I talk to the owner and have him have the staff send someone my way. On a totally unrelated note, I furnish the owner of with a small consideration, as a token of respect. ([_man] + [_intr] + Contacts)" if not picked2 and pc.hasPerk(M_CONTACTS[KEY_NAME])[0]:
-                $ picked2, used_contacts = True
+                $ picked2 = used_contacts = True
                 if story_sqn_generic2:
                     jump feeding.hx_sqn_generic
                 else:
@@ -1794,7 +1794,7 @@ label feeding:
                 $ grade1 = evalt(pc.test(3 + int(story_times_dodged_ex), _dex, _clan))
                 $ grade2 = evalt(pc.test(3 + int(story_times_dodged_ex), _wit, _stre))
                 if grade == SUCCESS or grade == MESSYCRIT:
-                    "I know [exname] well enough to know how [exsubj] thinks. Keeping her position in mind, I can keep out of [expos] field of view until I'm a safe distance away."
+                    "I know [exname] well enough to know how [exsubj] thinks. Keeping [expos] position in mind, I can keep out of [expos] field of view until I'm a safe distance away."
 
                     beast "When it comes to running from problems like a spineless coward, you truly are peerless. You know [exsubj]'ll just keep looking for you, right?"
 
@@ -2111,6 +2111,8 @@ label feeding:
         "I suggest we get out of here. He smiles; it's his lucky night. His place is two-bedroom apartment on 20th and Terminex. We don't make it to the bed."
 
         $ pc.soundFeed("The sex is pretty good, considering that I'm dead. When he starts nibbling at my ear I turn my head and bite into his lip. He makes a sort of yelp that deepens into a moan halfway through. I drink as much as I dare, then kiss the wounds away.")
+
+        $ pc.slakeHunger(2)
 
         beast "Must our every victory be incomplete and hollow? Why not invite him in? I mean all of him, all the way in. You could use another friend."
 

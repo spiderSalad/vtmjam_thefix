@@ -56,6 +56,7 @@ default usingMindControl        = False # Entrance or Mesmerize
 default usingToughness          = False # Used in combat, unlike most of these flags
 
 default story_mission1_cased    = False
+default story_m1_case_win       = False
 default story_mission1_start    = False
 default story_mission1_ghost    = True
 default story_mission1_spotted  = False

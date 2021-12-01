@@ -1491,9 +1491,9 @@ screen codexCasefilesPage(*args):
 
                                 if itemDetails[KEY_ITEMTYPE] == IT_MONEY:
                                     title = "" + str(item[KEY_NAME]).capitalize() + ": ${:.2f}".format(item[KEY_VALUE])
-                                elif itemDetails[KEY_ITEMTYPE] == IT_WEAPON:
+                                elif itemDetails[KEY_ITEMTYPE] == IT_WEAPON or itemDetails[KEY_ITEMTYPE] == IT_FIREARM:
                                     concealed = "I have my trusty forged CCW permit, just in case." if itemDetails[ITEM_CONCEALED] else "This is an open carry state, right?"
-                                    toolTip = "Damage Bonus: {db}\n{cncl}\n{btt}".format(db=itemDetails[DAMAGE_BONUS], cncl=concealed, btt=toolTip)
+                                    toolTip = "Damage Bonus: {db}\n\n{cncl}\n\n{btt}".format(db=itemDetails[DAMAGE_BONUS], cncl=concealed, btt=toolTip)
 
                             textbutton str(title) + " {color=[colorstr]}(" + str(itemDetails[KEY_ITEMTYPE]) + "){/color}":
                                 text_style style.codex_hoverable_text
@@ -1554,8 +1554,8 @@ screen disciplineTree(*args):
 # Used to display tooltips
 screen hovertip(tip, *args):
     frame background Frame("gui/frame.png", Borders(5, 5, 5, 5)):
-        xmaximum 200
-        ymaximum 150
+        xmaximum 250
+        ymaximum 160
         # ysize 80
         pos renpy.get_mouse_pos()
         padding (10, 10)

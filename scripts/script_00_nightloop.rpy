@@ -31,9 +31,82 @@ python:
     dirtycop.embody(5, 4, 1)
     dirtycop.equip(4, 2, 3, True, 5) # he's got a gun
 
-    brujah = Combatant(beth = pc)
+    brujah = Combatant(beth = pc, fightsToDeath = True)
     brujah.embody(6, 6, 0)
     brujah.equip(6, 0, 6)
+
+
+label start:
+
+# The game starts here.
+# =====================
+
+    stop music fadeout 1.0
+
+    scene black with fade
+
+    "Content warning: (Somewhat graphic descriptions of) violence, blood, alcohol, addiction, mental illness, emotional abuse."
+
+    "Some sexual content, if you pick the option that mentions it. Lots of profanity."
+
+    "..."
+
+    jump chapter0
+
+
+# ==========================
+# These labels end the game.
+
+label endgame:
+
+    $ log("\n[STATUS]: Game ended.\n")
+
+    return
+
+label gameover:
+
+    $ log("\n[STATUS]: Failure. Game over.\n")
+
+    label .Health:
+
+        "..."
+
+        "...This isn't how it was supposed to go."
+
+        "But..."
+
+        "Maybe it's for the best. Everyone else... is..."
+
+        "...probably better off."
+
+        "I'm sorry."
+
+        jump gameover.end
+
+    label .Willpower:
+
+        "..."
+
+        "...I can't do this."
+
+        "...Why did I think I could do this?"
+
+        beast "{i}Because you're stupid. But don't worry. As ever, I'm here to guide you. In fact, I think I'll take over for a while.{/i}"
+
+        "..."
+
+        play sound audio.beastgrowl1
+
+        jump gameover.end
+
+    label .end:
+
+    "..."
+
+    return
+
+    return
+
 
 label nightloop:
     scene bg hotel room with fade
@@ -145,7 +218,17 @@ label nightloop:
 
                     jump missions.mission1_start
 
-                "Alright, I think I still have a chance to get this done. Let's give our first case another shot." if (story_mission1_start and story_mission1_failed) or story_mission1_cased:
+                "Okay, I think I'm ready to do this." if story_mission1_cased and not story_mission1_failed:
+                    stop music fadeout 2.5
+
+                    if pc.getHunger() > 2:
+                        beast "You really want to go into this hungry? I mean, I guess I can improvise. But you might not like the results."
+                    else:
+                        beast "Finally. Let's get this show on the road."
+
+                    jump missions.mission1_try_again
+
+                "Alright, I think I still have a chance to get this done. Let's give our first case another shot." if (story_mission1_start and story_mission1_failed):
                     stop music fadeout 2.5
 
                     if pc.getHunger() > 2:
@@ -197,6 +280,7 @@ label nightloop:
                         play sound audio.beastgrowl1
                         beast "SO HELP ME GOD IF YOU DON'T GET OUT THERE AND HUNT I AM GOING TO DRAIN THE FIRST PERSON WE SEE"
                     else:
+                        play sound audio.mending
                         python:
                             pc.mend(KEY_HP, KEY_SPFD, pc.getBPMend())
                             pc.addHungerDebt(4)
@@ -229,6 +313,7 @@ label nightloop:
     # random battles
     label .randomBattle:
 
+        play sound audio.car_screech
         $ _opp = arena.generateRandomOpp()
         $ arena.setStage()
         $ arena.startBattle(_opp)
@@ -242,9 +327,15 @@ label nightloop:
         # TODO music and sounds
         "I stumble into the shower and clean up as best I can. Then I dry off and throw myself onto the bed. I'll just... lie here for a bit."
 
+        play sound audio.doorknock
+
         "There's a knock at the door. Go away, whoever you are."
 
+        play sound audio.doorknock
+
         "But they don't. The knocking just gets more urgent. Fuck me. If that's another Anarch hitter, I'm done. I can't fight another fucking Brujah."
+
+        play sound audio.doorknock
 
         ghoul "[pcname]? You in there? [petname]!"
 
@@ -264,7 +355,9 @@ label nightloop:
 
         "He does, actually. He's rocking a well-fitted crimson turtleneck and pressed slacks. His peacoat is on the floor in the hall."
 
-        if pc.hasPerk(M_HERD[KEY_NAME]):
+        $ print("\n\nAYYY", pc.hasPerk(M_HERD[KEY_NAME]))
+
+        if pc.hasPerk(M_HERD[KEY_NAME])[0]:
             ghoul "What do you need? You can heal all of that, right? If you have blood? I'll have one of your people sent up."
 
             me "That... actually sounds pretty good."
@@ -396,6 +489,8 @@ label nightloop:
         label .burnstash:
             "I contact the Seneschal with Kay Sanghera's burner phone. They confirm that the material is to be destroyed. I record a video of the drives and tapes being tossed in a bag, thrown into a dumpster, and set on fire."
 
+            play sound audio.burnit
+
             beast "Did it {i}have{/i} to be fire?"
 
             "From a safe distance, of course."
@@ -417,6 +512,8 @@ label rnr: # TODO random battles here?
     scene bg driving road2
 
     if random.randint(0, 1) > 0:
+        play sound audio.car_screech
+
         "{i}Goddamnit.{/i} Another one of these."
 
         beast "Hey, if we're on vacation I should get to have fun too, right?"
@@ -519,57 +616,3 @@ label rnr: # TODO random battles here?
     $ updateTime(1)
 
     jump nightloop
-
-
-# ==========================
-# These labels end the game.
-
-label endgame:
-
-    $ log("\n[STATUS]: Game ended.\n")
-
-    return
-
-label gameover:
-
-    $ log("\n[STATUS]: Failure. Game over.\n")
-
-    label .Health:
-
-        "..."
-
-        "...This isn't how it was supposed to go."
-
-        "But..."
-
-        "Maybe it's for the best. Everyone else... is..."
-
-        "...probably better off."
-
-        "I'm sorry."
-
-        jump gameover.end
-
-    label .Willpower:
-
-        "..."
-
-        "...I can't do this."
-
-        "...Why did I think I could do this?"
-
-        beast "{i}Because you're stupid. But don't worry. As ever, I'm here to guide you. In fact, I think I'll take over for a while.{/i}"
-
-        "..."
-
-        play sound audio.beastgrowl1
-
-        jump gameover.end
-
-    label .end:
-
-    "..."
-
-    return
-
-    return
