@@ -390,8 +390,6 @@ label nightloop:
         # endings
         if story_mission1_ghost:
             play music audio.huntsuccess fadeout 1.5 fadein 1.5
-            define audio.huntsuccess        = "audio/music/Tea K Pea - commander.mp3"
-            define audio.huntfailure        = "audio/music/Darkstar83 - The Witches Dream.mp3"
 
             me "I got in and out with no one the wiser. There shouldn't be any clue as to what I was there to do, and no one should recognize me."
 

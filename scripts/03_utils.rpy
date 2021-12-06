@@ -127,7 +127,7 @@ init 1 python:
                 herdlevel += 1
                 ctt = "In every city there are places you can go to find people just passing through. The only problem is they're usually claimed, but that's not a problem for me here."
 
-            if PRES_ADDICTED2U in self.powers[KEY_DISCIPLINE][_presence][KEY_DPOWERS]:
+            if self.hasDisciplinePower(_presence, PRES_ADDICTED2U): # PRES_ADDICTED2U in self.powers[KEY_DISCIPLINE][_presence][KEY_DPOWERS]:
                 herdlevel += 1
                 ctt = "My milkshake brings all the boys to the yard. Girls too. People of any gender, really."
 
@@ -239,7 +239,7 @@ init 1 python:
                     # print("\n\npowerInThatSlot", powerInThatSlot, scoreWords, i)
                     if not powerInThatSlot:
                         self.powers[KEY_DISCIPLINE][discipline][KEY_DPOWERS][scoreWords[i]] = power
-                        print("\n\npowers:: ", scoreWords[i], self.powers[KEY_DISCIPLINE][discipline][KEY_DPOWERS])
+                        # print("\n\npowers:: ", scoreWords[i], self.powers[KEY_DISCIPLINE][discipline][KEY_DPOWERS])
                         self.checkPowers()
                         return True
                 self.checkPowers()

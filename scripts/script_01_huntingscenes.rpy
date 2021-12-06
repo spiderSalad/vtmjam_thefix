@@ -26,6 +26,9 @@ label feeding:
     define cuteman2 = Character("Beautiful Man", color = "#e378ba")
     define cutelady2= Character("Beautiful Woman", color = "#e378ba")
 
+    define bex      = Character("Ex")
+    # $ bex = Character("Ex")
+
     label .establish_orientation:
 
         $ global pcex
@@ -1944,7 +1947,7 @@ label feeding:
 
             bex "It's true!"
 
-            "[exSubj] goes on to describe, in impressive and disturbing, my itinerary over the last week or so."
+            "[exSubj] goes on to describe, in impressive and disturbing detail, my itinerary over the last week or so."
 
             me "So, what? You hired a private investigator? You..."
 
@@ -2094,7 +2097,7 @@ label feeding:
         if story_srn_generic:
             jump feeding.hx_srn_generic
 
-        $ story_siren_generic = True
+        $ story_srn_generic = True
 
         "I make my way onto the dance floor doing some basic dancehall moves. A few heads are turning already. I head to the clear space with the best lighting."
 
@@ -2137,7 +2140,7 @@ label feeding:
         if story_srn_generic:
             jump feeding.hx_srn_generic
 
-        $ story_siren_generic = True
+        $ story_srn_generic = True
 
         "I don't care for the music here - it's not bad per se, but it doesn't make we want to dance at all. So I sit down at the bar and order a drink I won't touch. I look around. The decor is nice at least, and the vibe gets better when the song changes to someting more... me."
 

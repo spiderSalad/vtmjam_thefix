@@ -597,11 +597,11 @@ label missions:
                 $ grade = evalt(result)
                 jump missions.mission1_snafu
 
-            "I feign ignorance and convince her there was some mistake. I don't want to extend my aura so far I draw the cops' attention, but I should be able to easily entrance one mortal woman, no matter how beautiful. ([_man] + [_acad] or [_intr] + [_pres])" if pc.getHunger() < HUNGER_MAX and pc.hasDisciplinePower(_presence, PRES_CHARM):
+            "I feign ignorance and convince her there was some mistake. I don't want to extend my aura so far I draw the cops' attention, but I should be able to easily entrance one mortal woman, no matter how beautiful. ([_man] + [_acad] or [_intr] + [_presence])" if pc.getHunger() < HUNGER_MAX and pc.hasDisciplinePower(_presence, PRES_CHARM):
                 $ chosenSkill = max(pc.getSkill(_acad), pc.getSkill(_intr))
                 $ result = pc.test(7, _man, chosenSkill, _presence, pc.maybeBloodSurge())
                 $ grade = evalt(result)
-                $ addHungerDebt(4)
+                $ pc.addHungerDebt(4)
                 jump missions.mission1_snafu
 
             "I come up with some bullshit technical explanation for why I'm here early. ([_man] or [_int] + [_tech])":
@@ -615,7 +615,7 @@ label missions:
                 $ chosenAttr = max(pc.getAttr(_int), pc.getAttr(_man))
                 $ result = pc.test(7, chosenAttr, _tech, _presence, pc.maybeBloodSurge())
                 $ grade = evalt(result)
-                $ addHungerDebt(4)
+                $ pc.addHungerDebt(4)
                 # jump missions.mission1_technobabble
                 jump missions.mission1_snafu
 
