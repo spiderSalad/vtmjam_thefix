@@ -29,6 +29,7 @@ label feeding:
     label .establish_orientation:
 
         $ global pcex
+        $ global bex
 
         menu:
             "I'm looking for..."
@@ -53,6 +54,7 @@ label feeding:
                         story_this_time = SIREN_MEN
                         pcex = _exfemale
 
+        $ bex = Character(pcex["first"], color = "#d75b9a")
         $ story_orientation_set = True
 
         return
@@ -583,7 +585,7 @@ label feeding:
             scene bg hunt siren_their_place with fade
             play music audio.siren_their_place fadeout 1.5 fadein 1.5 volume 0.8
 
-            "I let him take me back to his place. It's small, spartan studio apartment on the fourth floor of the Huron-Farouk building. It's clean, almost immaculate. But it's got a hint of that wonderful lived-in smell."
+            "I let him take me back to his place. It's a small, spartan studio apartment on the fourth floor of the Huron-Farouk building. It's clean, almost immaculate. But it's got a hint of that wonderful lived-in smell."
 
             "We only make it to the bed because it looks so much comfier than the sofa. He kisses me long and deep, and then works his way down with his hands and lips while I fumble with his belt."
 
@@ -685,7 +687,7 @@ label feeding:
                     else:
                         "Fortunately, I don't. It's a weird thing I can do. I don't think it's the same as the normal Ventrue arts, but I haven't had time to look into it."
 
-                    me "Mindy. Don't worry, I forgive you. And no, I just arrived the city a week ago. What about you?"
+                    me "Mindy. Don't worry, I forgive you. And no, I just arrived in the city a week ago. What about you?"
 
                     ang "Oh, I just come here to blow off steam. Get away from classes and sports and all that."
 
@@ -1776,6 +1778,8 @@ label feeding:
 
         if story_srn_generic:
             jump feeding.hx_srn_generic
+        elif story_ex_resolved:
+            jump expression "feeding.hx_srn_" + story_this_time
 
         "Sure, just watch me-"
 
@@ -1821,17 +1825,17 @@ label feeding:
 
                     jump feeding.hx_srn_attack_ex
 
-            "I can literally just {i}make{/i} [exobj] leave. I command [exname] to leave the city! ([_man] + [_dominate])" if pc.hasDisciplinePower(_dominate, DOM_MESMERIZE):
+            "I can literally just {i}make{/i} [exobj] leave. I command [exname] to leave the city! ([_man] + [_dominate])" if pc.getHunger() < HUNGER_MAX and pc.hasDisciplinePower(_dominate, DOM_MESMERIZE):
                 $ grade = evalt(pc.test(3 + int(story_times_dodged_ex), _man, _dominate))
 
                 "I march up to [exobj]. [exSubj] sees me from a hundred feet away and starts to wave, then thinks better of it."
 
-                exlover "[petname]! It's good to-"
+                bex "[petname]! It's good to-"
 
                 me "You will leave this city and you will not return."
 
                 if grade == SUCCESS or grade == MESSYCRIT:
-                    exlover "...[petname]? Why wou-"
+                    bex "...[petname]? Why wou-"
 
                     "[exSubj] gives me a strange look, then turns around and walks away."
 
@@ -1842,7 +1846,7 @@ label feeding:
                     $ story_times_dodged_ex += 1
                     jump expression "feeding.hx_srn_" + story_this_time
                 else:
-                    exlover "[Beth], why are you doing this? Why are you acting this way? Just talk to me, please! Please."
+                    bex "[Beth], why are you doing this? Why are you acting this way? Just talk to me, please! Please."
 
                     beast "Pathetic."
 
@@ -1856,11 +1860,11 @@ label feeding:
 
                 "I march up to [exobj]. [exSubj] sees me from a hundred feet away and starts to wave, then thinks better of it."
 
-                exlover "[petname]! It's good to-"
+                bex "[petname]! It's good to-"
 
                 me "Come with me, [exname]."
 
-                exlover "Okay, sure. I really just need to talk to you."
+                bex "Okay, sure. I really just need to talk to you."
 
                 scene bg danger alley1
                 # play music audio.brainwashedex fadeout 1.0 fadein 2.5 TODO: need track for this
@@ -1875,7 +1879,7 @@ label feeding:
 
         label .hx_srn_brainwash_ex:
 
-            exlover "[petname]. I-"
+            bex "[petname]. I-"
 
             "I put my finger to [expos] lips. And then my Blood percolates behind my eyes, roiling and surging back and forth between my tongue and my lips and my brain. My gaze burns into [expos] mind, and [expos] eyes grow wide."
 
@@ -1885,11 +1889,11 @@ label feeding:
 
             me "You never needed [petname] [pclast]. You've been doing just fine without her. Better, actually. You planned to leave this city after your vacation and return to your life fresh and rejuvenated. You're free."
 
-            exlover "But... I love her. I love [petname]."
+            bex "But... I love her. I love [petname]."
 
             me "You've been assured by the people you trust the most - family and friends - that those feelings will pass. That they don't need to control you."
 
-            exlover "..."
+            bex "..."
 
             "I don't have any way of knowing how much of it took, or how well the implanted narrative will hold up to any kind of reflection or scrutiny. And I can't stick around to find out. I head the other way."
 
@@ -1908,19 +1912,22 @@ label feeding:
         label .hx_srn_meet_ex:
 
             scene bg danger alleyRed with trans_slowfade
-            # play music audio.meeting_ex fadeout 1.0 fadein 2.0 TODO: track for this.
+            play music audio.title2x fadeout 1.0 fadein 2.0 # TODO: track for this.
 
             "We're standing in an alley just off the Teknokhrome Plaza. [exname] looks at me, an expression on [expos] face that I can't read."
 
-            exlover "Thanks for coming to talk to me, [petname]."
+            bex "Thanks for coming to talk to me, [petname]."
 
             me "What do you want? Why are you doing this? Following me from city to city! Are you fucking insane?"
 
-            exlover "I... [petname]. I had to find you. I can't stop thinking about you."
+            bex "I... [petname]. I had to find you. I can't stop thinking about you."
 
             me "[exname]... don't do this."
 
-            exlover "Wait, just hear me out! Please. I think I'm {i}supposed{/i} to be with you. In one way or another. [petname], haven't you wondered how I keep finding you?"
+            $ print("\n\nbex:", bex)
+            $ print("pcex", pcex)
+
+            bex "Wait, just hear me out! Please. I think I'm {i}supposed{/i} to be with you. In one way or another. [petname], haven't you wondered how I keep finding you?"
 
             "Yeah, I was going to have to look into that at some point."
 
@@ -1931,17 +1938,17 @@ label feeding:
 
             me "...How you find me, [exname]?"
 
-            exlover "My dreams! I always see you in my dreams."
+            bex "My dreams! I always see you in my dreams."
 
             me "You've got to be fucking kidding me."
 
-            exlover "It's true!"
+            bex "It's true!"
 
             "[exSubj] goes on to describe, in impressive and disturbing, my itinerary over the last week or so."
 
             me "So, what? You hired a private investigator? You..."
 
-            exlover "I swear, I see you almost every time I sleep!"
+            bex "I swear, I see you almost every time I sleep!"
 
             me "You need therapy, [exname]. Not some monomythical Hero's Journey. There are a hundred thousand better places to find meaning in your life."
 
@@ -1949,21 +1956,21 @@ label feeding:
 
             beast "That would be my guess."
 
-            exlover "...Only ever at night, so I have to sleep during the day. But that's not the point. The point is, there has to be a reason for all this."
+            bex "...Only ever at night, so I have to sleep during the day. But that's not the point. The point is, there has to be a reason for all this."
 
             "Shit, I wasn't listening for that last part."
 
-            exlover "I'm supposed to be by your side. Helping you, or protecting you. Something. I've never had dreams like this before; it can't be a coincidence!"
+            bex "I'm supposed to be by your side. Helping you, or protecting you. Something. I've never had dreams like this before; it can't be a coincidence!"
 
-            exlover "[petname], I love you. I already forgave you for all the other... things. I need you."
+            bex "[petname], I love you. I already forgave you for all the other... things. I need you."
 
             me "You really, really don't."
 
-            exlover "I do! I know I'd never meet someone else like you in a hundred years."
+            bex "I do! I know I'd never meet someone else like you in a hundred years."
 
             me "That's a good thing. We were {i}terrible{/i} for each other. Especially me for you. Why are you putting yourself through this?"
 
-            exlover "But listen - I wouldn't be here if I didn't think there was something I can do for you. Something I'm supposed to do for you."
+            bex "But listen - I wouldn't be here if I didn't think there was something I can do for you. Something I'm supposed to do for you."
 
             beast "That might be the only way to resolve this."
 
@@ -1986,33 +1993,33 @@ label feeding:
 
                     me "Alright."
 
-                    exlover "But [petname], I- ...what?"
+                    bex "But [petname], I- ...what?"
 
                     me "We can be together, if you think it has to be that way. But there's a price. It'll cost you whatever you have left."
 
-                    exlover "...What? [petname], if you need money I can-"
+                    bex "...What? [petname], if you need money I can-"
 
                     me "Not what I meant. I mean it'll cost you whatever life and happiness you would have had."
 
-                    exlover "...I accept. A small price to pay. This is destiny. I believe that."
+                    bex "...I accept. A small price to pay. This is destiny. I believe that."
 
                     me "...We'll see. Kneel."
 
-                    exlover "Uhh... okay."
+                    bex "Uhh... okay."
 
                     "[exname]'s eyes widen as I flip my switchblade open and cut my wrist. No one's around. No one can see us in the shadows here. We're not in any cameras' field of view."
 
-                    exlover "Uh, [petname]? What kind of weird shit are you into these days?"
+                    bex "Uh, [petname]? What kind of weird shit are you into these days?"
 
                     me "You're about to find out, aren't you? Drink."
 
                     "[exSubj] does as [exsubj]'s told without another word. I don't know why I'm surprised. [exSubj] drinks and drinks, until I tear my arm away from [exobj] and seal the wound. [exname] stares up at me with what looks like wonder. Or horror."
 
-                    exlover "...I knew it, [petname]. I knew this was meant to be. This is proof."
+                    bex "...I knew it, [petname]. I knew this was meant to be. This is proof."
 
                     me "Here's the address of the hotel I'm staying at. Wait for me there in the lobby."
 
-                    exlover "Anything. God, I love you so much."
+                    bex "Anything. God, I love you so much."
 
                     beast "Yes, this is good. Another loyal servant to do our bidding. [exSubj] certainly asked for it. Probably be happier this way, if anything."
 
@@ -2050,13 +2057,13 @@ label feeding:
 
         stop music fadeout 2.5
 
-        exlover "{alt}Gasping, choking: {/alt}Wasn't sure how you'd react to seeing me again. I thought I was prepared for the worst, but once again you manage to surprise me."
+        bex "{alt}Gasping, choking: {/alt}Wasn't sure how you'd react to seeing me again. I thought I was prepared for the worst, but once again you manage to surprise me."
 
         me "...[exname]? Why are you here? How did you find me?"
 
         "[exSubj] gives me a long, sad look."
 
-        exlover "I had to... I needed to-"
+        bex "I had to... I needed to-"
 
         "Onlooker" "What the hell is going on here? Oh my God!"
 
@@ -2066,7 +2073,7 @@ label feeding:
 
         me "Fuck!"
 
-        exlover "Wait! [petname], I-"
+        bex "Wait! [petname], I-"
 
         me "Forget!"
         $ pc.cloudMemory()
@@ -2082,6 +2089,7 @@ label feeding:
         label .hx_srn_men:
 
         scene bg huntX siren
+        play music audio.siren_men1
 
         if story_srn_generic:
             jump feeding.hx_srn_generic
@@ -2124,6 +2132,7 @@ label feeding:
         label .hx_srn_women:
 
         scene bg huntX siren
+        play music audio.siren_women1
 
         if story_srn_generic:
             jump feeding.hx_srn_generic
@@ -2163,9 +2172,16 @@ label feeding:
 
         beast "That went badly when you were a living human being. How do you think it would go now that you're a corpse? Focus! We. Need. Blood."
 
-        "Fuck off. I don't need you to tell me any of that. The Hunger gnaws at me, killing the mood. I whisper in her ear, and in a few minutes we're out and back at her place."
+        "Fuck off. I don't need you to tell me any of that. But it's too late; the Hunger gnaws at me, killing the mood. I whisper in her ear, and in a few minutes we're out and back at her place."
 
-        "She's bigger and stronger than a lot of the men I've been with. Her mouth tastes like wine and her scent is intoxicating. She's not wearing perfume and there's only the slightest hint of body wash. She's holding me up with one arm and the other has already got my shirt off. I wrap my legs around her as we fall to the bed."
+        play music audio.siren_their_place fadeout 2.0 fadein 1.5
+
+        if story_orientation == SIREN_WOMEN:
+            "She's strong, and she carries me over the threshold like we're married. Her mouth tastes like wine and her scent is intoxicating. She's not wearing perfume and there's only the slightest hint of body wash."
+        else:
+            "She's bigger and stronger than a lot of the men I've been with. Her mouth tastes like wine and her scent is intoxicating. She's not wearing perfume and there's only the slightest hint of body wash."
+
+        "She's holding me up with one arm and the other has already got my shirt off. I wrap my legs around her as we fall to the bed."
 
         beast "What's taking you so goddamn long? Drink her already."
 
@@ -2196,9 +2212,9 @@ label feeding:
 
             beast "Yes, it is. But so is a lot else of what you've done lately."
 
-        beast "Listen. I'm trying to help you. I mean, I'm trying to help me. But by way of helping you. Your emotional instability is distracting you from the hunt, from your job, from everything that's actually important."
+        beast "Listen. I'm trying to help you. I mean, I'm trying to help {i}me{/i}. But by way of helping you. Your emotional instability is distracting you from the hunt, from your job, from everything that's actually important."
 
-        beast "We can't keep going on like this. And I understand hunger. I {i}am{/i} hunger. So if you hunger for love, make some. Or take some. Whatever; I don't care. Just claim what you want and be satisfied, for fuck's sake!"
+        beast "We can't keep going on like this. And I understand hunger. I {i}am{/i} Hunger. So if you hunger for love, make some. Or take some. Whatever; I don't care. Just claim what you want and be satisfied, for fuck's sake!"
 
         beast "You're a vampire! A Ventrue! We don't pine, we don't long, and we don't wallow in regret. If we want something, we take it or we make it. You obviously want her, so take her. Then make her, into whatever it is you want out of her."
 
@@ -2206,9 +2222,9 @@ label feeding:
 
         "..."
 
-        "I... no. I hear you. But no. I won't ruin this woman's life. I'll... I'll focus from now on. Just... let's go. Please."
+        "I... no. I hear you. But no. I won't ruin this woman's life. I'll... I'll focus from now on, okay? Just... let's just go. {i}Please{/i}."
 
-        beast "I'll hold you to that, [petname]."
+        beast "...I'll hold you to that, [petname]."
 
         jump feeding.hx_srn_win
 

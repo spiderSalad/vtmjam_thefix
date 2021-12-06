@@ -411,7 +411,7 @@ init 1 python:
             dented = False
             injured = False
             trueAmount = amount
-            if dtype == KEY_SPFD: # NOTE: Superficial damage is halved before the loop
+            if swkey == KEY_HP and dtype == KEY_SPFD: # NOTE: Superficial damage is halved before the loop
                 trueAmount = math.ceil(float(amount) / 2)
 
             for point in range(int(trueAmount)):

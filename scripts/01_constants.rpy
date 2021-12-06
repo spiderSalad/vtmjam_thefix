@@ -67,6 +67,7 @@ define _exfemale    = {"first":"Michelle", "last":"Garcia", "subj":"she", "obj":
 
 define audio.title              = "audio/music/BenJamin Banger - Tom 2.0.mp3"
 define audio.title2             = "audio/music/DJ Spooky - Dark Skies.mp3"
+define audio.title2x            = "<from 8>audio/music/DJ Spooky - Dark Skies.mp3"
 define audio.scene1_awakening   = "audio/music/2Kutup - Travelling Through Intergalactic Space.mp3"
 define audio.club1              = "audio/music/BenJamin Banger - Freestyle 39.mp3"
 define audio.car_meeting        = "<from 5>audio/music/AEED - Through The City.mp3"

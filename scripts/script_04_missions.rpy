@@ -129,17 +129,20 @@ label missions:
         $ arena.setStage()
         $ arena.startBattle(shadyguy)
 
-        "So that's that. Oh, but look. Our friend seems to have dropped something."
+        if wonLastBattle:
+            "So that's that. Oh, but look. Our friend seems to have dropped something."
 
-        $ pc.addToInventory("switchblade", customToolTip = None)
+            $ pc.addToInventory("switchblade", customToolTip = None)
 
-        beast "Well at least we got a weapon out of this sideshow. About time you started carrying one again. We're not Rabble or Sewer Rats; we can't tear our enemies limb from limb with our bare hands."
+            beast "Well at least we got a weapon out of this sideshow. About time you started carrying one again. We're not Rabble or Sewer Rats; we can't tear our enemies limb from limb with our bare hands."
 
-        "I should totally look into finding someone to teach me that art, though."
+            "I should totally look into finding someone to teach me that art, though."
 
-        beast "Yes, you should. Look at you, planning for our future as if you're not some aimless wastoid."
+            beast "Yes, you should. Look at you, planning for our future as if you're not some aimless wastoid."
 
-        "My sire says that any Kindred can learn the arts of any Clan, though some require more teaching than others. And you need to taste their Blood. Which is always a risk."
+            "My sire says that any Kindred can learn the arts of any Clan, though some require more teaching than others. And you need to taste their Blood. Which is always a risk."
+        else:
+            "Good fucking grief!"
 
         jump missions.mission1_case_joint
 
@@ -166,7 +169,7 @@ label missions:
             "I'll circle around a few times, take photos from a safe distance, and note entrances, cameras, any cops I can spot. Then I'll compare it to Kay's info and see what I can come up with. ([_wit] or [_int] + [_inve] or [_awar])":
                 $ grade = evalt(pc.basictest(5, max(pc.getAttr(_int), pc.getAttr(_wit)), max(pc.getSkill(_inve), pc.getSkill(_awar))))
 
-            "I don't want to mess this up, so before all of that I'm going to send Blood to my brain and eyes. I love being my own performance-enhancing drug.":
+            "I don't want to mess this up, so before all of that I'm going to send Blood to my brain and eyes. I love being my own performance-enhancing drug." if pc.getHunger() < HUNGER_MAX:
                 $ grade = evalt(pc.basictest(5, max(pc.getAttr(_int), pc.getAttr(_wit)), max(pc.getSkill(_inve), pc.getSkill(_awar)), pc.getBPSurge()))
 
         scene black with fade
@@ -1085,7 +1088,7 @@ label missions:
 
                     "No, no, no, no, nononononononononono..."
 
-                    "He's dead. Skin white and shriveled. And I'm covered in his blood. His gun's in my hand. I feel so full, but someone's screaming."
+                    "He's dead. Skin white and shriveled. And I'm covered in his blood. His gun's in my hand. I feel so full, so... mmm... but someone's screaming."
                     $ pc.addToInventory("police_colt")
 
                     scene black with fade
@@ -1101,6 +1104,8 @@ label missions:
                     jump missions.mission1_failstate
 
     label .mission1_security_room:
+        scene bg precinct interior1 with fade
+
         if pc.getSkill(_tech) > 2:
             "I don't waste any time. I have a whole baggie of USBs stuffed with malware, and I stick one in to the terminal. The dozens of screens go dark for a second. A few shell commands later, and the cameras are looping and flushing their cache every minute or so."
 
@@ -1427,7 +1432,6 @@ label missions:
 
             beast "Well, we all knew this was coming, didn't we? The part where I clean up. Clean up the mess that you are. That you've always been."
 
-            $ story_mission1_failed = True
             $ pc.damage(KEY_WP, KEY_AGGD, 10)
         elif (story_m1fail_burglary and story_m1fail_tech):# and story_m1fail_social):
             beast "How the FUCK did you manage to fail at absolutely everything?! At every single one of your stupid fucking gambits! You'd think one of your plans would succeed if only by chance!"
@@ -1442,7 +1446,6 @@ label missions:
 
             beast "Yes, that's abundantly clear now. You can't say I didn't give you a chance."
 
-            $ story_mission1_failed = True
             $ pc.damage(KEY_WP, KEY_AGGD, 10)
         else:
             "...Goddamnit. FUCK! Why? WHY?! Why can't-"
@@ -1459,6 +1462,7 @@ label missions:
 
             "There's still time..."
 
+        $ story_mission1_failed = True
         $ story_mission1_cased = True
         jump missions.mission1_end
 

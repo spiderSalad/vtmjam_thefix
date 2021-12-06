@@ -21,7 +21,6 @@ label chapter0:
     define samghoulm    = Character("Barak", color = "#dbdb76")
     define keerat       = Character("Keerat \"Kay\" Sanghera", color = "#ffa100")
     define sam          = Character("Seneschal " + _sensam["last"], color = "#FFD700")
-    define exlover      = Character(pcex["first"], color = "#d75b9a")
 
     # Show a background. This uses a placeholder by default, but you can add a file (named either "bg room.png" or "bg room.jpg") to the images directory to show it.
 
@@ -547,7 +546,7 @@ label chapter0:
             if pc.getHunger() > 2:
                 beast "You know {i}exactly{/i} what to do to get me to shut the fuck up, and you refused to do it."
             else:
-                beast "I have the sense not to drink distilled ass, at least. If you're going wear yourself out on something that stupid, you really might as well just let me take over for good."
+                beast "I have the sense not to drink distilled ass, at least. If you're going to wear yourself out on something that stupid, you really might as well just let me take over for good."
 
                 "I already told you it was a stopgap measure. To keep you from freaking out. Blame yourself."
 
@@ -1162,7 +1161,7 @@ label chapter0:
 
         me "While the Cam's off hunting those poor bastards down, I'm supposed to break into the police precinct on 3rd and Goliath. Once I'm in, they basically want me to steal all the physical evidence and wipe all the digital records."
 
-        ghoul "Ah. Well, can't help you with Five Oh, but did they give you any, like, building schematics or some shit?"
+        ghoul "Ah. Well, can't help you with Five-Oh, but did they give you any, like, building schematics or some shit?"
 
         me "No... wait, maybe."
 
@@ -1242,6 +1241,8 @@ label chapter0:
                 ghoul "How the fuck do I know if that's true?"
 
                 if pc.getHumanity > 7 or pc.getAttr(_cha) + pc.getSkill(_pers) >= 5 or pc.getAttr(_man) + pc.getSkill(_pers) >= 6:
+                    play music audio.consensualist fadeout 2.0 fadein 2.0
+
                     me "Jesus Christ, dude. You're, like, the only actual friend I have left. That legit hurts."
 
                     beast "He really is, isn't he? Everyone else kind of hates you now. Or they're afraid of you."
@@ -1258,8 +1259,12 @@ label chapter0:
 
                     ghoul "You a laugh and a fuckin' half, ain't you?"
 
+                    stop music fadeout 1.5
+
                     beast "You know he's Blood-bonded to you, right? Even if you were friends before?"
                 else:
+                    play music audio.scene1_awakening fadeout 2.0 fadein 2.0
+
                     me "If I were going to brainwash someone into being my ghoul I could have picked anyone. Why would I have picked you?"
 
                     ghoul "Oh, thanks. That makes me feel a whole lot better about this arrangement! Fuck you, [pcpetname]."
@@ -1283,9 +1288,13 @@ label chapter0:
 
                     $ setOpinion(F_GHOUL, 20, "subtract")
 
+                    stop music fadeout 1.5
+
                     beast "Well you sure did a shit job smoothing that over. But at least we know [ghoulname] is afraid of you too. That's good, right?"
 
                 me "Okay, moving on..."
+
+                play music audio.hotel_neutral fadeout 1.5 fadein 1.5
 
             # Dominate 2 - Mesmerize
             "I can give someone orders that they {i}must{/i} obey. Those orders can be long and complex if need be." if domrank >= 2 and dompowers >= 1 and dompowers < domrank and not pc.hasDisciplinePower(_dominate, DOM_MESMERIZE):

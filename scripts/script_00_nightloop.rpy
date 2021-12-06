@@ -61,6 +61,8 @@ label endgame:
 
     $ log("\n[STATUS]: Game ended.\n")
 
+    $ renpy.full_restart()
+
     return
 
 label gameover:
@@ -102,6 +104,9 @@ label gameover:
     label .end:
 
     "..."
+
+    $ renpy.full_restart()
+    # $ renpy.quit()
 
     return
 
@@ -355,8 +360,6 @@ label nightloop:
 
         "He does, actually. He's rocking a well-fitted crimson turtleneck and pressed slacks. His peacoat is on the floor in the hall."
 
-        $ print("\n\nAYYY", pc.hasPerk(M_HERD[KEY_NAME]))
-
         if pc.hasPerk(M_HERD[KEY_NAME])[0]:
             ghoul "What do you need? You can heal all of that, right? If you have blood? I'll have one of your people sent up."
 
@@ -386,6 +389,10 @@ label nightloop:
 
         # endings
         if story_mission1_ghost:
+            play music audio.huntsuccess fadeout 1.5 fadein 1.5
+            define audio.huntsuccess        = "audio/music/Tea K Pea - commander.mp3"
+            define audio.huntfailure        = "audio/music/Darkstar83 - The Witches Dream.mp3"
+
             me "I got in and out with no one the wiser. There shouldn't be any clue as to what I was there to do, and no one should recognize me."
 
             ghoul "{i}Hell{/i} yeah. Good work, boss."
@@ -408,6 +415,8 @@ label nightloop:
 
             me "You do that. I've got some business to follow up on myself."
         elif not story_mission1_spotted:
+            play music audio.huntsuccess fadeout 1.5 fadein 1.5
+
             me "I got in and out without being identified. They'll know something went down, but I'm in the clear."
 
             ghoul "So basically it couldn't have gone much better."
@@ -430,6 +439,8 @@ label nightloop:
 
             me "You do that. I've got some business to follow up on."
         elif not story_mission1_failed:
+            play music audio.huntfailure fadeout 1.5 fadein 1.5
+
             me "I got the goods, on the first attempt no less."
 
             ghoul "Could there have been a second?"
@@ -454,6 +465,8 @@ label nightloop:
 
             ghoul "I'll make some calls."
         else:
+            play music audio.huntfailure fadeout 1.5 fadein 1.5
+
             me "It took more than one try, admittedly. But there were no major Masquerade breaches, and I got the goods. That's good, right?"
 
             ghoul "Uh, I sure hope so. You'd know better than me, boss."

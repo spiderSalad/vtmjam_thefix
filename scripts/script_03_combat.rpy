@@ -404,6 +404,7 @@ init 2 python:
 
         def endBattle(self):
             global usingToughness
+            global wonLastBattle
             usingToughness = False
 
             if opp.isDead():
@@ -413,6 +414,7 @@ init 2 python:
             elif opp.isFleeing():
                 self.readOppStory("fled")
             else:
+                wonLastBattle = False
                 self.readOppStory("escape")
 
             renpy.scene()

@@ -54,6 +54,7 @@ default freeBloodSurges         = 0
 default usingAwe                = False
 default usingMindControl        = False # Entrance or Mesmerize
 default usingToughness          = False # Used in combat, unlike most of these flags
+default wonLastBattle           = True
 
 default story_mission1_cased    = False
 default story_m1_case_win       = False
@@ -76,6 +77,7 @@ default relaxbar                = False
 
 # Variable characters
 define pcex                 = {"first":"", "last":"", "subj":"", "obj":"", "pos":"", "pospro":"", "reflex":""}
+default bex                 = None
 define shadyguy             = None
 define dirtycop             = None
 define brujah               = None
